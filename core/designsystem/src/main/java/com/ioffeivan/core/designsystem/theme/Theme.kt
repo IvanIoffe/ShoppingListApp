@@ -1,4 +1,4 @@
-package com.ioffeivan.shoppinglistapp.ui.theme
+package com.ioffeivan.core.designsystem.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
