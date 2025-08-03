@@ -22,9 +22,9 @@ espressoCore = "3.7.0"
 
 # Plugins
 agp = "8.11.1"
-kotlin = "2.0.21"
-jetbrainsKotlinJvm = "2.0.21"
-ksp = "2.0.21-1.0.28"
+kotlin = "2.2.0"
+jetbrainsKotlinJvm = "2.2.0"
+ksp = "2.2.0-2.0.2"
 
 [libraries]
 # Core
