@@ -13,6 +13,7 @@ espressoCore = "3.7.0"
 # Plugins
 agp = "8.11.1"
 kotlin = "2.0.21"
+jetbrainsKotlinJvm = "2.0.21"
 
 [libraries]
 # Core
@@ -38,3 +39,4 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }

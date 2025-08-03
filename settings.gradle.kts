@@ -21,5 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "ShoppingListApp"
 include(":app")
+include(":core:common")
 include(":core:designsystem")
+
 include(":feature:login")
