@@ -55,7 +55,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.hilt.android)
-    implementation(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -56,7 +56,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
 
     implementation(libs.hilt.android)
-    implementation(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
