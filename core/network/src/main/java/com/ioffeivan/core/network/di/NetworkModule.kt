@@ -1,5 +1,6 @@
-package com.ioffeivan.core.network
+package com.ioffeivan.core.network.di
 
+import com.ioffeivan.core.network.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

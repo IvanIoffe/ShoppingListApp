@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 val backendBaseUrl = providers.fileContents(
@@ -30,7 +31,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
 
-        buildConfigField("String", "BACKEND_BASE_URL", "\"$backendBaseUrl\"")
+        buildConfigField("String", "BACKEND_BASE_URL", "\"${backendBaseUrl.get()}\"")
     }
 
     buildTypes {
@@ -52,6 +53,8 @@ android {
 }
 
 dependencies {
+
+    implementation(project(":core:common"))
 
     implementation(libs.androidx.core.ktx)
 
