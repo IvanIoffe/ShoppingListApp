@@ -4,6 +4,8 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 val backendBaseUrl = providers.fileContents(
@@ -52,6 +54,15 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
+
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.compiler)
+
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.okhttp.logging)
+
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
