@@ -1,6 +1,9 @@
 package com.ioffeivan.feature.login.data.source.remote.di
 
 import com.ioffeivan.feature.login.data.source.remote.LoginApiService
+import com.ioffeivan.feature.login.data.source.remote.LoginRemoteDataSource
+import com.ioffeivan.feature.login.data.source.remote.RetrofitLoginRemoteDataSource
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,4 +23,14 @@ class LoginRemoteSourceModuleProvider {
             .build()
             .create()
     }
+}
+
+@InstallIn(SingletonComponent::class)
+@Module
+interface LoginRemoteSourceModuleBinder {
+
+    @Binds
+    fun bindLoginRemoteDataSource(
+        retrofitLoginRemoteDataSource: RetrofitLoginRemoteDataSource
+    ): LoginRemoteDataSource
 }
