@@ -35,7 +35,12 @@ android {
 
 dependencies {
 
+    implementation(project(":core:designsystem"))
+
     implementation(libs.androidx.core.ktx)
+
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.material3)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
