@@ -8,6 +8,10 @@ composeBom = "2025.07.00"
 # DI
 hilt = "2.57"
 
+# Navigation
+androidxNavigationCompose = "2.9.3"
+androidxHiltNavigationCompose = "1.2.0"
+
 # Network
 retrofit = "3.0.0"
 okhttp = "5.1.0"
@@ -41,6 +45,10 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 # DI
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+
+# Navigation
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigationCompose" }
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 
 # Network
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
