@@ -39,9 +39,14 @@ android {
 dependencies {
 
     implementation(project(":core:common"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:ui"))
     implementation(project(":core:network"))
 
     implementation(libs.androidx.core.ktx)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
@@ -49,4 +54,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    debugImplementation(libs.androidx.ui.tooling)
 }
