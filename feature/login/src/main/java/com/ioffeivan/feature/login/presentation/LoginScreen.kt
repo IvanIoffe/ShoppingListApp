@@ -13,6 +13,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -21,10 +23,35 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ioffeivan.core.designsystem.preview.PreviewContainer
 import com.ioffeivan.core.ui.LoadingButton
 import com.ioffeivan.feature.login.R
 import com.ioffeivan.feature.login.presentation.component.KeyTextField
+
+@Composable
+fun LoginRoute(
+    onLoginSuccess: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(uiState.success) {
+        if (uiState.success) {
+            onLoginSuccess()
+        }
+    }
+
+    LoginScreen(
+        uiState = uiState,
+        onKeyChange = viewModel::onKeyChange,
+        onLoginButtonClick = viewModel::login,
+        modifier = modifier
+            .padding(horizontal = 16.dp),
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
