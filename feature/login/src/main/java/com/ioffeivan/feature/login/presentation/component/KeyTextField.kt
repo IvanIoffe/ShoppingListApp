@@ -14,28 +14,28 @@ import androidx.compose.ui.unit.dp
 import com.ioffeivan.feature.login.R
 
 @Composable
-fun KeyTextField(
-    key: String,
-    onKeyChange: (String) -> Unit,
+fun AuthKeyTextField(
+    authKey: String,
+    onAuthKeyChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     isError: Boolean = false,
     errorMessage: String = "",
 ) {
     OutlinedTextField(
-        value = key,
-        onValueChange = onKeyChange,
+        value = authKey,
+        onValueChange = onAuthKeyChange,
         modifier = modifier,
         enabled = enabled,
         label = {
             Text(
-                text = stringResource(R.string.key),
+                text = stringResource(R.string.auth_key),
                 style = MaterialTheme.typography.bodyLarge,
             )
         },
         placeholder = {
             Text(
-                text = stringResource(R.string.enter_key),
+                text = stringResource(R.string.enter_auth_key),
                 style = MaterialTheme.typography.bodyLarge,
             )
         },

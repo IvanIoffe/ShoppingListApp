@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="key">Key</string>
-    <string name="enter_key">Enter key</string>
+    <string name="auth_key">Key</string>
+    <string name="enter_auth_key">Enter key</string>
     <string name="log_in">Log in</string>
 </resources>

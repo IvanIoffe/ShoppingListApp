@@ -13,7 +13,7 @@ class RetrofitLoginRemoteDataSource @Inject constructor(
 
     override fun login(loginCredentialsDto: LoginCredentialsDto): Flow<Result<LoginResponseDto>> {
         return remoteRequestFlow {
-            loginApiService.login(loginCredentialsDto.key)
+            loginApiService.login(loginCredentialsDto.authKey)
         }
     }
 }

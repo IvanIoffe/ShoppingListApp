@@ -9,6 +9,6 @@ interface LoginApiService {
 
     @POST("Authentication")
     suspend fun login(
-        @Query("key") key: String,
+        @Query("key") authKey: String,
     ): Response<LoginResponseDto>
 }

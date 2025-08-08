@@ -28,7 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ioffeivan.core.designsystem.preview.PreviewContainer
 import com.ioffeivan.core.ui.LoadingButton
 import com.ioffeivan.feature.login.R
-import com.ioffeivan.feature.login.presentation.component.KeyTextField
+import com.ioffeivan.feature.login.presentation.component.AuthKeyTextField
 
 @Composable
 fun LoginRoute(
@@ -46,7 +46,7 @@ fun LoginRoute(
 
     LoginScreen(
         uiState = uiState,
-        onKeyChange = viewModel::onKeyChange,
+        onAuthKeyChange = viewModel::onAuthKeyChange,
         onLoginButtonClick = viewModel::login,
         modifier = modifier
             .padding(horizontal = 16.dp),
@@ -55,9 +55,9 @@ fun LoginRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(
+internal fun LoginScreen(
     uiState: LoginUiState,
-    onKeyChange: (String) -> Unit,
+    onAuthKeyChange: (String) -> Unit,
     onLoginButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -82,7 +82,7 @@ fun LoginScreen(
         ) {
             LoginForm(
                 uiState = uiState,
-                onKeyChange = onKeyChange,
+                onAuthKeyChange = onAuthKeyChange,
                 onLoginClick = onLoginButtonClick,
             )
         }
@@ -90,9 +90,9 @@ fun LoginScreen(
 }
 
 @Composable
-fun LoginForm(
+private fun LoginForm(
     uiState: LoginUiState,
-    onKeyChange: (String) -> Unit,
+    onAuthKeyChange: (String) -> Unit,
     onLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -103,9 +103,9 @@ fun LoginForm(
         verticalArrangement = Arrangement.Center,
         modifier = modifier,
     ) {
-        KeyTextField(
-            key = uiState.key,
-            onKeyChange = onKeyChange,
+        AuthKeyTextField(
+            authKey = uiState.authKey,
+            onAuthKeyChange = onAuthKeyChange,
             enabled = !uiState.isLoading,
             isError = uiState.errorMessage != null,
             errorMessage = uiState.errorMessage.orEmpty(),
@@ -140,7 +140,7 @@ fun LoginScreenPreviewLight() {
     PreviewContainer {
         LoginScreen(
             uiState = LoginUiState(),
-            onKeyChange = {},
+            onAuthKeyChange = {},
             onLoginButtonClick = {},
             modifier = Modifier
                 .padding(horizontal = 16.dp),
@@ -154,7 +154,7 @@ fun LoginScreenPreviewDark() {
     PreviewContainer(darkTheme = true) {
         LoginScreen(
             uiState = LoginUiState(),
-            onKeyChange = {},
+            onAuthKeyChange = {},
             onLoginButtonClick = {},
             modifier = Modifier
                 .padding(horizontal = 16.dp),

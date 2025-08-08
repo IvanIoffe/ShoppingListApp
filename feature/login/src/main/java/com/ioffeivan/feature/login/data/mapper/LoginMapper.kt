@@ -5,6 +5,6 @@ import com.ioffeivan.feature.login.domain.model.LoginCredentials
 
 fun LoginCredentials.toDto(): LoginCredentialsDto {
     return LoginCredentialsDto(
-        key = key,
+        authKey = authKey,
     )
 }

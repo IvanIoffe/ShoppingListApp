@@ -23,17 +23,17 @@ class LoginViewModel @Inject constructor(
     val uiState: StateFlow<LoginUiState>
         get() = _uiState.asStateFlow()
 
-    fun onKeyChange(key: String) {
+    fun onAuthKeyChange(authKey: String) {
         _uiState.update {
             it.copy(
-                key = key,
+                authKey = authKey,
                 errorMessage = null,
             )
         }
     }
 
     fun login() {
-        loginRepository.login(LoginCredentials(key = _uiState.value.key))
+        loginRepository.login(LoginCredentials(authKey = _uiState.value.authKey))
             .onEach { result ->
                 when (result) {
                     is Result.Success -> {

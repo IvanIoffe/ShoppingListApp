@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.ioffeivan.core.designsystem.theme.ShoppingListAppTheme
+import com.ioffeivan.feature.login.presentation.LoginRoute
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,7 +18,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             ShoppingListAppTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-
+                    LoginRoute(
+                        onLoginSuccess = {},
+                    )
                 }
             }
         }
