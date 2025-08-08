@@ -2,6 +2,7 @@ package com.ioffeivan.feature.login.data.repository
 
 import com.ioffeivan.core.common.Result
 import com.ioffeivan.feature.login.data.mapper.toDto
+import com.ioffeivan.feature.login.data.source.local.LoginLocalDataSource
 import com.ioffeivan.feature.login.data.source.remote.LoginRemoteDataSource
 import com.ioffeivan.feature.login.domain.model.LoginCredentials
 import com.ioffeivan.feature.login.domain.repository.LoginRepository
@@ -11,6 +12,7 @@ import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
     private val loginRemoteDataSource: LoginRemoteDataSource,
+    private val loginLocalDataSource: LoginLocalDataSource,
 ) : LoginRepository {
 
     override fun login(loginCredentials: LoginCredentials): Flow<Result<Unit>> {
@@ -18,6 +20,7 @@ class LoginRepositoryImpl @Inject constructor(
             .map { result ->
                 when (result) {
                     is Result.Success -> {
+                        loginLocalDataSource.saveAuthKey(loginCredentials.key)
                         Result.Success(Unit)
                     }
 
