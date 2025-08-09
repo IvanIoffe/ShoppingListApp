@@ -28,3 +28,4 @@ include(":core:network")
 include(":core:ui")
 
 include(":feature:login")
+include(":feature:shopping-list")
