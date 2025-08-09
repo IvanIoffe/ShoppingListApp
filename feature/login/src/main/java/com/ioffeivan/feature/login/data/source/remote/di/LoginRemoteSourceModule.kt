@@ -1,5 +1,6 @@
 package com.ioffeivan.feature.login.data.source.remote.di
 
+import com.ioffeivan.core.network.di.Unauthorized
 import com.ioffeivan.feature.login.data.source.remote.LoginApiService
 import com.ioffeivan.feature.login.data.source.remote.LoginRemoteDataSource
 import com.ioffeivan.feature.login.data.source.remote.RetrofitLoginRemoteDataSource
@@ -18,9 +19,8 @@ class LoginRemoteSourceModuleProvider {
 
     @Singleton
     @Provides
-    fun provideLoginApiService(retrofitBuilder: Retrofit.Builder): LoginApiService {
-        return retrofitBuilder
-            .build()
+    fun provideLoginApiService(@Unauthorized retrofit: Retrofit): LoginApiService {
+        return retrofit
             .create()
     }
 }
