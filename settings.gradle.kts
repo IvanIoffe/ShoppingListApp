@@ -22,6 +22,7 @@ dependencyResolutionManagement {
 rootProject.name = "ShoppingListApp"
 include(":app")
 include(":core:common")
+include(":core:database")
 include(":core:datastore-auth")
 include(":core:designsystem")
 include(":core:network")
