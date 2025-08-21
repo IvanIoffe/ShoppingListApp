@@ -8,9 +8,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface ShoppingListRepository {
 
-    fun getAllShoppingLists(): Flow<Result<ShoppingLists>>
+    suspend fun refreshShoppingLists()
 
     fun createShoppingList(createShoppingList: CreateShoppingList): Flow<Result<ShoppingList>>
 
     fun deleteShoppingList(shoppingList: ShoppingList): Flow<Result<Unit>>
+
+    fun observeShoppingLists(): Flow<Result<ShoppingLists>>
 }
