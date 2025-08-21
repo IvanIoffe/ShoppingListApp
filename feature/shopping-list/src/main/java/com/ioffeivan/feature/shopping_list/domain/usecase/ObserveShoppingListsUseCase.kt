@@ -6,11 +6,11 @@ import com.ioffeivan.feature.shopping_list.domain.repository.ShoppingListReposit
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAllShoppingListsUseCase @Inject constructor(
+class ObserveShoppingListsUseCase @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
 ) {
 
     operator fun invoke(): Flow<Result<ShoppingLists>> {
-        return shoppingListRepository.getAllShoppingLists()
+        return shoppingListRepository.observeShoppingLists()
     }
 }
