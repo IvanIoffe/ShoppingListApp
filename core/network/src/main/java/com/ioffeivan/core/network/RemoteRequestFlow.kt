@@ -1,7 +1,7 @@
 package com.ioffeivan.core.network
 
 import com.ioffeivan.core.common.Result
-import com.ioffeivan.core.network.model.Error
+import com.ioffeivan.core.network.model.NetworkError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -23,8 +23,8 @@ fun <T> remoteRequestFlow(call: suspend () -> Response<T>): Flow<Result<T>> {
             } else {
                 response.errorBody()?.let { error ->
                     val json = Json { ignoreUnknownKeys = true }
-                    val parsedError = json.decodeFromString<Error>(error.string())
-                    emit(Result.Error(message = parsedError.message))
+                    val parsedNetworkError = json.decodeFromString<NetworkError>(error.string())
+                    emit(Result.Error(message = parsedNetworkError.message))
                 }
             }
         } catch (e: Exception) {

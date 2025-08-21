@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Error(
+data class NetworkError(
 
     @SerialName("error")
     val message: String,
