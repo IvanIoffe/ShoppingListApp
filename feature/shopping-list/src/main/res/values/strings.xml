@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shopping_lists_content_title">My Shopping Lists</string>
+    <string name="shopping_lists_empty_title">No Shopping Lists</string>
+    <string name="shopping_lists_empty_message">Tap the \'+\' button below to create a new shopping list and start adding items.</string>
+</resources>
