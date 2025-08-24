@@ -11,15 +11,15 @@ class RoomShoppingListLocalDataSource @Inject constructor(
     private val shoppingListDao: ShoppingListDao,
 ) : ShoppingListLocalDataSource {
 
-    override fun getAllShoppingLists(): Flow<Result<List<ShoppingListEntity>>> {
-        return shoppingListDao.getAllShoppingLists().toResultFlow()
+    override fun observeAllShoppingLists(): Flow<Result<List<ShoppingListEntity>>> {
+        return shoppingListDao.observeAllShoppingLists().toResultFlow()
     }
 
-    override suspend fun addShoppingLists(shoppingLists: List<ShoppingListEntity>) {
+    override suspend fun insertShoppingLists(shoppingLists: List<ShoppingListEntity>) {
         shoppingListDao.insertShoppingLists(shoppingLists)
     }
 
-    override suspend fun addShoppingList(shoppingList: ShoppingListEntity) {
+    override suspend fun insertShoppingList(shoppingList: ShoppingListEntity) {
         shoppingListDao.insertShoppingList(shoppingList)
     }
 

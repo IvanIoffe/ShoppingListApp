@@ -12,7 +12,7 @@ interface ShoppingListRepository {
 
     fun createShoppingList(createShoppingList: CreateShoppingList): Flow<Result<ShoppingList>>
 
-    fun deleteShoppingList(shoppingList: ShoppingList): Flow<Result<Unit>>
+    suspend fun deleteShoppingList(shoppingList: ShoppingList)
 
     fun observeShoppingLists(): Flow<Result<ShoppingLists>>
 }

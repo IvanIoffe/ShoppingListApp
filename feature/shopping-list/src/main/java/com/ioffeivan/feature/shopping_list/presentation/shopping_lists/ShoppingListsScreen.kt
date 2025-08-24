@@ -42,8 +42,6 @@ import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
 import com.ioffeivan.feature.shopping_list.R
 import com.ioffeivan.feature.shopping_list.domain.model.ShoppingList
-import com.ioffeivan.feature.shopping_list.presentation.OneTimeEvent
-import com.ioffeivan.feature.shopping_list.presentation.ShoppingListsViewModel
 import com.ioffeivan.feature.shopping_list.presentation.shopping_lists.component.ShoppingListItem
 
 @Composable
@@ -51,7 +49,7 @@ fun ShoppingListsRoute(
     modifier: Modifier = Modifier,
     viewModel: ShoppingListsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.shoppingListsUiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
 
     ObserveAsEventsWithLifecycle(
@@ -69,7 +67,7 @@ fun ShoppingListsRoute(
         uiState = uiState,
         onRefresh = viewModel::refreshShoppingLists,
         onCreateShoppingListClick = {},
-        onDeleteShoppingListClick = {},
+        onDeleteShoppingListClick = viewModel::deleteShoppingList,
         modifier = modifier,
         snackbarHostState = snackbarHostState,
     )
@@ -81,7 +79,7 @@ fun ShoppingListsScreen(
     uiState: ShoppingListsUiState,
     onRefresh: () -> Unit,
     onCreateShoppingListClick: () -> Unit,
-    onDeleteShoppingListClick: (Int) -> Unit,
+    onDeleteShoppingListClick: (ShoppingList) -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState,
 ) {
@@ -140,7 +138,7 @@ fun ShoppingListsScreen(
 @Composable
 fun ShoppingListsScreenContent(
     shoppingLists: List<ShoppingList>,
-    onDeleteShoppingListClick: (Int) -> Unit,
+    onDeleteShoppingListClick: (ShoppingList) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier = modifier) {
@@ -215,30 +213,3 @@ fun ShoppingListsFAB(
         }
     }
 }
-
-/*
-@Preview
-@Composable
-fun ShoppingListsScreenEmptyPreviewLight() {
-    PreviewContainer {
-        ShoppingListsScreen(
-            uiState = ShoppingListsUiState.Empty,
-            onRefresh = {},
-            onCreateShoppingListClick = {},
-            onDeleteShoppingListClick = {},
-        )
-    }
-}
-
-@Preview
-@Composable
-fun ShoppingListsScreenEmptyPreviewDark() {
-    PreviewContainer(darkTheme = true) {
-        ShoppingListsScreen(
-            uiState = ShoppingListsUiState.Empty,
-            onRefresh = {},
-            onCreateShoppingListClick = {},
-            onDeleteShoppingListClick = {},
-        )
-    }
-}*/

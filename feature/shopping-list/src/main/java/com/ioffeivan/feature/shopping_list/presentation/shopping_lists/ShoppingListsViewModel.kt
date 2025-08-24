@@ -1,11 +1,13 @@
-package com.ioffeivan.feature.shopping_list.presentation
+package com.ioffeivan.feature.shopping_list.presentation.shopping_lists
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ioffeivan.core.common.Result
+import com.ioffeivan.feature.shopping_list.domain.model.ShoppingList
+import com.ioffeivan.feature.shopping_list.domain.usecase.DeleteShoppingListUseCase
 import com.ioffeivan.feature.shopping_list.domain.usecase.ObserveShoppingListsUseCase
 import com.ioffeivan.feature.shopping_list.domain.usecase.RefreshShoppingListsUseCase
-import com.ioffeivan.feature.shopping_list.presentation.shopping_lists.ShoppingListsUiState
+import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -24,19 +26,19 @@ import javax.inject.Inject
 class ShoppingListsViewModel @Inject constructor(
     observeShoppingListsUseCase: ObserveShoppingListsUseCase,
     private val refreshShoppingListsUseCase: RefreshShoppingListsUseCase,
+    private val deleteShoppingListUseCase: Lazy<DeleteShoppingListUseCase>,
 ) : ViewModel() {
 
     private val _oneTimeEvent = Channel<OneTimeEvent>()
     val oneTimeEvent = _oneTimeEvent.receiveAsFlow()
 
-    private val _shoppingListsUiState = MutableStateFlow(ShoppingListsUiState())
-
-    val shoppingListsUiState = observeShoppingListsUseCase()
+    private val _uiState = MutableStateFlow(ShoppingListsUiState())
+    val uiState = observeShoppingListsUseCase()
         .drop(1)
         .map { result ->
             when (result) {
                 is Result.Success -> {
-                    _shoppingListsUiState.updateAndGet {
+                    _uiState.updateAndGet {
                         it.copy(
                             shoppingLists = result.data,
                             isEmpty = result.data.items.isEmpty(),
@@ -49,7 +51,7 @@ class ShoppingListsViewModel @Inject constructor(
                 is Result.Error -> {
                     _oneTimeEvent.send(OneTimeEvent.ShowErrorSnackbar(result.message))
 
-                    _shoppingListsUiState.updateAndGet {
+                    _uiState.updateAndGet {
                         it.copy(
                             isRefreshing = false,
                             isLoading = false,
@@ -58,7 +60,7 @@ class ShoppingListsViewModel @Inject constructor(
                 }
 
                 Result.Loading -> {
-                    _shoppingListsUiState.updateAndGet {
+                    _uiState.updateAndGet {
                         it.copy(isRefreshing = true)
                     }
                 }
@@ -77,12 +79,10 @@ class ShoppingListsViewModel @Inject constructor(
         }
     }
 
-    fun createShoppingList() {
-
-    }
-
-    fun deleteShoppingList(id: Int) {
-
+    fun deleteShoppingList(shoppingList: ShoppingList) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteShoppingListUseCase.get().invoke(shoppingList)
+        }
     }
 }
 

@@ -25,7 +25,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
     private val networkShoppingListsFlow = MutableSharedFlow<Result<ShoppingLists>>(replay = 1)
 
     private val localShoppingListsFlow: Flow<Result<ShoppingLists>> =
-        shoppingListLocalDataSource.getAllShoppingLists()
+        shoppingListLocalDataSource.observeAllShoppingLists()
             .map { result ->
                 when (result) {
                     is Result.Success -> {
@@ -46,7 +46,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
                 when (result) {
                     is Result.Success -> {
                         val shoppingListsEntity = result.data.toEntity()
-                        shoppingListLocalDataSource.addShoppingLists(shoppingListsEntity)
+                        shoppingListLocalDataSource.insertShoppingLists(shoppingListsEntity)
                     }
 
                     is Result.Loading -> networkShoppingListsFlow.emit(Result.Loading)
@@ -73,18 +73,23 @@ class ShoppingListRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun deleteShoppingList(shoppingList: ShoppingList): Flow<Result<Unit>> {
-        return shoppingListRemoteDataSource.deleteShoppingList(shoppingList.toDto())
-            .map { result ->
+    override suspend fun deleteShoppingList(shoppingList: ShoppingList) {
+        val shoppingListEntity = shoppingList.toEntity()
+
+        shoppingListLocalDataSource.deleteShoppingList(shoppingListEntity)
+
+        shoppingListRemoteDataSource.deleteShoppingList(shoppingList.toDto())
+            .collect { result ->
                 when (result) {
-                    is Result.Success -> {
-                        Result.Success(Unit)
+                    is Result.Error -> {
+                        shoppingListLocalDataSource.insertShoppingList(shoppingListEntity)
+                        networkShoppingListsFlow.emit(Result.Error(result.message))
                     }
 
-                    Result.Loading -> Result.Loading
-                    is Result.Error -> Result.Error(result.message)
+                    else -> {}
                 }
             }
+
     }
 
     override fun observeShoppingLists(): Flow<Result<ShoppingLists>> {

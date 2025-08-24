@@ -2,7 +2,6 @@ package com.ioffeivan.feature.shopping_list.presentation.shopping_lists.componen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -28,33 +27,31 @@ fun ShoppingListItem(
     shoppingList: ShoppingList,
     modifier: Modifier = Modifier,
     onShoppingItemClick: () -> Unit,
-    onDeleteClick: (Int) -> Unit,
+    onDeleteClick: (ShoppingList) -> Unit,
 ) {
-    Box(modifier = modifier) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(onClick = onShoppingItemClick)
-                .padding(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
-        ) {
-            Text(
-                text = shoppingList.name,
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = FontWeight.SemiBold,
-                ),
-            )
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onShoppingItemClick)
+            .padding(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
+    ) {
+        Text(
+            text = shoppingList.name,
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontWeight = FontWeight.SemiBold,
+            ),
+        )
 
-            IconButton(onClick = { onDeleteClick(shoppingList.id) }) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_delete),
-                    contentDescription = null,
-                    tint = ShoppingListsColors.deleteIconButtonColor,
-                    modifier = Modifier
-                        .size(28.dp),
-                )
-            }
+        IconButton(onClick = { onDeleteClick(shoppingList) }) {
+            Icon(
+                painter = painterResource(R.drawable.ic_delete),
+                contentDescription = null,
+                tint = ShoppingListsColors.deleteIconButtonColor,
+                modifier = Modifier
+                    .size(28.dp),
+            )
         }
     }
 }

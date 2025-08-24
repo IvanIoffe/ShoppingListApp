@@ -35,6 +35,13 @@ fun ShoppingListEntity.toDomain(): ShoppingList {
     )
 }
 
+fun ShoppingList.toEntity(): ShoppingListEntity {
+    return ShoppingListEntity(
+        id = id,
+        name = name,
+    )
+}
+
 fun ShoppingListsDto.toEntity(): List<ShoppingListEntity> {
     return items.map { it.toEntity() }
 }
