@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface ShoppingListLocalDataSource {
 
-    fun getAllShoppingLists(): Flow<Result<List<ShoppingListEntity>>>
+    fun observeAllShoppingLists(): Flow<Result<List<ShoppingListEntity>>>
 
-    suspend fun addShoppingLists(shoppingLists: List<ShoppingListEntity>)
+    suspend fun insertShoppingLists(shoppingLists: List<ShoppingListEntity>)
 
-    suspend fun addShoppingList(shoppingList: ShoppingListEntity)
+    suspend fun insertShoppingList(shoppingList: ShoppingListEntity)
 
     suspend fun deleteShoppingList(shoppingList: ShoppingListEntity)
 }

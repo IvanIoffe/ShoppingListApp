@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface ShoppingListDao {
 
     @Query("SELECT * FROM shopping_lists")
-    fun getAllShoppingLists(): Flow<List<ShoppingListEntity>>
+    fun observeAllShoppingLists(): Flow<List<ShoppingListEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertShoppingLists(shoppingLists: List<ShoppingListEntity>)
