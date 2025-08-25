@@ -7,6 +7,7 @@ import com.ioffeivan.feature.shopping_list.data.mapper.toEntity
 import com.ioffeivan.feature.shopping_list.data.mapper.toShoppingListDomain
 import com.ioffeivan.feature.shopping_list.data.source.local.ShoppingListLocalDataSource
 import com.ioffeivan.feature.shopping_list.data.source.remote.ShoppingListRemoteDataSource
+import com.ioffeivan.feature.shopping_list.data.source.remote.model.ShoppingListsDto
 import com.ioffeivan.feature.shopping_list.domain.model.CreateShoppingList
 import com.ioffeivan.feature.shopping_list.domain.model.ShoppingList
 import com.ioffeivan.feature.shopping_list.domain.model.ShoppingLists
@@ -45,8 +46,16 @@ class ShoppingListRepositoryImpl @Inject constructor(
             .collect { result ->
                 when (result) {
                     is Result.Success -> {
-                        val shoppingListsEntity = result.data.toEntity()
-                        shoppingListLocalDataSource.insertShoppingLists(shoppingListsEntity)
+                        val shoppingListsDto: ShoppingListsDto = result.data
+
+                        if (shoppingListsDto.items.isEmpty()) {
+                            networkShoppingListsFlow.emit(
+                                Result.Success(ShoppingLists(emptyList()))
+                            )
+                        } else {
+                            val shoppingListsEntity = shoppingListsDto.toEntity()
+                            shoppingListLocalDataSource.insertShoppingLists(shoppingListsEntity)
+                        }
                     }
 
                     is Result.Loading -> networkShoppingListsFlow.emit(Result.Loading)
