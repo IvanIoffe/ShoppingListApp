@@ -4,7 +4,7 @@ import com.ioffeivan.core.common.Result
 import com.ioffeivan.feature.shopping_list.data.mapper.toDomain
 import com.ioffeivan.feature.shopping_list.data.mapper.toDto
 import com.ioffeivan.feature.shopping_list.data.mapper.toEntity
-import com.ioffeivan.feature.shopping_list.data.mapper.toShoppingListDomain
+import com.ioffeivan.feature.shopping_list.data.mapper.toShoppingListEntity
 import com.ioffeivan.feature.shopping_list.data.source.local.ShoppingListLocalDataSource
 import com.ioffeivan.feature.shopping_list.data.source.remote.ShoppingListRemoteDataSource
 import com.ioffeivan.feature.shopping_list.data.source.remote.model.ShoppingListsDto
@@ -66,14 +66,15 @@ class ShoppingListRepositoryImpl @Inject constructor(
 
     override fun createShoppingList(
         createShoppingList: CreateShoppingList,
-    ): Flow<Result<ShoppingList>> {
+    ): Flow<Result<Unit>> {
         return shoppingListRemoteDataSource.createShoppingList(createShoppingList.toDto())
             .map { result ->
                 when (result) {
                     is Result.Success -> {
-                        Result.Success(
-                            result.data.toShoppingListDomain(name = createShoppingList.name)
-                        )
+                        val shoppingListEntity =
+                            result.data.toShoppingListEntity(createShoppingList)
+                        shoppingListLocalDataSource.insertShoppingList(shoppingListEntity)
+                        Result.Success(Unit)
                     }
 
                     Result.Loading -> Result.Loading

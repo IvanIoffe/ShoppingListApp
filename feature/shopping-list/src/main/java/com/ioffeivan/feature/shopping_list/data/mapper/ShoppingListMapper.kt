@@ -14,10 +14,12 @@ fun CreateShoppingList.toDto(): CreateShoppingListDto {
     )
 }
 
-fun CreatedShoppingListDto.toShoppingListDomain(name: String): ShoppingList {
-    return ShoppingList(
+fun CreatedShoppingListDto.toShoppingListEntity(
+    createShoppingList: CreateShoppingList,
+): ShoppingListEntity {
+    return ShoppingListEntity(
         id = id,
-        name = name,
+        name = createShoppingList.name,
     )
 }
 

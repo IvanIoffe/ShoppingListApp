@@ -48,6 +48,7 @@ import com.ioffeivan.feature.shopping_list.presentation.shopping_lists.component
 fun ShoppingListsRoute(
     modifier: Modifier = Modifier,
     viewModel: ShoppingListsViewModel = hiltViewModel(),
+    onCreateShoppingListClick: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -66,7 +67,7 @@ fun ShoppingListsRoute(
     ShoppingListsScreen(
         uiState = uiState,
         onRefresh = viewModel::refreshShoppingLists,
-        onCreateShoppingListClick = {},
+        onCreateShoppingListClick = onCreateShoppingListClick,
         onDeleteShoppingListClick = viewModel::deleteShoppingList,
         modifier = modifier,
         snackbarHostState = snackbarHostState,

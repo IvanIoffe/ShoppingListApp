@@ -10,7 +10,7 @@ interface ShoppingListRepository {
 
     suspend fun refreshShoppingLists()
 
-    fun createShoppingList(createShoppingList: CreateShoppingList): Flow<Result<ShoppingList>>
+    fun createShoppingList(createShoppingList: CreateShoppingList): Flow<Result<Unit>>
 
     suspend fun deleteShoppingList(shoppingList: ShoppingList)
 
