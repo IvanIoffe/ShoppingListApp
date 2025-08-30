@@ -29,4 +29,5 @@ include(":core:network")
 include(":core:ui")
 
 include(":feature:login")
+include(":feature:shopping-item")
 include(":feature:shopping-list")
