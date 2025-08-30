@@ -20,6 +20,9 @@ data object ShoppingListsRoute
 @Serializable
 data object CreateShoppingListRoute
 
+fun NavController.navigateToShoppingList(navOptions: NavOptions? = null) =
+    navigate(route = ShoppingListBaseRoute, navOptions = navOptions)
+
 fun NavController.navigateToCreateShoppingList(navOptions: NavOptions? = null) =
     navigate(route = CreateShoppingListRoute, navOptions = navOptions)
 
