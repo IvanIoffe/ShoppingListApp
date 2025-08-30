@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PrimaryButton(
+fun SlaButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -33,14 +33,14 @@ fun PrimaryButton(
 }
 
 @Composable
-fun PrimaryButton(
+fun SlaButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
 ) {
-    PrimaryButton(
+    SlaButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
