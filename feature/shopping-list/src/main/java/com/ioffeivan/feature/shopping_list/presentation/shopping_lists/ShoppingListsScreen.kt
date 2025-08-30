@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ioffeivan.core.designsystem.component.AddFloatingActionButton
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
 import com.ioffeivan.feature.shopping_list.R
@@ -206,11 +207,8 @@ fun ShoppingListsFAB(
         modifier = modifier,
         enter = fadeIn() + scaleIn(),
     ) {
-        FloatingActionButton(
+        AddFloatingActionButton(
             onClick = onClick,
-            shape = CircleShape,
-        ) {
-            Icon(imageVector = Icons.Rounded.Add, contentDescription = null)
-        }
+        )
     }
 }
