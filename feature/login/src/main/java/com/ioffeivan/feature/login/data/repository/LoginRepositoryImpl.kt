@@ -15,6 +15,8 @@ class LoginRepositoryImpl @Inject constructor(
     private val loginLocalDataSource: LoginLocalDataSource,
 ) : LoginRepository {
 
+    override val isLoggedIn = loginLocalDataSource.isLoggedIn
+
     override fun login(loginCredentials: LoginCredentials): Flow<Result<Unit>> {
         return loginRemoteDataSource.login(loginCredentials.toDto())
             .map { result ->

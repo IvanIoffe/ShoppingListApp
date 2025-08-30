@@ -17,6 +17,8 @@ class AuthStore @Inject constructor(
 
     val authKey: Flow<String?> = dataStore.data.map { it[AUTH_KEY] }
 
+    val isLoggedIn: Flow<Boolean> = dataStore.data.map { it[AUTH_KEY] != null }
+
     suspend fun saveAuthKey(authKey: String) {
         dataStore.edit { preferences ->
             preferences[AUTH_KEY] = authKey

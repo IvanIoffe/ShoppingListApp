@@ -6,5 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {
 
+    val isLoggedIn: Flow<Boolean>
+
     fun login(loginCredentials: LoginCredentials): Flow<Result<Unit>>
 }
