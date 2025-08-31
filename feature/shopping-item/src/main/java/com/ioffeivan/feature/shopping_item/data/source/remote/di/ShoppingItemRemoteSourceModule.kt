@@ -1,7 +1,10 @@
 package com.ioffeivan.feature.shopping_item.data.source.remote.di
 
 import com.ioffeivan.core.network.di.Authorized
+import com.ioffeivan.feature.shopping_item.data.source.remote.RetrofitShoppingItemRemoteDataSource
 import com.ioffeivan.feature.shopping_item.data.source.remote.ShoppingItemApiService
+import com.ioffeivan.feature.shopping_item.data.source.remote.ShoppingItemRemoteDataSource
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,4 +22,14 @@ class ShoppingItemRemoteSourceModuleProvider {
     fun provideShoppingItemApiService(@Authorized retrofit: Retrofit): ShoppingItemApiService {
         return retrofit.create()
     }
+}
+
+@InstallIn(SingletonComponent::class)
+@Module
+interface ShoppingItemRemoteSourceModuleBinder {
+
+    @Binds
+    fun bindShoppingItemRemoteDataSource(
+        retrofitShoppingItemRemoteDataSource: RetrofitShoppingItemRemoteDataSource,
+    ): ShoppingItemRemoteDataSource
 }
