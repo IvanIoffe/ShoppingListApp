@@ -3,6 +3,7 @@ package com.ioffeivan.core.database.di
 import android.content.Context
 import androidx.room.Room
 import com.ioffeivan.core.database.SlaDatabase
+import com.ioffeivan.core.database.migrations.MIGRATION_2_3
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +24,8 @@ internal object DatabaseModule {
             context = context,
             klass = SlaDatabase::class.java,
             name = "sla-database",
-        ).build()
+        )
+            .addMigrations(MIGRATION_2_3)
+            .build()
     }
 }
