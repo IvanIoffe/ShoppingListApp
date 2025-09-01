@@ -4,7 +4,6 @@ import com.ioffeivan.core.common.Result
 import com.ioffeivan.core.network.remoteRequestFlow
 import com.ioffeivan.feature.shopping_list.data.source.remote.model.CreateShoppingListDto
 import com.ioffeivan.feature.shopping_list.data.source.remote.model.CreatedShoppingListDto
-import com.ioffeivan.feature.shopping_list.data.source.remote.model.ShoppingListDto
 import com.ioffeivan.feature.shopping_list.data.source.remote.model.ShoppingListsDto
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -27,9 +26,9 @@ class RetrofitShoppingListRemoteDataSource @Inject constructor(
         }
     }
 
-    override fun deleteShoppingList(shoppingListDto: ShoppingListDto): Flow<Result<Unit>> {
+    override fun deleteShoppingList(id: Int): Flow<Result<Unit>> {
         return remoteRequestFlow {
-            shoppingListApiService.deleteShoppingList(listId = shoppingListDto.id)
+            shoppingListApiService.deleteShoppingList(listId = id)
         }
     }
 }
