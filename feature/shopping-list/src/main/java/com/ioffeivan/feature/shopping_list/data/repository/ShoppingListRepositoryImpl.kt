@@ -9,7 +9,6 @@ import com.ioffeivan.feature.shopping_list.data.source.local.ShoppingListLocalDa
 import com.ioffeivan.feature.shopping_list.data.source.remote.ShoppingListRemoteDataSource
 import com.ioffeivan.feature.shopping_list.data.source.remote.model.ShoppingListsDto
 import com.ioffeivan.feature.shopping_list.domain.model.CreateShoppingList
-import com.ioffeivan.feature.shopping_list.domain.model.ShoppingList
 import com.ioffeivan.feature.shopping_list.domain.model.ShoppingLists
 import com.ioffeivan.feature.shopping_list.domain.repository.ShoppingListRepository
 import kotlinx.coroutines.flow.Flow
@@ -83,16 +82,21 @@ class ShoppingListRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun deleteShoppingList(shoppingList: ShoppingList) {
-        val shoppingListEntity = shoppingList.toEntity()
+    override suspend fun deleteShoppingList(id: Int) {
+        shoppingListLocalDataSource.changePendingDeletionStatus(id = id, isDeletionStatus = true)
 
-        shoppingListLocalDataSource.deleteShoppingList(shoppingListEntity)
-
-        shoppingListRemoteDataSource.deleteShoppingList(shoppingList.toDto())
+        shoppingListRemoteDataSource.deleteShoppingList(id)
             .collect { result ->
                 when (result) {
+                    is Result.Success -> {
+                        shoppingListLocalDataSource.deleteShoppingList(id)
+                    }
+
                     is Result.Error -> {
-                        shoppingListLocalDataSource.insertShoppingList(shoppingListEntity)
+                        shoppingListLocalDataSource.changePendingDeletionStatus(
+                            id = id,
+                            isDeletionStatus = false,
+                        )
                         networkShoppingListsFlow.emit(Result.Error(result.message))
                     }
 

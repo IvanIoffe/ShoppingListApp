@@ -23,24 +23,11 @@ fun CreatedShoppingListDto.toShoppingListEntity(
     )
 }
 
-fun ShoppingList.toDto(): ShoppingListDto {
-    return ShoppingListDto(
-        id = id,
-        name = name,
-    )
-}
-
 fun ShoppingListEntity.toDomain(): ShoppingList {
     return ShoppingList(
         id = id,
         name = name,
-    )
-}
-
-fun ShoppingList.toEntity(): ShoppingListEntity {
-    return ShoppingListEntity(
-        id = id,
-        name = name,
+        isPendingDeletion = isPendingDeletion,
     )
 }
 
