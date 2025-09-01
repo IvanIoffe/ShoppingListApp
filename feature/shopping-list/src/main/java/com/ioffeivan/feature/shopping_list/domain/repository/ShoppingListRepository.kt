@@ -2,7 +2,6 @@ package com.ioffeivan.feature.shopping_list.domain.repository
 
 import com.ioffeivan.core.common.Result
 import com.ioffeivan.feature.shopping_list.domain.model.CreateShoppingList
-import com.ioffeivan.feature.shopping_list.domain.model.ShoppingList
 import com.ioffeivan.feature.shopping_list.domain.model.ShoppingLists
 import kotlinx.coroutines.flow.Flow
 
@@ -12,7 +11,7 @@ interface ShoppingListRepository {
 
     fun createShoppingList(createShoppingList: CreateShoppingList): Flow<Result<Unit>>
 
-    suspend fun deleteShoppingList(shoppingList: ShoppingList)
+    suspend fun deleteShoppingList(id: Int)
 
     fun observeShoppingLists(): Flow<Result<ShoppingLists>>
 }
