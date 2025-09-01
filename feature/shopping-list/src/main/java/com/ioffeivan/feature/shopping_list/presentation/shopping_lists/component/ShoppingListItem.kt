@@ -28,7 +28,7 @@ fun ShoppingListItem(
     shoppingList: ShoppingList,
     modifier: Modifier = Modifier,
     onShoppingItemClick: () -> Unit,
-    onDeleteClick: (ShoppingList) -> Unit,
+    onDeleteClick: (Int) -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -49,7 +49,7 @@ fun ShoppingListItem(
                 .weight(1f),
         )
 
-        IconButton(onClick = { onDeleteClick(shoppingList) }) {
+        IconButton(onClick = { onDeleteClick(shoppingList.id) }) {
             Icon(
                 painter = painterResource(R.drawable.ic_delete),
                 contentDescription = null,

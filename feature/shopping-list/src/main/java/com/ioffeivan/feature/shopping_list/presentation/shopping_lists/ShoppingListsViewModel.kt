@@ -3,7 +3,6 @@ package com.ioffeivan.feature.shopping_list.presentation.shopping_lists
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ioffeivan.core.common.Result
-import com.ioffeivan.feature.shopping_list.domain.model.ShoppingList
 import com.ioffeivan.feature.shopping_list.domain.usecase.DeleteShoppingListUseCase
 import com.ioffeivan.feature.shopping_list.domain.usecase.ObserveShoppingListsUseCase
 import com.ioffeivan.feature.shopping_list.domain.usecase.RefreshShoppingListsUseCase
@@ -38,10 +37,12 @@ class ShoppingListsViewModel @Inject constructor(
         .map { result ->
             when (result) {
                 is Result.Success -> {
+                    val filteredShoppingLists =
+                        result.data.copy(items = result.data.items.filter { !it.isPendingDeletion })
                     _uiState.updateAndGet {
                         it.copy(
-                            shoppingLists = result.data,
-                            isEmpty = result.data.items.isEmpty(),
+                            shoppingLists = filteredShoppingLists,
+                            isEmpty = filteredShoppingLists.items.isEmpty(),
                             isRefreshing = false,
                             isLoading = false,
                         )
@@ -79,9 +80,9 @@ class ShoppingListsViewModel @Inject constructor(
         }
     }
 
-    fun deleteShoppingList(shoppingList: ShoppingList) {
+    fun deleteShoppingList(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteShoppingListUseCase.get().invoke(shoppingList)
+            deleteShoppingListUseCase.get().invoke(id)
         }
     }
 }
