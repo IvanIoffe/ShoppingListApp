@@ -14,4 +14,7 @@ data class ShoppingListEntity(
 
     @ColumnInfo(name = "name")
     val name: String,
+
+    @ColumnInfo(name = "is_pending_deletion")
+    val isPendingDeletion: Boolean = false,
 )

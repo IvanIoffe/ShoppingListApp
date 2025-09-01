@@ -1,10 +1,11 @@
 package com.ioffeivan.core.database.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Update
 import com.ioffeivan.core.database.model.ShoppingListEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -20,6 +21,18 @@ interface ShoppingListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertShoppingList(shoppingListEntity: ShoppingListEntity)
 
-    @Delete
-    suspend fun deleteShoppingList(shoppingListEntity: ShoppingListEntity)
+    @Query("DELETE FROM shopping_lists WHERE id = :id")
+    suspend fun deleteShoppingList(id: Int)
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateShoppingList(shoppingListEntity: ShoppingListEntity)
+
+    @Query("SELECT * FROM shopping_lists WHERE id = :id")
+    suspend fun getShoppingList(id: Int): ShoppingListEntity
+
+    @Transaction
+    suspend fun changePendingDeletionStatus(id: Int, isPendingDeletion: Boolean) {
+        val shoppingList = getShoppingList(id)
+        updateShoppingList(shoppingList.copy(isPendingDeletion = isPendingDeletion))
+    }
 }
