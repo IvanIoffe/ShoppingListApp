@@ -12,5 +12,7 @@ interface ShoppingListLocalDataSource {
 
     suspend fun insertShoppingList(shoppingList: ShoppingListEntity)
 
-    suspend fun deleteShoppingList(shoppingList: ShoppingListEntity)
+    suspend fun deleteShoppingList(id: Int)
+
+    suspend fun changePendingDeletionStatus(id: Int, isDeletionStatus: Boolean)
 }
