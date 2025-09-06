@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "8809a6db523ce599612a2e24caa3e17a",
+    "identityHash": "10bfa2fa9ee205b23d209071583397ae",
     "entities": [
       {
         "tableName": "shopping_lists",
@@ -30,7 +30,7 @@
       },
       {
         "tableName": "shopping_items",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `quantity` TEXT NOT NULL, `list_id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`list_id`) REFERENCES `shopping_lists`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `quantity` TEXT NOT NULL, `is_pending_deletion` INTEGER NOT NULL, `list_id` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`list_id`) REFERENCES `shopping_lists`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -48,6 +48,12 @@
             "fieldPath": "quantity",
             "columnName": "quantity",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isPendingDeletion",
+            "columnName": "is_pending_deletion",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -80,7 +86,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8809a6db523ce599612a2e24caa3e17a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '10bfa2fa9ee205b23d209071583397ae')"
     ]
   }
 }

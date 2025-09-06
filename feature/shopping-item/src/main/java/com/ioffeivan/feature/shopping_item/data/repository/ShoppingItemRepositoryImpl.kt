@@ -2,6 +2,7 @@ package com.ioffeivan.feature.shopping_item.data.repository
 
 import com.ioffeivan.core.common.Result
 import com.ioffeivan.feature.shopping_item.data.mapper.toDomain
+import com.ioffeivan.feature.shopping_item.data.mapper.toDto
 import com.ioffeivan.feature.shopping_item.data.mapper.toEntity
 import com.ioffeivan.feature.shopping_item.data.source.local.ShoppingItemLocalDataSource
 import com.ioffeivan.feature.shopping_item.data.source.remote.ShoppingItemRemoteDataSource
@@ -27,7 +28,28 @@ class ShoppingItemRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteShoppingItem(deleteShoppingItem: DeleteShoppingItem) {
-        TODO("Not yet implemented")
+        shoppingItemLocalDataSource.changePendingDeletionStatus(
+            id = deleteShoppingItem.itemId,
+            isPendingDeletion = true,
+        )
+        shoppingItemRemoteDataSource.deleteShoppingItem(deleteShoppingItem.toDto())
+            .collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        shoppingItemLocalDataSource.deleteShoppingItem(deleteShoppingItem.itemId)
+                    }
+
+                    is Result.Error -> {
+                        shoppingItemLocalDataSource.changePendingDeletionStatus(
+                            id = deleteShoppingItem.itemId,
+                            isPendingDeletion = false,
+                        )
+                        remoteShoppingItemsFLow.emit(Result.Error(result.message))
+                    }
+
+                    else -> {}
+                }
+            }
     }
 
     override suspend fun refreshShoppingItems(listId: Int) {

@@ -3,7 +3,6 @@ package com.ioffeivan.feature.shopping_item.presentation.shopping_items.componen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,7 +25,6 @@ fun ShoppingItemCard(
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
             .clip(RoundedCornerShape(6.dp))
             .background(MaterialTheme.colorScheme.inverseOnSurface)
             .padding(horizontal = 16.dp, vertical = 10.dp),

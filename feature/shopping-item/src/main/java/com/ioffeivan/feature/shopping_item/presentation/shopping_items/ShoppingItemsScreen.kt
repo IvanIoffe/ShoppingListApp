@@ -1,18 +1,25 @@
 package com.ioffeivan.feature.shopping_item.presentation.shopping_items
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,6 +28,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SwipeToDismissBoxState
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -28,6 +37,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +50,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ioffeivan.core.designsystem.preview.PreviewContainer
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
+import com.ioffeivan.core.ui.SwipeToDismissContainer
 import com.ioffeivan.feature.shopping_item.R
 import com.ioffeivan.feature.shopping_item.domain.model.ShoppingItem
 import com.ioffeivan.feature.shopping_item.domain.model.ShoppingItems
@@ -72,6 +84,7 @@ fun ShoppingItemRoute(
         snackbarHostState = snackbarHostState,
         onBack = onBack,
         onRefresh = viewModel::refreshShoppingItems,
+        onShoppingItemDelete = viewModel::deleteShoppingItem,
         modifier = modifier,
     )
 }
@@ -84,6 +97,7 @@ fun ShoppingItemScreen(
     snackbarHostState: SnackbarHostState,
     onBack: () -> Unit,
     onRefresh: () -> Unit,
+    onShoppingItemDelete: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -127,6 +141,7 @@ fun ShoppingItemScreen(
                 !uiState.isEmpty -> {
                     ShoppingItemScreenContent(
                         shoppingItems = uiState.shoppingItems.items,
+                        onShoppingItemDelete = onShoppingItemDelete,
                         modifier = Modifier
                             .fillMaxSize(),
                     )
@@ -148,20 +163,73 @@ fun ShoppingItemScreen(
 @Composable
 fun ShoppingItemScreenContent(
     shoppingItems: List<ShoppingItem>,
+    onShoppingItemDelete: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(
-            horizontal = 8.dp,
-            vertical = 8.dp,
-        ),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
     ) {
-        items(items = shoppingItems, key = { it.id }) { shoppingItem ->
-            ShoppingItemCard(
-                shoppingItem = shoppingItem,
-            )
+        items(
+            items = shoppingItems,
+            key = { it.id },
+        ) { shoppingItem ->
+            SwipeToDismissContainer(
+                backgroundContent = { swipeToDismissBoxState ->
+                    SwipeToDismissBackground(
+                        swipeToDismissBoxState = swipeToDismissBoxState,
+                    )
+                },
+                enableDismissFromStartToEnd = false,
+                confirmValueChange = { it != SwipeToDismissBoxValue.StartToEnd },
+                onEndToStart = { onShoppingItemDelete(shoppingItem.id) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateItem()
+                    .padding(vertical = 4.dp),
+            ) {
+                ShoppingItemCard(
+                    shoppingItem = shoppingItem,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun SwipeToDismissBackground(
+    swipeToDismissBoxState: SwipeToDismissBoxState,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier) {
+        when (swipeToDismissBoxState.dismissDirection) {
+            SwipeToDismissBoxValue.EndToStart -> {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(Color.Red)
+                        .padding(16.dp),
+                ) {
+                    Text(
+                        text = "Удалить",
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Icon(
+                        imageVector = Icons.Rounded.Delete,
+                        contentDescription = null,
+                    )
+                }
+            }
+
+            else -> {}
         }
     }
 }
@@ -207,6 +275,7 @@ fun ShoppingItemScreenContentPreviewLight(
             ),
             isRefreshing = false,
             snackbarHostState = SnackbarHostState(),
+            onShoppingItemDelete = {},
             onBack = {},
             onRefresh = {},
         )
@@ -228,6 +297,7 @@ fun ShoppingItemScreenContentPreviewDark(
             ),
             isRefreshing = false,
             snackbarHostState = SnackbarHostState(),
+            onShoppingItemDelete = {},
             onBack = {},
             onRefresh = {},
         )
@@ -246,6 +316,7 @@ fun ShoppingItemScreenEmptyPreviewLight() {
             ),
             isRefreshing = false,
             snackbarHostState = SnackbarHostState(),
+            onShoppingItemDelete = {},
             onBack = {},
             onRefresh = {},
         )
@@ -264,6 +335,7 @@ fun ShoppingItemScreenEmptyPreviewDark() {
             ),
             isRefreshing = false,
             snackbarHostState = SnackbarHostState(),
+            onShoppingItemDelete = {},
             onBack = {},
             onRefresh = {},
         )

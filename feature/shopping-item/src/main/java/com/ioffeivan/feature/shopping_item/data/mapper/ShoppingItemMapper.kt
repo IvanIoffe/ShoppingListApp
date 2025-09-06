@@ -1,8 +1,10 @@
 package com.ioffeivan.feature.shopping_item.data.mapper
 
 import com.ioffeivan.core.database.model.ShoppingItemEntity
+import com.ioffeivan.feature.shopping_item.data.source.remote.model.DeleteShoppingItemDto
 import com.ioffeivan.feature.shopping_item.data.source.remote.model.ShoppingItemDto
 import com.ioffeivan.feature.shopping_item.data.source.remote.model.ShoppingItemsDto
+import com.ioffeivan.feature.shopping_item.domain.model.DeleteShoppingItem
 import com.ioffeivan.feature.shopping_item.domain.model.ShoppingItem
 
 fun ShoppingItemsDto.toEntity(listId: Int): List<ShoppingItemEntity> {
@@ -23,5 +25,13 @@ fun ShoppingItemEntity.toDomain(): ShoppingItem {
         id = id,
         name = name,
         quantity = quantity,
+        isPendingDeletion = isPendingDeletion,
+    )
+}
+
+fun DeleteShoppingItem.toDto(): DeleteShoppingItemDto {
+    return DeleteShoppingItemDto(
+        listId = listId,
+        itemId = itemId,
     )
 }

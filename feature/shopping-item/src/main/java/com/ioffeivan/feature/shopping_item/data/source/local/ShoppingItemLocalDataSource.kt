@@ -13,4 +13,6 @@ interface ShoppingItemLocalDataSource {
     suspend fun deleteShoppingItem(id: Int)
 
     fun observeShoppingItems(listId: Int): Flow<Result<List<ShoppingItemEntity>>>
+
+    suspend fun changePendingDeletionStatus(id: Int, isPendingDeletion: Boolean)
 }

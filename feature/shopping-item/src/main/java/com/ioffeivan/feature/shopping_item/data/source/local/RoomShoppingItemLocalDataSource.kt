@@ -26,4 +26,8 @@ class RoomShoppingItemLocalDataSource @Inject constructor(
     override fun observeShoppingItems(listId: Int): Flow<Result<List<ShoppingItemEntity>>> {
         return shoppingItemDao.observeShoppingItems(listId).toResultFlow()
     }
+
+    override suspend fun changePendingDeletionStatus(id: Int, isPendingDeletion: Boolean) {
+        shoppingItemDao.changePendingDeletionStatus(id = id, isPendingDeletion = isPendingDeletion)
+    }
 }

@@ -25,6 +25,9 @@ data class ShoppingItemEntity(
 
     val quantity: String,
 
+    @ColumnInfo("is_pending_deletion")
+    val isPendingDeletion: Boolean = false,
+
     @ColumnInfo("list_id")
     val listId: Int,
 )
