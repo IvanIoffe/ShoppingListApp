@@ -4,9 +4,10 @@ import com.ioffeivan.core.common.Result
 import com.ioffeivan.feature.shopping_item.data.mapper.toDomain
 import com.ioffeivan.feature.shopping_item.data.mapper.toDto
 import com.ioffeivan.feature.shopping_item.data.mapper.toEntity
+import com.ioffeivan.feature.shopping_item.data.mapper.toShoppingItemEntity
 import com.ioffeivan.feature.shopping_item.data.source.local.ShoppingItemLocalDataSource
 import com.ioffeivan.feature.shopping_item.data.source.remote.ShoppingItemRemoteDataSource
-import com.ioffeivan.feature.shopping_item.domain.model.CreateShoppingItem
+import com.ioffeivan.feature.shopping_item.domain.model.AddShoppingItem
 import com.ioffeivan.feature.shopping_item.domain.model.DeleteShoppingItem
 import com.ioffeivan.feature.shopping_item.domain.model.ShoppingItems
 import com.ioffeivan.feature.shopping_item.domain.repository.ShoppingItemRepository
@@ -23,8 +24,21 @@ class ShoppingItemRepositoryImpl @Inject constructor(
 
     private val remoteShoppingItemsFLow = MutableSharedFlow<Result<ShoppingItems>>(replay = 1)
 
-    override fun addShoppingItem(createShoppingItem: CreateShoppingItem): Flow<Result<Unit>> {
-        TODO("Not yet implemented")
+    override fun addShoppingItem(addShoppingItem: AddShoppingItem): Flow<Result<Unit>> {
+        return shoppingItemRemoteDataSource.addShoppingItem(addShoppingItem.toDto())
+            .map { result ->
+                when (result) {
+                    is Result.Success -> {
+                        val shoppingItemEntity = result.data.toShoppingItemEntity(addShoppingItem)
+                        shoppingItemLocalDataSource.insertShoppingItem(shoppingItemEntity)
+                        Result.Success(Unit)
+                    }
+
+                    Result.Loading -> Result.Loading
+
+                    is Result.Error -> Result.Error(result.message)
+                }
+            }
     }
 
     override suspend fun deleteShoppingItem(deleteShoppingItem: DeleteShoppingItem) {

@@ -1,6 +1,6 @@
 package com.ioffeivan.feature.shopping_item.data.source.remote
 
-import com.ioffeivan.feature.shopping_item.data.source.remote.model.CreatedShoppingItemDto
+import com.ioffeivan.feature.shopping_item.data.source.remote.model.AddedShoppingItemDto
 import com.ioffeivan.feature.shopping_item.data.source.remote.model.ShoppingItemsDto
 import retrofit2.Response
 import retrofit2.http.GET
@@ -18,8 +18,8 @@ interface ShoppingItemApiService {
     suspend fun addShoppingItem(
         @Query("id") listId: Int,
         @Query("value") name: String,
-        @Query("n") quantity: String,
-    ): Response<CreatedShoppingItemDto>
+        @Query("n") quantity: Int,
+    ): Response<AddedShoppingItemDto>
 
     @POST("RemoveFromList")
     suspend fun deleteShoppingItem(

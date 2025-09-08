@@ -1,5 +1,8 @@
 package com.ioffeivan.feature.shopping_item.presentation.shopping_items
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,6 +50,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ioffeivan.core.designsystem.component.AddFloatingActionButton
 import com.ioffeivan.core.designsystem.preview.PreviewContainer
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
@@ -60,6 +64,7 @@ import com.ioffeivan.feature.shopping_item.presentation.shopping_items.utils.Sho
 @Composable
 fun ShoppingItemRoute(
     onBack: () -> Unit,
+    onAddShoppingItemClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ShoppingItemsViewModel = hiltViewModel(),
 ) {
@@ -85,6 +90,7 @@ fun ShoppingItemRoute(
         onBack = onBack,
         onRefresh = viewModel::refreshShoppingItems,
         onShoppingItemDelete = viewModel::deleteShoppingItem,
+        onAddShoppingItemClick = onAddShoppingItemClick,
         modifier = modifier,
     )
 }
@@ -98,6 +104,7 @@ fun ShoppingItemScreen(
     onBack: () -> Unit,
     onRefresh: () -> Unit,
     onShoppingItemDelete: (Int) -> Unit,
+    onAddShoppingItemClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -122,7 +129,13 @@ fun ShoppingItemScreen(
         },
         snackbarHost = {
             SnackbarHost(snackbarHostState)
-        }
+        },
+        floatingActionButton = {
+            ShoppingItemsFAB(
+                onClick = onAddShoppingItemClick,
+                isVisible = !uiState.isLoading,
+            )
+        },
     ) { innerPadding ->
         PullToRefreshBox(
             isRefreshing = isRefreshing,
@@ -260,6 +273,23 @@ fun ShoppingItemScreenEmpty(
     }
 }
 
+@Composable
+fun ShoppingItemsFAB(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    isVisible: Boolean = true,
+) {
+    AnimatedVisibility(
+        visible = isVisible,
+        modifier = modifier,
+        enter = fadeIn() + scaleIn(),
+    ) {
+        AddFloatingActionButton(
+            onClick = onClick,
+        )
+    }
+}
+
 @Preview
 @Composable
 fun ShoppingItemScreenContentPreviewLight(
@@ -276,6 +306,7 @@ fun ShoppingItemScreenContentPreviewLight(
             isRefreshing = false,
             snackbarHostState = SnackbarHostState(),
             onShoppingItemDelete = {},
+            onAddShoppingItemClick = {},
             onBack = {},
             onRefresh = {},
         )
@@ -298,6 +329,7 @@ fun ShoppingItemScreenContentPreviewDark(
             isRefreshing = false,
             snackbarHostState = SnackbarHostState(),
             onShoppingItemDelete = {},
+            onAddShoppingItemClick = {},
             onBack = {},
             onRefresh = {},
         )
@@ -317,6 +349,7 @@ fun ShoppingItemScreenEmptyPreviewLight() {
             isRefreshing = false,
             snackbarHostState = SnackbarHostState(),
             onShoppingItemDelete = {},
+            onAddShoppingItemClick = {},
             onBack = {},
             onRefresh = {},
         )
@@ -336,6 +369,7 @@ fun ShoppingItemScreenEmptyPreviewDark() {
             isRefreshing = false,
             snackbarHostState = SnackbarHostState(),
             onShoppingItemDelete = {},
+            onAddShoppingItemClick = {},
             onBack = {},
             onRefresh = {},
         )

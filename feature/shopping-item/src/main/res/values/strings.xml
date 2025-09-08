@@ -3,4 +3,12 @@
     <string name="quantity">Quantity: %1$s</string>
     <string name="shopping_items_empty_title">Shopping list is empty</string>
     <string name="shopping_items_empty_message">Tap the \'+\' button below to add a new shopping item.</string>
+
+    <string name="add_shopping_item">Add item</string>
+    <string name="new_shopping_item">New Shopping Item</string>
+    <string name="shopping_item_name">Name</string>
+    <string name="enter_shopping_item_name">Enter name</string>
+    <string name="shopping_item_quantity">Quantity</string>
+    <string name="enter_shopping_item_quantity">Enter quantity</string>
+
 </resources>

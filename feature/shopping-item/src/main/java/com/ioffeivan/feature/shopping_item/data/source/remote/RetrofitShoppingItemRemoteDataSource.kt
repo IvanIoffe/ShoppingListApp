@@ -2,8 +2,8 @@ package com.ioffeivan.feature.shopping_item.data.source.remote
 
 import com.ioffeivan.core.common.Result
 import com.ioffeivan.core.network.remoteRequestFlow
-import com.ioffeivan.feature.shopping_item.data.source.remote.model.CreateShoppingItemDto
-import com.ioffeivan.feature.shopping_item.data.source.remote.model.CreatedShoppingItemDto
+import com.ioffeivan.feature.shopping_item.data.source.remote.model.AddShoppingItemDto
+import com.ioffeivan.feature.shopping_item.data.source.remote.model.AddedShoppingItemDto
 import com.ioffeivan.feature.shopping_item.data.source.remote.model.DeleteShoppingItemDto
 import com.ioffeivan.feature.shopping_item.data.source.remote.model.ShoppingItemsDto
 import kotlinx.coroutines.flow.Flow
@@ -14,13 +14,13 @@ class RetrofitShoppingItemRemoteDataSource @Inject constructor(
 ) : ShoppingItemRemoteDataSource {
 
     override fun addShoppingItem(
-        createShoppingItemDto: CreateShoppingItemDto,
-    ): Flow<Result<CreatedShoppingItemDto>> {
+        addShoppingItemDto: AddShoppingItemDto,
+    ): Flow<Result<AddedShoppingItemDto>> {
         return remoteRequestFlow {
             shoppingItemApiService.addShoppingItem(
-                listId = createShoppingItemDto.listId,
-                name = createShoppingItemDto.name,
-                quantity = createShoppingItemDto.quantity,
+                listId = addShoppingItemDto.listId,
+                name = addShoppingItemDto.name,
+                quantity = addShoppingItemDto.quantity,
             )
         }
     }

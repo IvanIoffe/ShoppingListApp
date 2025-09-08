@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreatedShoppingItemDto(
+data class AddedShoppingItemDto(
 
     @SerialName("item_id")
     val id: Int,

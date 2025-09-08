@@ -4,14 +4,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreateShoppingItemDto(
-
-    @SerialName("id")
-    val listId: Int,
+data class AddShoppingItemDto(
 
     @SerialName("value")
     val name: String,
 
     @SerialName("n")
-    val quantity: String,
+    val quantity: Int,
+
+    @SerialName("id")
+    val listId: Int,
 )
