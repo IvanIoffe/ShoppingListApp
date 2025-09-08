@@ -12,11 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -48,8 +44,9 @@ import com.ioffeivan.feature.shopping_list.presentation.shopping_lists.component
 @Composable
 fun ShoppingListsRoute(
     modifier: Modifier = Modifier,
-    viewModel: ShoppingListsViewModel = hiltViewModel(),
+    onShoppingListClick: (ShoppingList) -> Unit,
     onCreateShoppingListClick: () -> Unit,
+    viewModel: ShoppingListsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -68,6 +65,7 @@ fun ShoppingListsRoute(
     ShoppingListsScreen(
         uiState = uiState,
         onRefresh = viewModel::refreshShoppingLists,
+        onShoppingListClick = onShoppingListClick,
         onCreateShoppingListClick = onCreateShoppingListClick,
         onDeleteShoppingListClick = viewModel::deleteShoppingList,
         modifier = modifier,
@@ -80,6 +78,7 @@ fun ShoppingListsRoute(
 fun ShoppingListsScreen(
     uiState: ShoppingListsUiState,
     onRefresh: () -> Unit,
+    onShoppingListClick: (ShoppingList) -> Unit,
     onCreateShoppingListClick: () -> Unit,
     onDeleteShoppingListClick: (ShoppingList) -> Unit,
     modifier: Modifier = Modifier,
@@ -119,6 +118,7 @@ fun ShoppingListsScreen(
                 !uiState.isEmpty -> {
                     ShoppingListsScreenContent(
                         shoppingLists = uiState.shoppingLists.items,
+                        onShoppingListClick = onShoppingListClick,
                         onDeleteShoppingListClick = onDeleteShoppingListClick,
                         modifier = Modifier
                             .fillMaxSize(),
@@ -140,6 +140,7 @@ fun ShoppingListsScreen(
 @Composable
 fun ShoppingListsScreenContent(
     shoppingLists: List<ShoppingList>,
+    onShoppingListClick: (ShoppingList) -> Unit,
     onDeleteShoppingListClick: (ShoppingList) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -147,7 +148,7 @@ fun ShoppingListsScreenContent(
         items(items = shoppingLists) { shoppingList ->
             ShoppingListItem(
                 shoppingList = shoppingList,
-                onShoppingItemClick = {},
+                onClick = onShoppingListClick,
                 onDeleteClick = onDeleteShoppingListClick,
             )
 
