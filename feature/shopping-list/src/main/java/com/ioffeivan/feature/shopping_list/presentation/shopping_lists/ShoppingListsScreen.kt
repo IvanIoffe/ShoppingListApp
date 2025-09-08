@@ -44,8 +44,9 @@ import com.ioffeivan.feature.shopping_list.presentation.shopping_lists.component
 @Composable
 fun ShoppingListsRoute(
     modifier: Modifier = Modifier,
-    viewModel: ShoppingListsViewModel = hiltViewModel(),
+    onShoppingListClick: (ShoppingList) -> Unit,
     onCreateShoppingListClick: () -> Unit,
+    viewModel: ShoppingListsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -64,6 +65,7 @@ fun ShoppingListsRoute(
     ShoppingListsScreen(
         uiState = uiState,
         onRefresh = viewModel::refreshShoppingLists,
+        onShoppingListClick = onShoppingListClick,
         onCreateShoppingListClick = onCreateShoppingListClick,
         onDeleteShoppingListClick = viewModel::deleteShoppingList,
         modifier = modifier,
@@ -76,6 +78,7 @@ fun ShoppingListsRoute(
 fun ShoppingListsScreen(
     uiState: ShoppingListsUiState,
     onRefresh: () -> Unit,
+    onShoppingListClick: (ShoppingList) -> Unit,
     onCreateShoppingListClick: () -> Unit,
     onDeleteShoppingListClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -115,6 +118,7 @@ fun ShoppingListsScreen(
                 !uiState.isEmpty -> {
                     ShoppingListsScreenContent(
                         shoppingLists = uiState.shoppingLists.items,
+                        onShoppingListClick = onShoppingListClick,
                         onDeleteShoppingListClick = onDeleteShoppingListClick,
                         modifier = Modifier
                             .fillMaxSize(),
@@ -136,6 +140,7 @@ fun ShoppingListsScreen(
 @Composable
 fun ShoppingListsScreenContent(
     shoppingLists: List<ShoppingList>,
+    onShoppingListClick: (ShoppingList) -> Unit,
     onDeleteShoppingListClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -143,7 +148,7 @@ fun ShoppingListsScreenContent(
         items(items = shoppingLists) { shoppingList ->
             ShoppingListItem(
                 shoppingList = shoppingList,
-                onShoppingItemClick = {},
+                onClick = onShoppingListClick,
                 onDeleteClick = onDeleteShoppingListClick,
             )
 

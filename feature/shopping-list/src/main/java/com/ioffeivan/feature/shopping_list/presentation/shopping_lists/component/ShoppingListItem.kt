@@ -27,7 +27,7 @@ import com.ioffeivan.feature.shopping_list.presentation.shopping_lists.ShoppingL
 fun ShoppingListItem(
     shoppingList: ShoppingList,
     modifier: Modifier = Modifier,
-    onShoppingItemClick: () -> Unit,
+    onClick: (ShoppingList) -> Unit,
     onDeleteClick: (Int) -> Unit,
 ) {
     Row(
@@ -35,7 +35,7 @@ fun ShoppingListItem(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .clickable(onClick = onShoppingItemClick)
+            .clickable(onClick = { onClick(shoppingList) })
             .padding(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
     ) {
         Text(
@@ -67,7 +67,7 @@ fun ShoppingListItemPreviewLight() {
     PreviewContainer {
         ShoppingListItem(
             shoppingList = ShoppingList(0, "Name List"),
-            onShoppingItemClick = {},
+            onClick = {},
             onDeleteClick = {},
         )
     }
@@ -79,7 +79,7 @@ fun ShoppingListItemPreviewDark() {
     PreviewContainer(darkTheme = true) {
         ShoppingListItem(
             shoppingList = ShoppingList(0, "Name List"),
-            onShoppingItemClick = {},
+            onClick = {},
             onDeleteClick = {},
         )
     }

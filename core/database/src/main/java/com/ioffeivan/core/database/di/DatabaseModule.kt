@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.ioffeivan.core.database.SlaDatabase
 import com.ioffeivan.core.database.migrations.MIGRATION_1_2
+import com.ioffeivan.core.database.migrations.MIGRATION_2_3
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,6 +27,7 @@ internal object DatabaseModule {
             name = "sla-database",
         )
             .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_2_3)
             .build()
     }
 }

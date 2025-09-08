@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "50d4ad3a1ca3b7811988954a278967b5",
+    "identityHash": "0a84a97fe03b4788f997c6022bd6afaa",
     "entities": [
       {
         "tableName": "shopping_lists",
@@ -37,7 +37,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '50d4ad3a1ca3b7811988954a278967b5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0a84a97fe03b4788f997c6022bd6afaa')"
     ]
   }
 }
