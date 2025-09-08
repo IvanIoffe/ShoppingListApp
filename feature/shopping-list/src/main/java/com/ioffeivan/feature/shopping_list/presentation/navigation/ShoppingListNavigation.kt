@@ -33,7 +33,14 @@ fun NavGraphBuilder.shoppingList(
     onBack: () -> Unit,
 ) {
     navigation<ShoppingListBaseRoute>(startDestination = ShoppingListsRoute) {
-        composable<ShoppingListsRoute> {
+        composable<ShoppingListsRoute>(
+            popEnterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(700),
+                )
+            },
+        ) {
             ShoppingListsRoute(
                 onShoppingListClick = onShoppingListClick,
                 onCreateShoppingListClick = onCreateShoppingListClick,
