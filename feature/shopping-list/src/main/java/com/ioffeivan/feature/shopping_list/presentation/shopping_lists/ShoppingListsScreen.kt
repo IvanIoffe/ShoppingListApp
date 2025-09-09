@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -129,6 +131,7 @@ fun ShoppingListsScreen(
                     ShoppingListsScreenEmpty(
                         modifier = Modifier
                             .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
                             .padding(horizontal = 8.dp),
                     )
                 }
@@ -161,38 +164,33 @@ fun ShoppingListsScreenContent(
 fun ShoppingListsScreenEmpty(
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
+    Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        item {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                SlaIcon(
-                    icon = SlaIcons.ShoppingCartOff,
-                    modifier = Modifier
-                        .size(125.dp)
-                )
+        SlaIcon(
+            icon = SlaIcons.ShoppingCartOff,
+            modifier = Modifier
+                .size(125.dp)
+        )
 
-                Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-                Text(
-                    text = stringResource(R.string.shopping_lists_empty_title),
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.SemiBold
-                    ),
-                )
+        Text(
+            text = stringResource(R.string.shopping_lists_empty_title),
+            style = MaterialTheme.typography.headlineMedium.copy(
+                fontWeight = FontWeight.SemiBold
+            ),
+        )
 
-                Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-                Text(
-                    text = stringResource(R.string.shopping_lists_empty_message),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyLarge,
-                )
-            }
-        }
+        Text(
+            text = stringResource(R.string.shopping_lists_empty_message),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyLarge,
+        )
     }
 }
 
