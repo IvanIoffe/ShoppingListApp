@@ -45,6 +45,7 @@ android {
 dependencies {
 
     implementation(project(":core:designsystem"))
+    implementation(project(":core:ui"))
 
     implementation(project(":feature:login"))
     implementation(project(":feature:shopping-list"))
