@@ -8,11 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -34,6 +31,8 @@ import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ioffeivan.core.designsystem.component.SlaButton
+import com.ioffeivan.core.designsystem.icon.SlaIcon
+import com.ioffeivan.core.designsystem.icon.SlaIcons
 import com.ioffeivan.core.designsystem.preview.PreviewContainer
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
@@ -100,9 +99,8 @@ fun AddShoppingItemScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.Rounded.Close,
-                            contentDescription = null,
+                        SlaIcon(
+                            icon = SlaIcons.Close,
                         )
                     }
                 },

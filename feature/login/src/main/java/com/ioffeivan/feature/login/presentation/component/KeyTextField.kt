@@ -1,14 +1,14 @@
 package com.ioffeivan.feature.login.presentation.component
 
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.ioffeivan.core.designsystem.component.SlaTextField
+import com.ioffeivan.core.designsystem.icon.SlaIcon
+import com.ioffeivan.core.designsystem.icon.SlaIcons
 import com.ioffeivan.feature.login.R
 
 @Composable
@@ -38,7 +38,9 @@ fun AuthKeyTextField(
             )
         },
         leadingIcon = {
-            Icon(painter = painterResource(R.drawable.ic_key), contentDescription = null)
+            SlaIcon(
+                icon = SlaIcons.Key,
+            )
         },
         isError = isError,
         supportingText = {

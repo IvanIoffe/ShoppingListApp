@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -27,7 +26,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ioffeivan.core.designsystem.component.AddFloatingActionButton
+import com.ioffeivan.core.designsystem.icon.SlaIcon
+import com.ioffeivan.core.designsystem.icon.SlaIcons
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
 import com.ioffeivan.feature.shopping_list.R
@@ -169,9 +169,8 @@ fun ShoppingListsScreenEmpty(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_shopping_cart_off),
-                    contentDescription = null,
+                SlaIcon(
+                    icon = SlaIcons.ShoppingCartOff,
                     modifier = Modifier
                         .size(125.dp)
                 )

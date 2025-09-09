@@ -20,12 +20,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -51,6 +47,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ioffeivan.core.designsystem.component.AddFloatingActionButton
+import com.ioffeivan.core.designsystem.icon.SlaIcon
+import com.ioffeivan.core.designsystem.icon.SlaIcons
 import com.ioffeivan.core.designsystem.preview.PreviewContainer
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
@@ -119,9 +117,8 @@ fun ShoppingItemScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                            contentDescription = null,
+                        SlaIcon(
+                            icon = SlaIcons.ArrowBack,
                         )
                     }
                 },
@@ -235,9 +232,8 @@ fun SwipeToDismissBackground(
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    Icon(
-                        imageVector = Icons.Rounded.Delete,
-                        contentDescription = null,
+                    SlaIcon(
+                        icon = SlaIcons.Delete,
                     )
                 }
             }

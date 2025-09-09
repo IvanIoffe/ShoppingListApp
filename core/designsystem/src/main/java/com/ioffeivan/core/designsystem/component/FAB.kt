@@ -1,12 +1,11 @@
 package com.ioffeivan.core.designsystem.component
 
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.ioffeivan.core.designsystem.icon.SlaIcon
+import com.ioffeivan.core.designsystem.icon.SlaIcons
 
 @Composable
 fun AddFloatingActionButton(
@@ -18,6 +17,6 @@ fun AddFloatingActionButton(
         modifier = modifier,
         shape = CircleShape,
     ) {
-        Icon(imageVector = Icons.Rounded.Add, contentDescription = null)
+        SlaIcon(icon = SlaIcons.Add)
     }
 }
