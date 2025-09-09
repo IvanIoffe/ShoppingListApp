@@ -13,7 +13,7 @@ import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.ioffeivan.feature.shopping_item.presentation.add_shopping_item.AddShoppingItemRoute
 import com.ioffeivan.feature.shopping_item.presentation.add_shopping_item.AddShoppingItemViewModel
-import com.ioffeivan.feature.shopping_item.presentation.shopping_items.ShoppingItemRoute
+import com.ioffeivan.feature.shopping_item.presentation.shopping_items.ShoppingItemsRoute
 import com.ioffeivan.feature.shopping_item.presentation.shopping_items.ShoppingItemsViewModel
 import kotlinx.serialization.Serializable
 
@@ -78,7 +78,7 @@ fun NavGraphBuilder.shoppingItem(
             val parentEntry = remember { navBackStackEntry() }
             val (listId, listName) = parentEntry.toRoute<ShoppingItemBaseRoute>()
 
-            ShoppingItemRoute(
+            ShoppingItemsRoute(
                 onBack = onBack,
                 onAddShoppingItemClick = { onAddShoppingItemClick(listId) },
                 viewModel = hiltViewModel<ShoppingItemsViewModel, ShoppingItemsViewModel.Factory>(

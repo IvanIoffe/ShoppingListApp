@@ -60,7 +60,7 @@ import com.ioffeivan.feature.shopping_item.presentation.shopping_items.component
 import com.ioffeivan.feature.shopping_item.presentation.shopping_items.utils.ShoppingItemsPreviewParameterProvider
 
 @Composable
-fun ShoppingItemRoute(
+fun ShoppingItemsRoute(
     onBack: () -> Unit,
     onAddShoppingItemClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -81,7 +81,7 @@ fun ShoppingItemRoute(
         },
     )
 
-    ShoppingItemScreen(
+    ShoppingItemsScreen(
         uiState = uiState,
         isRefreshing = isRefreshing,
         snackbarHostState = snackbarHostState,
@@ -95,7 +95,7 @@ fun ShoppingItemRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShoppingItemScreen(
+fun ShoppingItemsScreen(
     uiState: ShoppingItemsUiState,
     isRefreshing: Boolean,
     snackbarHostState: SnackbarHostState,
@@ -149,7 +149,7 @@ fun ShoppingItemScreen(
                 }
 
                 !uiState.isEmpty -> {
-                    ShoppingItemScreenContent(
+                    ShoppingItemsScreenContent(
                         shoppingItems = uiState.shoppingItems.items,
                         onShoppingItemDelete = onShoppingItemDelete,
                         modifier = Modifier
@@ -158,7 +158,7 @@ fun ShoppingItemScreen(
                 }
 
                 uiState.isEmpty -> {
-                    ShoppingItemScreenEmpty(
+                    ShoppingItemsScreenEmpty(
                         modifier = Modifier
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())
@@ -171,7 +171,7 @@ fun ShoppingItemScreen(
 }
 
 @Composable
-fun ShoppingItemScreenContent(
+fun ShoppingItemsScreenContent(
     shoppingItems: List<ShoppingItem>,
     onShoppingItemDelete: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -244,7 +244,7 @@ fun SwipeToDismissBackground(
 }
 
 @Composable
-fun ShoppingItemScreenEmpty(
+fun ShoppingItemsScreenEmpty(
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -288,12 +288,12 @@ fun ShoppingItemsFAB(
 
 @Preview
 @Composable
-fun ShoppingItemScreenContentPreviewLight(
+fun ShoppingItemsScreenContentPreviewLight(
     @PreviewParameter(ShoppingItemsPreviewParameterProvider::class)
     shoppingItems: ShoppingItems,
 ) {
     PreviewContainer {
-        ShoppingItemScreen(
+        ShoppingItemsScreen(
             uiState = ShoppingItemsUiState(
                 title = "Party",
                 shoppingItems = shoppingItems,
@@ -311,12 +311,12 @@ fun ShoppingItemScreenContentPreviewLight(
 
 @Preview
 @Composable
-fun ShoppingItemScreenContentPreviewDark(
+fun ShoppingItemsScreenContentPreviewDark(
     @PreviewParameter(ShoppingItemsPreviewParameterProvider::class)
     shoppingItems: ShoppingItems,
 ) {
     PreviewContainer(darkTheme = true) {
-        ShoppingItemScreen(
+        ShoppingItemsScreen(
             uiState = ShoppingItemsUiState(
                 title = "Party",
                 shoppingItems = shoppingItems,
@@ -334,9 +334,9 @@ fun ShoppingItemScreenContentPreviewDark(
 
 @Preview
 @Composable
-fun ShoppingItemScreenEmptyPreviewLight() {
+fun ShoppingItemsScreenEmptyPreviewLight() {
     PreviewContainer {
-        ShoppingItemScreen(
+        ShoppingItemsScreen(
             uiState = ShoppingItemsUiState(
                 title = "Party",
                 isEmpty = true,
@@ -354,9 +354,9 @@ fun ShoppingItemScreenEmptyPreviewLight() {
 
 @Preview
 @Composable
-fun ShoppingItemScreenEmptyPreviewDark() {
+fun ShoppingItemsScreenEmptyPreviewDark() {
     PreviewContainer(darkTheme = true) {
-        ShoppingItemScreen(
+        ShoppingItemsScreen(
             uiState = ShoppingItemsUiState(
                 title = "Party",
                 isEmpty = true,
