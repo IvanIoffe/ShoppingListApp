@@ -18,14 +18,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -45,20 +42,20 @@ import com.ioffeivan.feature.shopping_list.presentation.shopping_lists.component
 
 @Composable
 fun ShoppingListsRoute(
-    modifier: Modifier = Modifier,
     onShoppingListClick: (ShoppingList) -> Unit,
     onCreateShoppingListClick: () -> Unit,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
+    modifier: Modifier = Modifier,
     viewModel: ShoppingListsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
 
     ObserveAsEventsWithLifecycle(
         events = viewModel.shoppingListsEvent,
         onEvent = { event ->
             when (event) {
                 is ShoppingListsEvent.ShowSnackbar -> {
-                    snackbarHostState.showSnackbar(event.message)
+                    onShowSnackbar(event.message, null)
                 }
             }
         },
@@ -71,7 +68,6 @@ fun ShoppingListsRoute(
         onCreateShoppingListClick = onCreateShoppingListClick,
         onDeleteShoppingListClick = viewModel::deleteShoppingList,
         modifier = modifier,
-        snackbarHostState = snackbarHostState,
     )
 }
 
@@ -84,7 +80,6 @@ fun ShoppingListsScreen(
     onCreateShoppingListClick: () -> Unit,
     onDeleteShoppingListClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    snackbarHostState: SnackbarHostState,
 ) {
     Scaffold(
         modifier = modifier,
@@ -101,7 +96,6 @@ fun ShoppingListsScreen(
                 isVisible = !uiState.isLoading,
             )
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     ) { innerPadding ->
         PullToRefreshBox(
             isRefreshing = uiState.isRefreshing,

@@ -31,6 +31,7 @@ fun NavGraphBuilder.shoppingList(
     onShoppingListClick: (ShoppingList) -> Unit,
     onCreateShoppingListClick: () -> Unit,
     onBack: () -> Unit,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
     navigation<ShoppingListBaseRoute>(startDestination = ShoppingListsRoute) {
         composable<ShoppingListsRoute>(
@@ -44,6 +45,7 @@ fun NavGraphBuilder.shoppingList(
             ShoppingListsRoute(
                 onShoppingListClick = onShoppingListClick,
                 onCreateShoppingListClick = onCreateShoppingListClick,
+                onShowSnackbar = onShowSnackbar,
             )
         }
 
@@ -63,6 +65,7 @@ fun NavGraphBuilder.shoppingList(
         ) {
             CreateShoppingListRoute(
                 onBack = onBack,
+                onShowSnackbar = onShowSnackbar,
             )
         }
     }

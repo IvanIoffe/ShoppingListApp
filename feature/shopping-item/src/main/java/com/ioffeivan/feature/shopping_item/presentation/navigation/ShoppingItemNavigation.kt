@@ -51,6 +51,7 @@ fun NavGraphBuilder.shoppingItem(
     navBackStackEntry: () -> NavBackStackEntry,
     onBack: () -> Unit,
     onAddShoppingItemClick: (Int) -> Unit,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
     navigation<ShoppingItemBaseRoute>(
         startDestination = ShoppingItemsRoute,
@@ -81,6 +82,7 @@ fun NavGraphBuilder.shoppingItem(
             ShoppingItemsRoute(
                 onBack = onBack,
                 onAddShoppingItemClick = { onAddShoppingItemClick(listId) },
+                onShowSnackbar = onShowSnackbar,
                 viewModel = hiltViewModel<ShoppingItemsViewModel, ShoppingItemsViewModel.Factory>(
                     key = "$listId|$listName"
                 ) { factory ->
@@ -107,6 +109,7 @@ fun NavGraphBuilder.shoppingItem(
 
             AddShoppingItemRoute(
                 onBack = onBack,
+                onShowSnackbar = onShowSnackbar,
                 viewModel = hiltViewModel<AddShoppingItemViewModel, AddShoppingItemViewModel.Factory>(
                     key = "$listId"
                 ) { factory ->

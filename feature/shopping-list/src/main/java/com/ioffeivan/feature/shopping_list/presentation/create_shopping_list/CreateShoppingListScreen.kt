@@ -35,19 +35,19 @@ import com.ioffeivan.feature.shopping_list.presentation.create_shopping_list.com
 @Composable
 fun CreateShoppingListRoute(
     onBack: () -> Unit,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
     viewModel: CreateShoppingListViewModel = hiltViewModel(),
 ) {
     val enteringShoppingListDataUiState by viewModel.enteringShoppingListDataUiState.collectAsStateWithLifecycle()
     val creatingShoppingListUiState by viewModel.creatingShoppingListUiState.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
 
     ObserveAsEventsWithLifecycle(
         events = viewModel.createShoppingListEvent,
         onEvent = { event ->
             when (event) {
                 is CreateShoppingListEvent.ShowSnackbar -> {
-                    snackbarHostState.showSnackbar(event.message)
+                    onShowSnackbar(event.message, null)
                 }
 
                 CreateShoppingListEvent.NavigateToBack -> onBack()
@@ -62,7 +62,6 @@ fun CreateShoppingListRoute(
         onCreateShoppingListClick = viewModel::onCreateShoppingListClick,
         onBackClick = onBack,
         modifier = modifier,
-        snackbarHostState = snackbarHostState,
     )
 }
 
@@ -75,7 +74,6 @@ fun CreateShoppingListScreen(
     onCreateShoppingListClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
-    snackbarHostState: SnackbarHostState,
 ) {
     Scaffold(
         modifier = modifier,
@@ -96,9 +94,6 @@ fun CreateShoppingListScreen(
                 },
             )
         },
-        snackbarHost = {
-            SnackbarHost(snackbarHostState)
-        }
     ) { innerPadding ->
         Box(
             modifier = Modifier

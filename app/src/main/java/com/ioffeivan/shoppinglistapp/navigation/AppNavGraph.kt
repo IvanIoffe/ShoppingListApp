@@ -23,6 +23,7 @@ object SplashRoute
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -51,12 +52,14 @@ fun AppNavGraph(
             },
             onCreateShoppingListClick = navController::navigateToCreateShoppingList,
             onBack = navController::popBackStack,
+            onShowSnackbar = onShowSnackbar,
         )
 
         shoppingItem(
             navBackStackEntry = { navController.getBackStackEntry<ShoppingItemBaseRoute>() },
             onBack = navController::popBackStack,
-            onAddShoppingItemClick = navController::navigateToAddShoppingItem
+            onAddShoppingItemClick = navController::navigateToAddShoppingItem,
+            onShowSnackbar = onShowSnackbar,
         )
     }
 }

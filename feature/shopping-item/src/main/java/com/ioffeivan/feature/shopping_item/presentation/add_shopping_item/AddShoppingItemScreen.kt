@@ -13,12 +13,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,19 +40,19 @@ import com.ioffeivan.feature.shopping_item.presentation.add_shopping_item.compon
 @Composable
 fun AddShoppingItemRoute(
     onBack: () -> Unit,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
     viewModel: AddShoppingItemViewModel = hiltViewModel(),
 ) {
     val enteringShoppingItemInfoUiState by viewModel.enteringShoppingItemInfoUiState.collectAsStateWithLifecycle()
     val addShoppingItemUiState by viewModel.addShoppingItemUiState.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
 
     ObserveAsEventsWithLifecycle(
         events = viewModel.addShoppingItemEvent,
         onEvent = { event ->
             when (event) {
                 is AddShoppingItemEvent.ShowSnackbar -> {
-                    snackbarHostState.showSnackbar(event.message)
+                    onShowSnackbar(event.message, null)
                 }
 
                 AddShoppingItemEvent.NavigateToBack -> onBack()
@@ -71,7 +68,6 @@ fun AddShoppingItemRoute(
         onShoppingItemQuantityChange = viewModel::onShoppingItemQuantityChange,
         onAddShoppingItemClick = viewModel::onAddShoppingItem,
         modifier = modifier,
-        snackbarHostState = snackbarHostState,
     )
 }
 
@@ -85,7 +81,6 @@ fun AddShoppingItemScreen(
     onShoppingItemQuantityChange: (String) -> Unit,
     onAddShoppingItemClick: () -> Unit,
     modifier: Modifier = Modifier,
-    snackbarHostState: SnackbarHostState,
 ) {
     Scaffold(
         modifier = modifier,
@@ -106,11 +101,6 @@ fun AddShoppingItemScreen(
                 },
             )
         },
-        snackbarHost = {
-            SnackbarHost(
-                hostState = snackbarHostState,
-            )
-        }
     ) { innerPadding ->
         EnteringShoppingItemInfoScreen(
             uiState = enteringShoppingItemInfoUiState,
@@ -196,7 +186,6 @@ fun AddShoppingItemScreenPreviewLight() {
             onShoppingItemNameChange = {},
             onShoppingItemQuantityChange = {},
             onAddShoppingItemClick = {},
-            snackbarHostState = SnackbarHostState(),
         )
     }
 }
@@ -212,7 +201,6 @@ fun AddShoppingItemScreenPreviewDark() {
             onShoppingItemNameChange = {},
             onShoppingItemQuantityChange = {},
             onAddShoppingItemClick = {},
-            snackbarHostState = SnackbarHostState(),
         )
     }
 }

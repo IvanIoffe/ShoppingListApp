@@ -25,15 +25,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SwipeToDismissBoxState
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -63,19 +60,19 @@ import com.ioffeivan.feature.shopping_item.presentation.shopping_items.utils.Sho
 fun ShoppingItemsRoute(
     onBack: () -> Unit,
     onAddShoppingItemClick: () -> Unit,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
     viewModel: ShoppingItemsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
 
     ObserveAsEventsWithLifecycle(
         events = viewModel.shoppingItemsEvent,
         onEvent = { event ->
             when (event) {
                 is ShoppingItemsEvent.ShowSnackbar -> {
-                    snackbarHostState.showSnackbar(event.message)
+                    onShowSnackbar(event.message, null)
                 }
             }
         },
@@ -84,7 +81,6 @@ fun ShoppingItemsRoute(
     ShoppingItemsScreen(
         uiState = uiState,
         isRefreshing = isRefreshing,
-        snackbarHostState = snackbarHostState,
         onBack = onBack,
         onRefresh = viewModel::refreshShoppingItems,
         onShoppingItemDelete = viewModel::deleteShoppingItem,
@@ -98,7 +94,6 @@ fun ShoppingItemsRoute(
 fun ShoppingItemsScreen(
     uiState: ShoppingItemsUiState,
     isRefreshing: Boolean,
-    snackbarHostState: SnackbarHostState,
     onBack: () -> Unit,
     onRefresh: () -> Unit,
     onShoppingItemDelete: (Int) -> Unit,
@@ -123,9 +118,6 @@ fun ShoppingItemsScreen(
                     }
                 },
             )
-        },
-        snackbarHost = {
-            SnackbarHost(snackbarHostState)
         },
         floatingActionButton = {
             ShoppingItemsFAB(
@@ -300,7 +292,6 @@ fun ShoppingItemsScreenContentPreviewLight(
                 isLoading = false,
             ),
             isRefreshing = false,
-            snackbarHostState = SnackbarHostState(),
             onShoppingItemDelete = {},
             onAddShoppingItemClick = {},
             onBack = {},
@@ -323,7 +314,6 @@ fun ShoppingItemsScreenContentPreviewDark(
                 isLoading = false,
             ),
             isRefreshing = false,
-            snackbarHostState = SnackbarHostState(),
             onShoppingItemDelete = {},
             onAddShoppingItemClick = {},
             onBack = {},
@@ -343,7 +333,6 @@ fun ShoppingItemsScreenEmptyPreviewLight() {
                 isLoading = false,
             ),
             isRefreshing = false,
-            snackbarHostState = SnackbarHostState(),
             onShoppingItemDelete = {},
             onAddShoppingItemClick = {},
             onBack = {},
@@ -363,7 +352,6 @@ fun ShoppingItemsScreenEmptyPreviewDark() {
                 isLoading = false,
             ),
             isRefreshing = false,
-            snackbarHostState = SnackbarHostState(),
             onShoppingItemDelete = {},
             onAddShoppingItemClick = {},
             onBack = {},
