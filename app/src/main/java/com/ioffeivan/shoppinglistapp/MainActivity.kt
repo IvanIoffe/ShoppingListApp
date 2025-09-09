@@ -13,8 +13,8 @@ import com.ioffeivan.core.designsystem.theme.ShoppingListAppTheme
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
 import com.ioffeivan.feature.login.presentation.navigation.navigateToLogin
 import com.ioffeivan.feature.shopping_list.presentation.navigation.navigateToShoppingList
-import com.ioffeivan.shoppinglistapp.navigation.AppNavGraph
 import com.ioffeivan.shoppinglistapp.navigation.SplashRoute
+import com.ioffeivan.shoppinglistapp.ui.AppScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                         }
                     )
 
-                    AppNavGraph(
+                    AppScreen(
                         navController = navController,
                     )
                 }
