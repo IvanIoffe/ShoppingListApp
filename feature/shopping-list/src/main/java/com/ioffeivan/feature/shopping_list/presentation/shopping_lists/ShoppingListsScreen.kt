@@ -52,10 +52,10 @@ fun ShoppingListsRoute(
     val snackbarHostState = remember { SnackbarHostState() }
 
     ObserveAsEventsWithLifecycle(
-        events = viewModel.oneTimeEvent,
+        events = viewModel.shoppingListsEvent,
         onEvent = { event ->
             when (event) {
-                is OneTimeEvent.ShowErrorSnackbar -> {
+                is ShoppingListsEvent.ShowSnackbar -> {
                     snackbarHostState.showSnackbar(event.message)
                 }
             }

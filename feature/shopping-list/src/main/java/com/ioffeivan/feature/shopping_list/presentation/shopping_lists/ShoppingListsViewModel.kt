@@ -28,8 +28,8 @@ class ShoppingListsViewModel @Inject constructor(
     private val deleteShoppingListUseCase: Lazy<DeleteShoppingListUseCase>,
 ) : ViewModel() {
 
-    private val _oneTimeEvent = Channel<OneTimeEvent>()
-    val oneTimeEvent = _oneTimeEvent.receiveAsFlow()
+    private val _shoppingListsEvent = Channel<ShoppingListsEvent>()
+    val shoppingListsEvent = _shoppingListsEvent.receiveAsFlow()
 
     private val _uiState = MutableStateFlow(ShoppingListsUiState())
     val uiState = observeShoppingListsUseCase()
@@ -50,7 +50,7 @@ class ShoppingListsViewModel @Inject constructor(
                 }
 
                 is Result.Error -> {
-                    _oneTimeEvent.send(OneTimeEvent.ShowErrorSnackbar(result.message))
+                    _shoppingListsEvent.send(ShoppingListsEvent.ShowSnackbar(result.message))
 
                     _uiState.updateAndGet {
                         it.copy(
@@ -87,6 +87,6 @@ class ShoppingListsViewModel @Inject constructor(
     }
 }
 
-sealed interface OneTimeEvent {
-    data class ShowErrorSnackbar(val message: String) : OneTimeEvent
+sealed interface ShoppingListsEvent {
+    data class ShowSnackbar(val message: String) : ShoppingListsEvent
 }
