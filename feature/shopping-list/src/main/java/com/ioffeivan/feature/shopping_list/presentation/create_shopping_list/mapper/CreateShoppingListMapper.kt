@@ -1,10 +1,10 @@
 package com.ioffeivan.feature.shopping_list.presentation.create_shopping_list.mapper
 
 import com.ioffeivan.feature.shopping_list.domain.model.CreateShoppingList
-import com.ioffeivan.feature.shopping_list.presentation.create_shopping_list.EnteringShoppingListDataUiState
+import com.ioffeivan.feature.shopping_list.presentation.create_shopping_list.EnteringShoppingListInfoUiState
 
-fun EnteringShoppingListDataUiState.toCreateShoppingList(): CreateShoppingList {
+fun EnteringShoppingListInfoUiState.toCreateShoppingList(): CreateShoppingList {
     return CreateShoppingList(
-        name = shoppingListName.trim(),
+        name = name.trim(),
     )
 }

@@ -56,7 +56,7 @@ fun CreateShoppingListRoute(
     )
 
     CreateShoppingListScreen(
-        enteringShoppingListDataUiState = enteringShoppingListDataUiState,
+        enteringShoppingListInfoUiState = enteringShoppingListDataUiState,
         creatingShoppingListUiState = creatingShoppingListUiState,
         onShoppingListNameChange = viewModel::onShoppingListNameChange,
         onCreateShoppingListClick = viewModel::onCreateShoppingListClick,
@@ -69,7 +69,7 @@ fun CreateShoppingListRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateShoppingListScreen(
-    enteringShoppingListDataUiState: EnteringShoppingListDataUiState,
+    enteringShoppingListInfoUiState: EnteringShoppingListInfoUiState,
     creatingShoppingListUiState: CreatingShoppingListUiState,
     onShoppingListNameChange: (String) -> Unit,
     onCreateShoppingListClick: () -> Unit,
@@ -113,7 +113,7 @@ fun CreateShoppingListScreen(
                     .fillMaxSize(),
             ) {
                 ShoppingListNameTextField(
-                    shoppingListName = enteringShoppingListDataUiState.shoppingListName,
+                    shoppingListName = enteringShoppingListInfoUiState.name,
                     onShoppingListNameChange = onShoppingListNameChange,
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -124,7 +124,7 @@ fun CreateShoppingListScreen(
                     onClick = {
                         onCreateShoppingListClick()
                     },
-                    enabled = enteringShoppingListDataUiState.createShoppingListButtonEnabled,
+                    enabled = enteringShoppingListInfoUiState.createShoppingListButtonEnabled,
                     modifier = Modifier
                         .fillMaxWidth(),
                 )

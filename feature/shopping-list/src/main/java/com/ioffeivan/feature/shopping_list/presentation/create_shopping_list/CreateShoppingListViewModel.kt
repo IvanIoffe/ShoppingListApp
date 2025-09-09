@@ -27,30 +27,30 @@ class CreateShoppingListViewModel @Inject constructor(
     private val createShoppingListUseCase: Lazy<CreateShoppingListUseCase>,
 ) : ViewModel() {
 
-    private val createShoppingListEventChannel = Channel<CreateShoppingListEvent>()
-    val createShoppingListEvent = createShoppingListEventChannel.receiveAsFlow()
+    private val _createShoppingListEvent = Channel<CreateShoppingListEvent>()
+    val createShoppingListEvent = _createShoppingListEvent.receiveAsFlow()
 
-    private val _createTrigger = MutableSharedFlow<CreateShoppingList>()
+    private val _createShoppingListTrigger = MutableSharedFlow<CreateShoppingList>()
 
-    private val _enteringShoppingListDataUiState =
-        MutableStateFlow(EnteringShoppingListDataUiState())
-    val enteringShoppingListDataUiState = _enteringShoppingListDataUiState.asStateFlow()
+    private val _enteringShoppingListInfoUiState =
+        MutableStateFlow(EnteringShoppingListInfoUiState())
+    val enteringShoppingListDataUiState = _enteringShoppingListInfoUiState.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val creatingShoppingListUiState = _createTrigger
+    val creatingShoppingListUiState = _createShoppingListTrigger
         .flatMapLatest { createShoppingList ->
             createShoppingListUseCase.get().invoke(createShoppingList)
                 .map { result ->
                     when (result) {
                         is Result.Success -> {
-                            createShoppingListEventChannel.send(CreateShoppingListEvent.NavigateToBack)
+                            _createShoppingListEvent.send(CreateShoppingListEvent.NavigateToBack)
                             CreatingShoppingListUiState.Success
                         }
 
                         Result.Loading -> CreatingShoppingListUiState.Loading
 
                         is Result.Error -> {
-                            createShoppingListEventChannel.send(
+                            _createShoppingListEvent.send(
                                 CreateShoppingListEvent.ShowSnackbar(message = result.message)
                             )
                             CreatingShoppingListUiState.Error
@@ -64,14 +64,14 @@ class CreateShoppingListViewModel @Inject constructor(
         )
 
     fun onShoppingListNameChange(shoppingListName: String) {
-        _enteringShoppingListDataUiState.update {
-            it.copy(shoppingListName = shoppingListName)
+        _enteringShoppingListInfoUiState.update {
+            it.copy(name = shoppingListName)
         }
     }
 
     fun onCreateShoppingListClick() {
         viewModelScope.launch {
-            _createTrigger.emit(_enteringShoppingListDataUiState.value.toCreateShoppingList())
+            _createShoppingListTrigger.emit(_enteringShoppingListInfoUiState.value.toCreateShoppingList())
         }
     }
 }
