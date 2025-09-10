@@ -28,7 +28,7 @@ fun <T> remoteRequestFlow(call: suspend () -> Response<T>): Flow<Result<T>> {
                 }
             }
         } catch (e: Exception) {
-            emit(Result.Error(message = e.message ?: ""))
+            emit(Result.Error(message = "Something went wrong."))
         }
     }.flowOn(Dispatchers.IO)
 }
