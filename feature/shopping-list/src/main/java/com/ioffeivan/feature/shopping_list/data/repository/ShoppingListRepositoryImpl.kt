@@ -22,7 +22,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
     private val shoppingListLocalDataSource: ShoppingListLocalDataSource,
 ) : ShoppingListRepository {
 
-    private val networkShoppingListsFlow = MutableSharedFlow<Result<ShoppingLists>>(replay = 1)
+    private val remoteShoppingListsFlow = MutableSharedFlow<Result<ShoppingLists>>(replay = 1)
 
     private val localShoppingListsFlow: Flow<Result<ShoppingLists>> =
         shoppingListLocalDataSource.observeAllShoppingLists()
@@ -38,7 +38,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
                 }
             }
 
-    private val shoppingLists = merge(networkShoppingListsFlow, localShoppingListsFlow)
+    private val shoppingLists = merge(remoteShoppingListsFlow, localShoppingListsFlow)
 
     override suspend fun refreshShoppingLists() {
         shoppingListRemoteDataSource.getAllShoppingLists()
@@ -48,7 +48,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
                         val shoppingListsDto: ShoppingListsDto = result.data
 
                         if (shoppingListsDto.items.isEmpty()) {
-                            networkShoppingListsFlow.emit(
+                            remoteShoppingListsFlow.emit(
                                 Result.Success(ShoppingLists(emptyList()))
                             )
                         } else {
@@ -57,8 +57,8 @@ class ShoppingListRepositoryImpl @Inject constructor(
                         }
                     }
 
-                    is Result.Loading -> networkShoppingListsFlow.emit(Result.Loading)
-                    is Result.Error -> networkShoppingListsFlow.emit(Result.Error(result.message))
+                    is Result.Loading -> remoteShoppingListsFlow.emit(Result.Loading)
+                    is Result.Error -> remoteShoppingListsFlow.emit(Result.Error(result.message))
                 }
             }
     }
@@ -97,7 +97,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
                             id = id,
                             isDeletionStatus = false,
                         )
-                        networkShoppingListsFlow.emit(Result.Error(result.message))
+                        remoteShoppingListsFlow.emit(Result.Error(result.message))
                     }
 
                     else -> {}
