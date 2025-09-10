@@ -37,7 +37,7 @@ fun SwipeToDismissContainer(
                     SwipeToDismissBoxValue.EndToStart -> onEndToStart()
                     else -> {}
                 }
-                state.dismiss(SwipeToDismissBoxValue.Settled)
+                state.snapTo(SwipeToDismissBoxValue.Settled)
             }
     }
 
