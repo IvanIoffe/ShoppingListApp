@@ -3,6 +3,7 @@ package com.ioffeivan.feature.shopping_item.presentation.shopping_items
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ioffeivan.core.common.Result
+import com.ioffeivan.core.ui.utils.withRefreshing
 import com.ioffeivan.feature.shopping_item.domain.model.DeleteShoppingItem
 import com.ioffeivan.feature.shopping_item.domain.usecase.DeleteShoppingItemFromShoppingListUseCase
 import com.ioffeivan.feature.shopping_item.domain.usecase.ObserveShoppingItemsUseCase
@@ -23,7 +24,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel(assistedFactory = ShoppingItemsViewModel.Factory::class)
@@ -80,7 +80,10 @@ class ShoppingItemsViewModel @AssistedInject constructor(
 
     fun refreshShoppingItems() {
         viewModelScope.launch(Dispatchers.IO) {
-            withLoading {
+            withRefreshing(
+                startRefreshingAction = { _isRefreshing.value = true },
+                endRefreshingAction = { _isRefreshing.value = false },
+            ) {
                 refreshShoppingItemsUseCase(listId)
             }
         }
@@ -91,15 +94,6 @@ class ShoppingItemsViewModel @AssistedInject constructor(
             deleteShoppingItemUseCase.get().invoke(
                 DeleteShoppingItem(listId = listId, itemId = itemId)
             )
-        }
-    }
-
-    private suspend fun withLoading(block: suspend () -> Unit) {
-        try {
-            _isRefreshing.update { true }
-            block()
-        } finally {
-            _isRefreshing.update { false }
         }
     }
 
