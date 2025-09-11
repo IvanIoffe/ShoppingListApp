@@ -145,7 +145,10 @@ fun ShoppingListsScreenContent(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier = modifier) {
-        items(items = shoppingLists) { shoppingList ->
+        items(
+            items = shoppingLists,
+            key = { it.id },
+        ) { shoppingList ->
             ShoppingListItem(
                 shoppingList = shoppingList,
                 onClick = onShoppingListClick,
