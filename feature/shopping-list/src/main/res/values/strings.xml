@@ -3,4 +3,9 @@
     <string name="shopping_lists_content_title">My Shopping Lists</string>
     <string name="shopping_lists_empty_title">No Shopping Lists</string>
     <string name="shopping_lists_empty_message">Tap the \'+\' button below to create a new shopping list and start adding items.</string>
+
+    <string name="create_shopping_list">Create List</string>
+    <string name="new_shopping_list">New Shopping List</string>
+    <string name="shopping_list_name">Name</string>
+    <string name="enter_shopping_list_name">Enter name</string>
 </resources>

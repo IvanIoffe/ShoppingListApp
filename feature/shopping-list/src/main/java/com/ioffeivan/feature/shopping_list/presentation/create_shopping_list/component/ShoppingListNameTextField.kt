@@ -4,7 +4,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.ioffeivan.core.designsystem.component.SlaTextField
+import com.ioffeivan.feature.shopping_list.R
 
 @Composable
 fun ShoppingListNameTextField(
@@ -18,13 +20,13 @@ fun ShoppingListNameTextField(
         modifier = modifier,
         label = {
             Text(
-                text = "List name",
+                text = stringResource(R.string.shopping_list_name),
                 style = MaterialTheme.typography.bodyLarge,
             )
         },
         placeholder = {
             Text(
-                text = "Enter list name",
+                text = stringResource(R.string.enter_shopping_list_name),
                 style = MaterialTheme.typography.bodyLarge,
             )
         },

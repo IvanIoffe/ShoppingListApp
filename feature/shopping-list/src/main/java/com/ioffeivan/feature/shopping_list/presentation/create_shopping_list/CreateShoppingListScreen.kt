@@ -12,15 +12,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,6 +28,7 @@ import com.ioffeivan.core.designsystem.icon.SlaIcon
 import com.ioffeivan.core.designsystem.icon.SlaIcons
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
+import com.ioffeivan.feature.shopping_list.R
 import com.ioffeivan.feature.shopping_list.presentation.create_shopping_list.component.ShoppingListNameTextField
 
 @Composable
@@ -81,7 +80,7 @@ fun CreateShoppingListScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "New List",
+                        text = stringResource(R.string.new_shopping_list),
                         style = MaterialTheme.typography.titleLarge,
                     )
                 },
@@ -115,7 +114,7 @@ fun CreateShoppingListScreen(
                 )
 
                 SlaButton(
-                    text = "Create List",
+                    text = stringResource(R.string.create_shopping_list),
                     onClick = {
                         onCreateShoppingListClick()
                     },
