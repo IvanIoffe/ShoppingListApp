@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -40,21 +41,24 @@ class CreateShoppingListViewModel @Inject constructor(
     val creatingShoppingListUiState = _createShoppingListTrigger
         .flatMapLatest { createShoppingList ->
             createShoppingListUseCase.get().invoke(createShoppingList)
-                .map { result ->
-                    when (result) {
+                .onEach {
+                    when (it) {
+                        is Result.Error -> {
+                            _createShoppingListEvent.send(CreateShoppingListEvent.ShowSnackbar(it.message))
+                        }
+
                         is Result.Success -> {
                             _createShoppingListEvent.send(CreateShoppingListEvent.NavigateToBack)
-                            CreatingShoppingListUiState.Success
                         }
 
+                        else -> {}
+                    }
+                }
+                .map { result ->
+                    when (result) {
+                        is Result.Success -> CreatingShoppingListUiState.Success
                         Result.Loading -> CreatingShoppingListUiState.Loading
-
-                        is Result.Error -> {
-                            _createShoppingListEvent.send(
-                                CreateShoppingListEvent.ShowSnackbar(message = result.message)
-                            )
-                            CreatingShoppingListUiState.Error
-                        }
+                        is Result.Error -> CreatingShoppingListUiState.Error
                     }
                 }
         }.stateIn(
