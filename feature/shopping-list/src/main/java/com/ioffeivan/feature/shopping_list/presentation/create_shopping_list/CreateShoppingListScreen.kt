@@ -38,8 +38,8 @@ fun CreateShoppingListRoute(
     modifier: Modifier = Modifier,
     viewModel: CreateShoppingListViewModel = hiltViewModel(),
 ) {
-    val enteringShoppingListDataUiState by viewModel.enteringShoppingListDataUiState.collectAsStateWithLifecycle()
-    val creatingShoppingListUiState by viewModel.creatingShoppingListUiState.collectAsStateWithLifecycle()
+    val enteringShoppingListInfoUiState by viewModel.enteringShoppingListInfoUiState.collectAsStateWithLifecycle()
+    val createShoppingListUiState by viewModel.createShoppingListUiState.collectAsStateWithLifecycle()
 
     ObserveAsEventsWithLifecycle(
         events = viewModel.createShoppingListEvent,
@@ -55,8 +55,8 @@ fun CreateShoppingListRoute(
     )
 
     CreateShoppingListScreen(
-        enteringShoppingListInfoUiState = enteringShoppingListDataUiState,
-        creatingShoppingListUiState = creatingShoppingListUiState,
+        enteringShoppingListInfoUiState = enteringShoppingListInfoUiState,
+        createShoppingListUiState = createShoppingListUiState,
         onShoppingListNameChange = viewModel::onShoppingListNameChange,
         onCreateShoppingListClick = viewModel::onCreateShoppingListClick,
         onBackClick = onBack,
@@ -68,7 +68,7 @@ fun CreateShoppingListRoute(
 @Composable
 fun CreateShoppingListScreen(
     enteringShoppingListInfoUiState: EnteringShoppingListInfoUiState,
-    creatingShoppingListUiState: CreatingShoppingListUiState,
+    createShoppingListUiState: CreateShoppingListUiState,
     onShoppingListNameChange: (String) -> Unit,
     onCreateShoppingListClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -126,12 +126,12 @@ fun CreateShoppingListScreen(
         }
     }
 
-    when (creatingShoppingListUiState) {
-        CreatingShoppingListUiState.Error,
-        CreatingShoppingListUiState.Initial,
-        CreatingShoppingListUiState.Success -> Unit
+    when (createShoppingListUiState) {
+        CreateShoppingListUiState.Error,
+        CreateShoppingListUiState.Initial,
+        CreateShoppingListUiState.Success -> Unit
 
-        CreatingShoppingListUiState.Loading -> {
+        CreateShoppingListUiState.Loading -> {
             Popup(
                 alignment = Alignment.Center,
             ) {

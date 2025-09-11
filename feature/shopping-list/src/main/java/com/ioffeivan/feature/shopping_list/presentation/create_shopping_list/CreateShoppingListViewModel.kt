@@ -35,10 +35,10 @@ class CreateShoppingListViewModel @Inject constructor(
 
     private val _enteringShoppingListInfoUiState =
         MutableStateFlow(EnteringShoppingListInfoUiState())
-    val enteringShoppingListDataUiState = _enteringShoppingListInfoUiState.asStateFlow()
+    val enteringShoppingListInfoUiState = _enteringShoppingListInfoUiState.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val creatingShoppingListUiState = _createShoppingListTrigger
+    val createShoppingListUiState = _createShoppingListTrigger
         .flatMapLatest { createShoppingList ->
             createShoppingListUseCase.get().invoke(createShoppingList)
                 .onEach {
@@ -56,15 +56,15 @@ class CreateShoppingListViewModel @Inject constructor(
                 }
                 .map { result ->
                     when (result) {
-                        is Result.Success -> CreatingShoppingListUiState.Success
-                        Result.Loading -> CreatingShoppingListUiState.Loading
-                        is Result.Error -> CreatingShoppingListUiState.Error
+                        is Result.Success -> CreateShoppingListUiState.Success
+                        Result.Loading -> CreateShoppingListUiState.Loading
+                        is Result.Error -> CreateShoppingListUiState.Error
                     }
                 }
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000L),
-            CreatingShoppingListUiState.Initial,
+            CreateShoppingListUiState.Initial,
         )
 
     fun onShoppingListNameChange(shoppingListName: String) {
