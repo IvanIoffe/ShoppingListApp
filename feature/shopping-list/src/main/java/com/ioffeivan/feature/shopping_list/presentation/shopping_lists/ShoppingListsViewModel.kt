@@ -3,6 +3,7 @@ package com.ioffeivan.feature.shopping_list.presentation.shopping_lists
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ioffeivan.core.common.Result
+import com.ioffeivan.core.ui.utils.withRefreshing
 import com.ioffeivan.feature.shopping_list.domain.usecase.DeleteShoppingListUseCase
 import com.ioffeivan.feature.shopping_list.domain.usecase.ObserveShoppingListsUseCase
 import com.ioffeivan.feature.shopping_list.domain.usecase.RefreshShoppingListsUseCase
@@ -12,12 +13,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,44 +33,40 @@ class ShoppingListsViewModel @Inject constructor(
     private val _shoppingListsEvent = Channel<ShoppingListsEvent>()
     val shoppingListsEvent = _shoppingListsEvent.receiveAsFlow()
 
-    private val _uiState = MutableStateFlow(ShoppingListsUiState())
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing get() = _isRefreshing.asStateFlow()
+
     val uiState = observeShoppingListsUseCase()
-        .drop(1)
-        .map { result ->
+        .onStart { refreshShoppingListsUseCase() }
+        .drop(1) // Skip first Loading or Error
+        .onEach {
+            when (it) {
+                is Result.Error -> _shoppingListsEvent.send(ShoppingListsEvent.ShowSnackbar(it.message))
+                else -> {}
+            }
+        }
+        .runningFold(initial = ShoppingListsUiState()) { previousState, result ->
             when (result) {
                 is Result.Success -> {
                     val filteredShoppingLists =
                         result.data.copy(items = result.data.items.filter { !it.isPendingDeletion })
-                    _uiState.updateAndGet {
-                        it.copy(
-                            shoppingLists = filteredShoppingLists,
-                            isEmpty = filteredShoppingLists.items.isEmpty(),
-                            isRefreshing = false,
-                            isLoading = false,
-                        )
-                    }
+                    previousState.copy(
+                        shoppingLists = filteredShoppingLists,
+                        isEmpty = filteredShoppingLists.items.isEmpty(),
+                        isLoading = false,
+                    )
                 }
 
                 is Result.Error -> {
-                    _shoppingListsEvent.send(ShoppingListsEvent.ShowSnackbar(result.message))
-
-                    _uiState.updateAndGet {
-                        it.copy(
-                            isRefreshing = false,
-                            isLoading = false,
-                        )
-                    }
+                    previousState.copy(
+                        isLoading = false,
+                    )
                 }
 
-                Result.Loading -> {
-                    _uiState.updateAndGet {
-                        it.copy(isRefreshing = true)
-                    }
-                }
+                Result.Loading -> previousState
             }
-        }.onStart {
-            refreshShoppingListsUseCase()
-        }.stateIn(
+        }
+        .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000L),
             ShoppingListsUiState(),
@@ -76,7 +74,12 @@ class ShoppingListsViewModel @Inject constructor(
 
     fun refreshShoppingLists() {
         viewModelScope.launch(Dispatchers.IO) {
-            refreshShoppingListsUseCase()
+            withRefreshing(
+                startRefreshingAction = { _isRefreshing.value = true },
+                endRefreshingAction = { _isRefreshing.value = false },
+            ) {
+                refreshShoppingListsUseCase()
+            }
         }
     }
 

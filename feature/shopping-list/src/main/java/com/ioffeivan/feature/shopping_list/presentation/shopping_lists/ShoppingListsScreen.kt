@@ -49,6 +49,7 @@ fun ShoppingListsRoute(
     viewModel: ShoppingListsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     ObserveAsEventsWithLifecycle(
         events = viewModel.shoppingListsEvent,
@@ -63,6 +64,7 @@ fun ShoppingListsRoute(
 
     ShoppingListsScreen(
         uiState = uiState,
+        isRefreshing = isRefreshing,
         onRefresh = viewModel::refreshShoppingLists,
         onShoppingListClick = onShoppingListClick,
         onCreateShoppingListClick = onCreateShoppingListClick,
@@ -75,6 +77,7 @@ fun ShoppingListsRoute(
 @Composable
 fun ShoppingListsScreen(
     uiState: ShoppingListsUiState,
+    isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onShoppingListClick: (ShoppingList) -> Unit,
     onCreateShoppingListClick: () -> Unit,
@@ -98,7 +101,7 @@ fun ShoppingListsScreen(
         },
     ) { innerPadding ->
         PullToRefreshBox(
-            isRefreshing = uiState.isRefreshing,
+            isRefreshing = isRefreshing,
             onRefresh = onRefresh,
             modifier = Modifier
                 .padding(innerPadding),
