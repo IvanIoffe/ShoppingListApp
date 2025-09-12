@@ -66,7 +66,7 @@ fun AddShoppingItemRoute(
         onBackClick = onBack,
         onShoppingItemNameChange = viewModel::onShoppingItemNameChange,
         onShoppingItemQuantityChange = viewModel::onShoppingItemQuantityChange,
-        onAddShoppingItemClick = viewModel::onAddShoppingItem,
+        onAddShoppingItemClick = viewModel::onAddShoppingItemClick,
         modifier = modifier,
     )
 }

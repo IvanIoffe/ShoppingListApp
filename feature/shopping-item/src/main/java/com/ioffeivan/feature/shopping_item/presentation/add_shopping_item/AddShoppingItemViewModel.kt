@@ -84,7 +84,7 @@ class AddShoppingItemViewModel @AssistedInject constructor(
         }
     }
 
-    fun onAddShoppingItem() {
+    fun onAddShoppingItemClick() {
         viewModelScope.launch {
             addShoppingItemTrigger.emit(
                 _enteringShoppingItemInfoUiState.value.toAddShoppingItem(listId)
