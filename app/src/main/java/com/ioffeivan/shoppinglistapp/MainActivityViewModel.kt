@@ -30,4 +30,6 @@ sealed class MainActivityUiState {
     data object Loading : MainActivityUiState()
     data object LoggedIn : MainActivityUiState()
     data object LoggedOut : MainActivityUiState()
+
+    fun shouldKeepSplashScreen() = this is Loading
 }
