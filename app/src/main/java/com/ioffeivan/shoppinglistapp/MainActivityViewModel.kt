@@ -4,13 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ioffeivan.feature.login.domain.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,22 +14,20 @@ class MainActivityViewModel @Inject constructor(
     isLoggedInUseCase: IsLoggedInUseCase,
 ) : ViewModel() {
 
-    private var lastEvent = MutableStateFlow<MainActivityEvent?>(null)
-
-    val events = isLoggedInUseCase()
+    val uiState = isLoggedInUseCase()
         .map { isLoggedIn ->
-            if (isLoggedIn) MainActivityEvent.NavigateToShoppingLists
-            else MainActivityEvent.NavigateToLogin
+            if (isLoggedIn) MainActivityUiState.LoggedIn
+            else MainActivityUiState.LoggedOut
         }
-        .filter { event -> lastEvent.value != event }
-        .onEach { event -> lastEvent.update { event } }
-        .shareIn(
+        .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000L),
+            MainActivityUiState.Loading,
         )
 }
 
-sealed interface MainActivityEvent {
-    data object NavigateToShoppingLists : MainActivityEvent
-    data object NavigateToLogin : MainActivityEvent
+sealed class MainActivityUiState {
+    data object Loading : MainActivityUiState()
+    data object LoggedIn : MainActivityUiState()
+    data object LoggedOut : MainActivityUiState()
 }

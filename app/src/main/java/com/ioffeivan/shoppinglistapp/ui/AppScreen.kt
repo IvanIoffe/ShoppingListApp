@@ -17,6 +17,7 @@ import com.ioffeivan.shoppinglistapp.navigation.AppNavGraph
 @Composable
 fun AppScreen(
     navController: NavHostController,
+    isLoggedIn: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -24,6 +25,7 @@ fun AppScreen(
     Box(modifier = modifier) {
         AppNavGraph(
             navController = navController,
+            isLoggedIn = isLoggedIn,
             modifier = modifier,
             onShowSnackbar = { message, action ->
                 snackbarHostState.showSnackbar(
