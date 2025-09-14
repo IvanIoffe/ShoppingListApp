@@ -13,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -27,29 +26,32 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ioffeivan.core.designsystem.preview.PreviewContainer
 import com.ioffeivan.core.ui.LoadingButton
+import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
 import com.ioffeivan.feature.login.R
 import com.ioffeivan.feature.login.presentation.component.AuthKeyTextField
 
 @Composable
 fun LoginRoute(
-    onLoginSuccess: () -> Unit,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(uiState.success) {
-        if (uiState.success) {
-            onLoginSuccess()
-        }
-    }
+    ObserveAsEventsWithLifecycle(
+        events = viewModel.loginEvent,
+        onEvent = { event ->
+            when (event) {
+                is LoginEvent.ShowSnackbar -> onShowSnackbar(event.message, null)
+            }
+        },
+    )
 
     LoginScreen(
         uiState = uiState,
         onAuthKeyChange = viewModel::onAuthKeyChange,
         onLoginButtonClick = viewModel::login,
-        modifier = modifier
-            .padding(horizontal = 16.dp),
+        modifier = modifier,
     )
 }
 
@@ -78,7 +80,8 @@ internal fun LoginScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp),
         ) {
             LoginForm(
                 uiState = uiState,
@@ -107,14 +110,12 @@ private fun LoginForm(
             authKey = uiState.authKey,
             onAuthKeyChange = onAuthKeyChange,
             enabled = !uiState.isLoading,
-            isError = uiState.errorMessage != null,
-            errorMessage = uiState.errorMessage.orEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         LoadingButton(
             isLoading = uiState.isLoading,
@@ -142,8 +143,6 @@ fun LoginScreenPreviewLight() {
             uiState = LoginUiState(),
             onAuthKeyChange = {},
             onLoginButtonClick = {},
-            modifier = Modifier
-                .padding(horizontal = 16.dp),
         )
     }
 }
@@ -156,8 +155,6 @@ fun LoginScreenPreviewDark() {
             uiState = LoginUiState(),
             onAuthKeyChange = {},
             onLoginButtonClick = {},
-            modifier = Modifier
-                .padding(horizontal = 16.dp),
         )
     }
 }

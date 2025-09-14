@@ -13,12 +13,12 @@ data object LoginRoute
 fun NavController.navigateToLogin(navOptions: NavOptions? = null) =
     navigate(route = LoginRoute, navOptions = navOptions)
 
-fun NavGraphBuilder.loginScreen(
-    onLoginSuccess: () -> Unit,
+fun NavGraphBuilder.login(
+    onShowSnackbar: suspend (String, String?) -> Boolean,
 ) {
     composable<LoginRoute> {
         LoginRoute(
-            onLoginSuccess = onLoginSuccess,
+            onShowSnackbar = onShowSnackbar,
         )
     }
 }

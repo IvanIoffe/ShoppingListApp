@@ -5,7 +5,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import com.ioffeivan.core.designsystem.component.SlaTextField
 import com.ioffeivan.core.designsystem.icon.SlaIcon
 import com.ioffeivan.core.designsystem.icon.SlaIcons
@@ -17,8 +16,6 @@ fun AuthKeyTextField(
     onAuthKeyChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    isError: Boolean = false,
-    errorMessage: String = "",
 ) {
     SlaTextField(
         value = authKey,
@@ -41,17 +38,6 @@ fun AuthKeyTextField(
             SlaIcon(
                 icon = SlaIcons.Key,
             )
-        },
-        isError = isError,
-        supportingText = {
-            if (isError) {
-                Text(
-                    text = errorMessage,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
         },
         singleLine = true,
     )

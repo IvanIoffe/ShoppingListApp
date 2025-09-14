@@ -5,20 +5,17 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navOptions
-import com.ioffeivan.feature.login.presentation.navigation.LoginRoute
-import com.ioffeivan.feature.login.presentation.navigation.loginScreen
+import com.ioffeivan.feature.login.presentation.navigation.login
 import com.ioffeivan.feature.shopping_item.presentation.navigation.ShoppingItemBaseRoute
 import com.ioffeivan.feature.shopping_item.presentation.navigation.navigateToAddShoppingItem
 import com.ioffeivan.feature.shopping_item.presentation.navigation.navigateToShoppingItem
 import com.ioffeivan.feature.shopping_item.presentation.navigation.shoppingItem
 import com.ioffeivan.feature.shopping_list.presentation.navigation.navigateToCreateShoppingList
-import com.ioffeivan.feature.shopping_list.presentation.navigation.navigateToShoppingList
 import com.ioffeivan.feature.shopping_list.presentation.navigation.shoppingList
 import kotlinx.serialization.Serializable
 
 @Serializable
-object SplashRoute
+data object SplashRoute
 
 @Composable
 fun AppNavGraph(
@@ -33,14 +30,8 @@ fun AppNavGraph(
     ) {
         composable<SplashRoute> {}
 
-        loginScreen(
-            onLoginSuccess = {
-                navController.navigateToShoppingList(
-                    navOptions = navOptions {
-                        popUpTo(LoginRoute) { inclusive = true }
-                    }
-                )
-            }
+        login(
+            onShowSnackbar = onShowSnackbar,
         )
 
         shoppingList(
