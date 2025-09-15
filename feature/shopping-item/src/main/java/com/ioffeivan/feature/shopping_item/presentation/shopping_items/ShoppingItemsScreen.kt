@@ -50,6 +50,7 @@ import com.ioffeivan.core.designsystem.preview.PreviewContainer
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
 import com.ioffeivan.core.ui.SwipeToDismissContainer
+import com.ioffeivan.core.ui.onDebounceClick
 import com.ioffeivan.feature.shopping_item.R
 import com.ioffeivan.feature.shopping_item.domain.model.ShoppingItem
 import com.ioffeivan.feature.shopping_item.domain.model.ShoppingItems
@@ -111,7 +112,7 @@ fun ShoppingItemsScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = onDebounceClick(onClick = onBack)) {
                         SlaIcon(
                             icon = SlaIcons.ArrowBack,
                         )
@@ -121,7 +122,7 @@ fun ShoppingItemsScreen(
         },
         floatingActionButton = {
             ShoppingItemsFAB(
-                onClick = onAddShoppingItemClick,
+                onClick = onDebounceClick(onClick = onAddShoppingItemClick),
                 isVisible = !uiState.isLoading,
             )
         },

@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ioffeivan.core.designsystem.preview.PreviewContainer
 import com.ioffeivan.core.ui.LoadingButton
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
+import com.ioffeivan.core.ui.onDebounceClick
 import com.ioffeivan.feature.login.R
 import com.ioffeivan.feature.login.presentation.component.AuthKeyTextField
 
@@ -119,10 +120,12 @@ private fun LoginForm(
 
         LoadingButton(
             isLoading = uiState.isLoading,
-            onClick = {
-                focusManager.clearFocus()
-                onLoginClick()
-            },
+            onClick = onDebounceClick(
+                onClick = {
+                    focusManager.clearFocus()
+                    onLoginClick()
+                },
+            ),
             enabled = uiState.isLoginButtonEnabled,
             modifier = Modifier
                 .fillMaxWidth(),

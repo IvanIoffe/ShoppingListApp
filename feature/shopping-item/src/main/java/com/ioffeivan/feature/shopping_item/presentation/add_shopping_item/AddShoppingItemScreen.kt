@@ -33,6 +33,7 @@ import com.ioffeivan.core.designsystem.icon.SlaIcons
 import com.ioffeivan.core.designsystem.preview.PreviewContainer
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
+import com.ioffeivan.core.ui.onDebounceClick
 import com.ioffeivan.feature.shopping_item.R
 import com.ioffeivan.feature.shopping_item.presentation.add_shopping_item.component.ShoppingItemNameTextField
 import com.ioffeivan.feature.shopping_item.presentation.add_shopping_item.component.ShoppingItemQuantityTextField
@@ -93,7 +94,7 @@ fun AddShoppingItemScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = onDebounceClick(onClick = onBackClick)) {
                         SlaIcon(
                             icon = SlaIcons.Close,
                         )
@@ -167,7 +168,7 @@ fun EnteringShoppingItemInfoScreen(
 
         SlaButton(
             text = stringResource(R.string.add_shopping_item),
-            onClick = onAddShoppingItemClick,
+            onClick = onDebounceClick(onClick = onAddShoppingItemClick),
             enabled = uiState.addShoppingItemButtonEnabled,
             modifier = Modifier
                 .fillMaxWidth(),

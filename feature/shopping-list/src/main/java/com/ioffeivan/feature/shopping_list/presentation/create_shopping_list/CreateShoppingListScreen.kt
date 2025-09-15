@@ -28,6 +28,7 @@ import com.ioffeivan.core.designsystem.icon.SlaIcon
 import com.ioffeivan.core.designsystem.icon.SlaIcons
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
+import com.ioffeivan.core.ui.onDebounceClick
 import com.ioffeivan.feature.shopping_list.R
 import com.ioffeivan.feature.shopping_list.presentation.create_shopping_list.component.ShoppingListNameTextField
 
@@ -85,7 +86,7 @@ fun CreateShoppingListScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = onDebounceClick(onBackClick)) {
                         SlaIcon(
                             icon = SlaIcons.Close,
                         )

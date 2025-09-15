@@ -36,6 +36,7 @@ import com.ioffeivan.core.designsystem.icon.SlaIcon
 import com.ioffeivan.core.designsystem.icon.SlaIcons
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
+import com.ioffeivan.core.ui.onDebounceClick
 import com.ioffeivan.feature.shopping_list.R
 import com.ioffeivan.feature.shopping_list.domain.model.ShoppingList
 import com.ioffeivan.feature.shopping_list.presentation.shopping_lists.component.ShoppingListItem
@@ -95,7 +96,7 @@ fun ShoppingListsScreen(
         },
         floatingActionButton = {
             ShoppingListsFAB(
-                onClick = onCreateShoppingListClick,
+                onClick = onDebounceClick(onClick = onCreateShoppingListClick),
                 isVisible = !uiState.isLoading,
             )
         },
@@ -151,7 +152,7 @@ fun ShoppingListsScreenContent(
         ) { shoppingList ->
             ShoppingListItem(
                 shoppingList = shoppingList,
-                onClick = onShoppingListClick,
+                onClick = onDebounceClick(onClick = onShoppingListClick),
                 onDeleteClick = onDeleteShoppingListClick,
             )
 
