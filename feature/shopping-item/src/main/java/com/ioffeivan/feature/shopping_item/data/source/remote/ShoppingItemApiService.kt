@@ -26,4 +26,17 @@ interface ShoppingItemApiService {
         @Query("list_id") listId: Int,
         @Query("item_id") itemId: Int,
     ): Response<Unit>
+
+
+    // Preferred: send credentials in request body (POST with @Body) — more secure and RESTful,
+    // but backend currently only accepts credentials via query parameters (@Query).
+    /*@POST("AddToShoppingList")
+    suspend fun addShoppingItem(
+        @Body addShoppingItemDto: AddShoppingItemDto,
+    ): Response<AddedShoppingItemDto>
+
+    @POST("RemoveFromList")
+    suspend fun deleteShoppingItem(
+        @Body deleteShoppingItemDto: DeleteShoppingItemDto,
+    ): Response<Unit>*/
 }
