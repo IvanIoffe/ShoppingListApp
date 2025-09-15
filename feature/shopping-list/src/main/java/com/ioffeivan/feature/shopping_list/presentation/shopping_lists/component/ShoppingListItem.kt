@@ -3,7 +3,6 @@ package com.ioffeivan.feature.shopping_list.presentation.shopping_lists.componen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.IconButton
@@ -33,7 +32,6 @@ fun ShoppingListItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .fillMaxWidth()
             .clickable(onClick = { onClick(shoppingList) })
             .padding(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
     ) {
