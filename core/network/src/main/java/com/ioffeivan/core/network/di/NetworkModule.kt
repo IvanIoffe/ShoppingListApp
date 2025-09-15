@@ -18,7 +18,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object NetworkModuleBase {
+internal object NetworkModuleBase {
 
     @Provides
     fun provideBaseOkHttpClientBuilder(
@@ -70,7 +70,7 @@ object NetworkModuleAuthorized {
     @Authorized
     @Singleton
     @Provides
-    fun provideAuthorizedRetrofitBuilder(
+    fun provideAuthorizedRetrofit(
         baseRetrofitBuilder: Retrofit.Builder,
         @Authorized client: OkHttpClient,
     ): Retrofit {
@@ -99,7 +99,7 @@ object NetworkModuleUnauthorized {
     @Unauthorized
     @Singleton
     @Provides
-    fun provideUnauthorizedRetrofitBuilder(
+    fun provideUnauthorizedRetrofit(
         baseRetrofitBuilder: Retrofit.Builder,
         @Unauthorized client: OkHttpClient,
     ): Retrofit {
