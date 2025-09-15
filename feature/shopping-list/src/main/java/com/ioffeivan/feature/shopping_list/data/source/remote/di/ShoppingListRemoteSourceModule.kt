@@ -30,6 +30,6 @@ interface ShoppingListRemoteSourceModuleBinder {
 
     @Binds
     fun bindShoppingListRemoteDataSource(
-        retrofitShoppingListRemoteDataSource: RetrofitShoppingListRemoteDataSource,
+        impl: RetrofitShoppingListRemoteDataSource
     ): ShoppingListRemoteDataSource
 }

@@ -15,6 +15,6 @@ interface ShoppingListDataModuleBinder {
     @Singleton
     @Binds
     fun bindShoppingListRepository(
-        shoppingListRepositoryImpl: ShoppingListRepositoryImpl,
+        impl: ShoppingListRepositoryImpl
     ): ShoppingListRepository
 }

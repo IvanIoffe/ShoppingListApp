@@ -13,6 +13,6 @@ interface ShoppingListLocalSourceModuleBinder {
 
     @Binds
     fun bindShoppingListLocalDataSource(
-        roomShoppingListLocalDataSource: RoomShoppingListLocalDataSource,
+        impl: RoomShoppingListLocalDataSource
     ): ShoppingListLocalDataSource
 }

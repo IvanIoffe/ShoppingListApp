@@ -31,6 +31,6 @@ interface LoginRemoteSourceModuleBinder {
 
     @Binds
     fun bindLoginRemoteDataSource(
-        retrofitLoginRemoteDataSource: RetrofitLoginRemoteDataSource
+        impl: RetrofitLoginRemoteDataSource
     ): LoginRemoteDataSource
 }

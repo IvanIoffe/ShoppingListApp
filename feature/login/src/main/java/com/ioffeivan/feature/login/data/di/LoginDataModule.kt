@@ -12,5 +12,5 @@ import dagger.hilt.components.SingletonComponent
 interface LoginDataModuleBinder {
 
     @Binds
-    fun bindLoginRepository(loginRepositoryImpl: LoginRepositoryImpl): LoginRepository
+    fun bindLoginRepository(impl: LoginRepositoryImpl): LoginRepository
 }

@@ -13,6 +13,6 @@ interface LoginLocalSourceModuleBinder {
 
     @Binds
     fun bindLoginLocalDataSource(
-        dataStoreLoginLocalDataSource: DataStoreLoginLocalDataSource
+        impl: DataStoreLoginLocalDataSource
     ): LoginLocalDataSource
 }
