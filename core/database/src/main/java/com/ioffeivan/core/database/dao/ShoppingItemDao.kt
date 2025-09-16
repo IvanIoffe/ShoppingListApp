@@ -6,16 +6,17 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import androidx.room.Upsert
 import com.ioffeivan.core.database.model.ShoppingItemEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ShoppingItemDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun insertShoppingItems(shoppingItems: List<ShoppingItemEntity>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun insertShoppingItem(shoppingItemEntity: ShoppingItemEntity)
 
     @Query("DELETE FROM shopping_items WHERE id = :id")
