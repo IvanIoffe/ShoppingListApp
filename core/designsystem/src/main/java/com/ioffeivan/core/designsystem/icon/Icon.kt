@@ -15,7 +15,7 @@ sealed class IconSpec {
 }
 
 @Composable
-fun SlaIcon(
+fun PrimaryIcon(
     icon: IconSpec,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,

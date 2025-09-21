@@ -44,8 +44,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ioffeivan.core.designsystem.component.AddFloatingActionButton
-import com.ioffeivan.core.designsystem.icon.SlaIcon
-import com.ioffeivan.core.designsystem.icon.SlaIcons
+import com.ioffeivan.core.designsystem.icon.PrimaryIcon
+import com.ioffeivan.core.designsystem.icon.PrimaryIcons
 import com.ioffeivan.core.designsystem.preview.PreviewContainer
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
@@ -113,8 +113,8 @@ fun ShoppingItemsScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onDebounceClick(onClick = onBack)) {
-                        SlaIcon(
-                            icon = SlaIcons.ArrowBack,
+                        PrimaryIcon(
+                            icon = PrimaryIcons.ArrowBack,
                         )
                     }
                 },
@@ -225,8 +225,8 @@ fun SwipeToDismissBackground(
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    SlaIcon(
-                        icon = SlaIcons.Delete,
+                    PrimaryIcon(
+                        icon = PrimaryIcons.Delete,
                     )
                 }
             }

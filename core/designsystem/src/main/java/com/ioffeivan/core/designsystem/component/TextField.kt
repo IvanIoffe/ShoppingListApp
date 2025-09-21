@@ -13,7 +13,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SlaTextField(
+fun PrimaryTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,

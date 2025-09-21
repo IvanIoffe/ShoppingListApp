@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ioffeivan.core.designsystem.component.SlaButton
-import com.ioffeivan.core.designsystem.icon.SlaIcon
-import com.ioffeivan.core.designsystem.icon.SlaIcons
+import com.ioffeivan.core.designsystem.component.PrimaryButton
+import com.ioffeivan.core.designsystem.icon.PrimaryIcon
+import com.ioffeivan.core.designsystem.icon.PrimaryIcons
 import com.ioffeivan.core.ui.LoadingScreen
 import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
 import com.ioffeivan.core.ui.onDebounceClick
@@ -87,8 +87,8 @@ fun CreateShoppingListScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onDebounceClick(onBackClick)) {
-                        SlaIcon(
-                            icon = SlaIcons.Close,
+                        PrimaryIcon(
+                            icon = PrimaryIcons.Close,
                         )
                     }
                 },
@@ -114,7 +114,7 @@ fun CreateShoppingListScreen(
                         .fillMaxWidth(),
                 )
 
-                SlaButton(
+                PrimaryButton(
                     text = stringResource(R.string.create_shopping_list),
                     onClick = {
                         onCreateShoppingListClick()
