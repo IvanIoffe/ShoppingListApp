@@ -15,8 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ioffeivan.core.designsystem.icon.SlaIcon
-import com.ioffeivan.core.designsystem.icon.SlaIcons
+import com.ioffeivan.core.designsystem.icon.PrimaryIcon
+import com.ioffeivan.core.designsystem.icon.PrimaryIcons
 import com.ioffeivan.core.designsystem.preview.PreviewContainer
 import com.ioffeivan.feature.shopping_list.domain.model.ShoppingList
 import com.ioffeivan.feature.shopping_list.presentation.shopping_lists.ShoppingListsColors
@@ -47,8 +47,8 @@ fun ShoppingListItem(
         )
 
         IconButton(onClick = { onDeleteClick(shoppingList.id) }) {
-            SlaIcon(
-                icon = SlaIcons.Delete,
+            PrimaryIcon(
+                icon = PrimaryIcons.Delete,
                 tint = ShoppingListsColors.deleteIconButtonColor,
                 modifier = Modifier
                     .size(28.dp),

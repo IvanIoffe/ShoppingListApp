@@ -6,7 +6,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.ioffeivan.core.designsystem.component.SlaButton
+import com.ioffeivan.core.designsystem.component.PrimaryButton
 
 @Composable
 fun LoadingButton(
@@ -16,7 +16,7 @@ fun LoadingButton(
     enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit,
 ) {
-    SlaButton(
+    PrimaryButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,

@@ -5,9 +5,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.ioffeivan.core.designsystem.component.SlaTextField
-import com.ioffeivan.core.designsystem.icon.SlaIcon
-import com.ioffeivan.core.designsystem.icon.SlaIcons
+import com.ioffeivan.core.designsystem.component.PrimaryTextField
+import com.ioffeivan.core.designsystem.icon.PrimaryIcon
+import com.ioffeivan.core.designsystem.icon.PrimaryIcons
 import com.ioffeivan.feature.login.R
 
 @Composable
@@ -17,7 +17,7 @@ fun AuthKeyTextField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    SlaTextField(
+    PrimaryTextField(
         value = authKey,
         onValueChange = onAuthKeyChange,
         modifier = modifier,
@@ -35,8 +35,8 @@ fun AuthKeyTextField(
             )
         },
         leadingIcon = {
-            SlaIcon(
-                icon = SlaIcons.Key,
+            PrimaryIcon(
+                icon = PrimaryIcons.Key,
             )
         },
         singleLine = true,

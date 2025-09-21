@@ -6,7 +6,7 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Close
 import com.ioffeivan.core.designsystem.R
 
-object SlaIcons {
+object PrimaryIcons {
     val Add = IconSpec.Vector(Icons.Rounded.Add)
     val ArrowBack = IconSpec.Vector(Icons.AutoMirrored.Rounded.ArrowBack)
     val Close = IconSpec.Vector(Icons.Rounded.Close)

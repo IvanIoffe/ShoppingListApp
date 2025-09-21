@@ -5,7 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.ioffeivan.core.designsystem.component.SlaTextField
+import com.ioffeivan.core.designsystem.component.PrimaryTextField
 import com.ioffeivan.feature.shopping_list.R
 
 @Composable
@@ -14,7 +14,7 @@ fun ShoppingListNameTextField(
     onShoppingListNameChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    SlaTextField(
+    PrimaryTextField(
         value = shoppingListName,
         onValueChange = onShoppingListNameChange,
         modifier = modifier,
