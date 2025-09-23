@@ -16,10 +16,10 @@ interface ShoppingListDao {
     fun observeAllShoppingLists(): Flow<List<ShoppingListEntity>>
 
     @Upsert
-    suspend fun insertShoppingLists(shoppingLists: List<ShoppingListEntity>)
+    suspend fun upsertShoppingLists(shoppingLists: List<ShoppingListEntity>)
 
     @Upsert
-    suspend fun insertShoppingList(shoppingListEntity: ShoppingListEntity)
+    suspend fun upsertShoppingList(shoppingListEntity: ShoppingListEntity)
 
     @Query("DELETE FROM shopping_lists WHERE id = :id")
     suspend fun deleteShoppingList(id: Int)

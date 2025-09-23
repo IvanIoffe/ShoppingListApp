@@ -12,11 +12,11 @@ class RoomShoppingItemLocalDataSource @Inject constructor(
 ) : ShoppingItemLocalDataSource {
 
     override suspend fun insertShoppingItems(shoppingItems: List<ShoppingItemEntity>) {
-        shoppingItemDao.insertShoppingItems(shoppingItems)
+        shoppingItemDao.upsertShoppingItems(shoppingItems)
     }
 
     override suspend fun insertShoppingItem(shoppingItemEntity: ShoppingItemEntity) {
-        shoppingItemDao.insertShoppingItem(shoppingItemEntity)
+        shoppingItemDao.upsertShoppingItem(shoppingItemEntity)
     }
 
     override suspend fun deleteShoppingItem(id: Int) {

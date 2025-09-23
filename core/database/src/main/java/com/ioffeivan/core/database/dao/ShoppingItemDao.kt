@@ -1,7 +1,6 @@
 package com.ioffeivan.core.database.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
@@ -14,10 +13,10 @@ import kotlinx.coroutines.flow.Flow
 interface ShoppingItemDao {
 
     @Upsert
-    suspend fun insertShoppingItems(shoppingItems: List<ShoppingItemEntity>)
+    suspend fun upsertShoppingItems(shoppingItems: List<ShoppingItemEntity>)
 
     @Upsert
-    suspend fun insertShoppingItem(shoppingItemEntity: ShoppingItemEntity)
+    suspend fun upsertShoppingItem(shoppingItemEntity: ShoppingItemEntity)
 
     @Query("DELETE FROM shopping_items WHERE id = :id")
     suspend fun deleteShoppingItem(id: Int)
