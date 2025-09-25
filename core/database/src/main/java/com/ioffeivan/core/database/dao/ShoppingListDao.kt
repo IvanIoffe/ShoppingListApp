@@ -33,6 +33,6 @@ interface ShoppingListDao {
     @Transaction
     suspend fun changePendingDeletionStatus(id: Int, isPendingDeletion: Boolean) {
         val shoppingList = getShoppingList(id)
-        updateShoppingList(shoppingList.copy(isPendingDeletion = isPendingDeletion))
+        updateShoppingList(shoppingList.copy())
     }
 }

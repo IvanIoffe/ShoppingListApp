@@ -9,7 +9,7 @@ import com.ioffeivan.core.database.model.ShoppingListEntity
 
 @Database(
     entities = [ShoppingListEntity::class, ShoppingItemEntity::class],
-    version = 3,
+    version = 4,
     exportSchema = true,
 )
 internal abstract class SlaDatabase : RoomDatabase() {

@@ -27,7 +27,7 @@ fun ShoppingListEntity.toDomain(): ShoppingList {
     return ShoppingList(
         id = id,
         name = name,
-        isPendingDeletion = isPendingDeletion,
+        isPendingDeletion = true,
     )
 }
 

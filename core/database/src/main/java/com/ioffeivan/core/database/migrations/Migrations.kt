@@ -27,3 +27,66 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
         )
     }
 }
+
+val MIGRATION_3_4 = object : Migration(3, 4) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+
+        // Rename the old `shopping_lists` table
+        db.execSQL("ALTER TABLE shopping_lists RENAME TO shopping_lists_old;")
+
+        // Create a new `shopping_lists` table with the new schema
+        db.execSQL(
+            """
+                CREATE TABLE shopping_lists (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    server_id INTEGER,
+                    name TEXT NOT NULL
+                );
+            """
+        )
+
+        // Add a unique index to the server_id
+        db.execSQL("CREATE UNIQUE INDEX index_shopping_lists_server_id ON shopping_lists(server_id);")
+
+        // Copy data from the old table into the new one,
+        // the old table's id goes into server_id. A new id will be generated automatically.
+        db.execSQL(
+            """
+                INSERT INTO shopping_lists (server_id, name)
+                SELECT id, name FROM shopping_lists_old;
+            """
+        )
+
+        // Update foreign keys in `shopping_items`.
+        // First create a temporary table to map old IDs to new IDs.
+        db.execSQL(
+            """
+                CREATE TEMP TABLE id_map (
+                    old_id INTEGER NOT NULL,
+                    new_id INTEGER NOT NULL
+                );
+            """
+        )
+
+        // Fill it by mapping the old id (now server_id) to the new id
+        db.execSQL(
+            """
+                INSERT INTO id_map (old_id, new_id)
+                SELECT server_id, id FROM shopping_lists;
+            """
+        )
+
+        // Now update `shopping_items` using the ID map
+        db.execSQL(
+            """
+                UPDATE shopping_items
+                SET list_id = (
+                    SELECT new_id FROM id_map WHERE old_id = shopping_items.list_id
+                );
+            """
+        )
+
+        // Remove the old table
+        db.execSQL("DROP TABLE shopping_lists_old;")
+    }
+}
