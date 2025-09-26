@@ -14,6 +14,22 @@ fun CreateShoppingList.toDto(): CreateShoppingListDto {
     )
 }
 
+fun ShoppingList.toCreateShoppingListDto(): CreateShoppingListDto {
+    return CreateShoppingListDto(
+        name = name,
+    )
+}
+
+fun CreatedShoppingListDto.toShoppingListEntity(
+    shoppingList: ShoppingList,
+): ShoppingListEntity {
+    return ShoppingListEntity(
+        id = shoppingList.id,
+        serverId = this.id,
+        name = shoppingList.name,
+    )
+}
+
 fun CreatedShoppingListDto.toShoppingListEntity(
     createShoppingList: CreateShoppingList,
 ): ShoppingListEntity {
