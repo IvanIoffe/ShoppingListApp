@@ -39,6 +39,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -50,6 +51,8 @@ dependencies {
     implementation(project(":feature:login"))
     implementation(project(":feature:shopping-list"))
     implementation(project(":feature:shopping-item"))
+
+    implementation(project(":sync"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
