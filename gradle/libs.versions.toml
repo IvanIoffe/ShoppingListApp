@@ -7,6 +7,7 @@ composeBom = "2025.07.00"
 
 # DI
 hilt = "2.57"
+hiltExt = "1.2.0"
 
 # Navigation
 androidxNavigationCompose = "2.9.3"
@@ -30,6 +31,9 @@ datastorePreferences = "1.1.7"
 
 # SplashScreen
 androidxCoreSplashscreen = "1.0.1"
+
+# WorkManager
+androidxWork = "2.10.5"
 
 # Test
 junit = "4.13.2"
@@ -57,6 +61,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 # DI
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
+hilt-ext-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltExt" }
 
 # Navigation
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigationCompose" }
@@ -83,6 +89,9 @@ androidx-datastore-preferences = { group = "androidx.datastore", name = "datasto
 
 # SplashScreen
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxCoreSplashscreen" }
+
+# WorkManager
+androidx-work-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
 
 # Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
