@@ -36,6 +36,9 @@ android {
 
 dependencies {
 
+    implementation(project(":core:database"))
+    implementation(project(":feature:shopping-list"))
+
     implementation(libs.androidx.core.ktx)
 
     implementation(libs.hilt.android)
