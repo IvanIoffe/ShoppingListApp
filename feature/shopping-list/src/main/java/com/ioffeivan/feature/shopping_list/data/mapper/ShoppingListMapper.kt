@@ -52,7 +52,7 @@ fun ShoppingListsDto.toEntity(): List<ShoppingListEntity> {
 
 fun ShoppingListDto.toEntity(): ShoppingListEntity {
     return ShoppingListEntity(
-        id = id,
+        serverId = id,
         name = name,
     )
 }
