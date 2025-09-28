@@ -26,8 +26,4 @@ class RoomShoppingListLocalDataSource @Inject constructor(
     override suspend fun deleteShoppingList(id: Int) {
         shoppingListDao.deleteShoppingList(id)
     }
-
-    override suspend fun changePendingDeletionStatus(id: Int, isDeletionStatus: Boolean) {
-        shoppingListDao.changePendingDeletionStatus(id, isDeletionStatus)
-    }
 }

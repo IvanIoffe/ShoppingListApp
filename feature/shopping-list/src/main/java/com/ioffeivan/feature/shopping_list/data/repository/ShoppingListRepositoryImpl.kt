@@ -83,8 +83,6 @@ class ShoppingListRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteShoppingList(id: Int) {
-        shoppingListLocalDataSource.changePendingDeletionStatus(id = id, isDeletionStatus = true)
-
         shoppingListRemoteDataSource.deleteShoppingList(id)
             .collect { result ->
                 when (result) {
@@ -93,10 +91,6 @@ class ShoppingListRepositoryImpl @Inject constructor(
                     }
 
                     is Result.Error -> {
-                        shoppingListLocalDataSource.changePendingDeletionStatus(
-                            id = id,
-                            isDeletionStatus = false,
-                        )
                         remoteShoppingListsFlow.emit(Result.Error(result.message))
                     }
 

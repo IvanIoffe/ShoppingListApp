@@ -48,11 +48,9 @@ class ShoppingListsViewModel @Inject constructor(
         .runningFold(initial = ShoppingListsUiState()) { previousState, result ->
             when (result) {
                 is Result.Success -> {
-                    val filteredShoppingLists =
-                        result.data.copy(items = result.data.items.filter { !it.isPendingDeletion })
                     previousState.copy(
-                        shoppingLists = filteredShoppingLists,
-                        isEmpty = filteredShoppingLists.items.isEmpty(),
+                        shoppingLists = result.data,
+                        isEmpty = result.data.items.isEmpty(),
                         isLoading = false,
                     )
                 }
