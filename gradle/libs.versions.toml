@@ -35,6 +35,9 @@ androidxCoreSplashscreen = "1.0.1"
 # WorkManager
 androidxWork = "2.10.5"
 
+# LifecycleProcess
+lifecycleProcess = "2.9.4"
+
 # Test
 junit = "4.13.2"
 junitVersion = "1.3.0"
@@ -92,6 +95,9 @@ androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscree
 
 # WorkManager
 androidx-work-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
+
+# LifecycleProcess
+androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycleProcess" }
 
 # Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
