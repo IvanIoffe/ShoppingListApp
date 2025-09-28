@@ -53,7 +53,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
                             )
                         } else {
                             val shoppingListsEntity = shoppingListsDto.toEntity()
-                            shoppingListLocalDataSource.insertShoppingLists(shoppingListsEntity)
+                            shoppingListLocalDataSource.upsertShoppingLists(shoppingListsEntity)
                         }
                     }
 
@@ -72,7 +72,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
                     is Result.Success -> {
                         val shoppingListEntity =
                             result.data.toShoppingListEntity(createShoppingList)
-                        shoppingListLocalDataSource.insertShoppingList(shoppingListEntity)
+                        shoppingListLocalDataSource.upsertShoppingList(shoppingListEntity)
                         Result.Success(Unit)
                     }
 

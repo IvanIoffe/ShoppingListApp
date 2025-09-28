@@ -34,7 +34,7 @@ interface ShoppingListDao {
     suspend fun upsertShoppingLists(shoppingLists: List<ShoppingListEntity>)
 
     @Upsert
-    suspend fun upsertShoppingList(shoppingListEntity: ShoppingListEntity)
+    suspend fun upsertShoppingList(shoppingListEntity: ShoppingListEntity): Long
 
     @Query(
         value = """

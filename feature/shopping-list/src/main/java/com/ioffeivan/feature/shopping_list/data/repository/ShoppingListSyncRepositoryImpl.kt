@@ -21,7 +21,7 @@ class ShoppingListSyncRepositoryImpl @Inject constructor(
                 when (result) {
                     is Result.Success -> {
                         val shoppingListEntity = result.data.toShoppingListEntity(shoppingList)
-                        shoppingListLocalDataSource.insertShoppingList(
+                        shoppingListLocalDataSource.upsertShoppingList(
                             shoppingList = shoppingListEntity,
                         )
                     }
