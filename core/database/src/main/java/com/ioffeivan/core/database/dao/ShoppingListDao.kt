@@ -11,10 +11,23 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ShoppingListDao {
 
-    @Query("SELECT * FROM shopping_lists")
+    @Query(
+        value = """
+            SELECT * FROM shopping_lists
+            WHERE id NOT IN (
+                SELECT list_id FROM shopping_lists_outbox 
+                WHERE operation = "DELETE"
+            )
+        """
+    )
     fun observeAllShoppingLists(): Flow<List<ShoppingListEntity>>
 
-    @Query("SELECT * FROM shopping_lists WHERE id = :id")
+    @Query(
+        value = """
+            SELECT * FROM shopping_lists
+            WHERE id = :id
+        """
+    )
     suspend fun getShoppingList(id: Int): ShoppingListEntity
 
     @Upsert
@@ -23,7 +36,12 @@ interface ShoppingListDao {
     @Upsert
     suspend fun upsertShoppingList(shoppingListEntity: ShoppingListEntity)
 
-    @Query("DELETE FROM shopping_lists WHERE id = :id")
+    @Query(
+        value = """
+            DELETE FROM shopping_lists
+            WHERE id = :id
+        """
+    )
     suspend fun deleteShoppingList(id: Int)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
