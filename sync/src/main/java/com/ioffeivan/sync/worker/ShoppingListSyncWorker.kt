@@ -35,8 +35,13 @@ internal class ShoppingListSyncWorker @AssistedInject constructor(
                 when (outbox.operation) {
                     Operation.CREATE -> {
                         shoppingListSyncRepository.createShoppingList(shoppingListEntity.toDomain())
+                        shoppingListOutboxDao.deleteShoppingListOutbox(outbox.id)
                     }
 
+                    // For Operation.DELETE we don't need to explicitly remove the outbox row.
+                    // The FK (shopping_lists_outbox.list_id -> shopping_lists.id) is defined with
+                    // ON DELETE CASCADE, so deleting the ShoppingList will automatically remove
+                    // the related shopping_lists_outbox row in the database.
                     Operation.DELETE -> {
                         shoppingListSyncRepository.deleteShoppingList(
                             localId = shoppingListEntity.id,
@@ -44,7 +49,6 @@ internal class ShoppingListSyncWorker @AssistedInject constructor(
                         )
                     }
                 }
-                shoppingListOutboxDao.deleteShoppingListOutbox(outbox.id)
             }
 
             Result.success()

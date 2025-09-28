@@ -65,7 +65,6 @@ fun NavGraphBuilder.shoppingList(
         ) {
             CreateShoppingListRoute(
                 onBack = onBack,
-                onShowSnackbar = onShowSnackbar,
             )
         }
     }

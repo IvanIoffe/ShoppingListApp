@@ -1,6 +1,5 @@
 package com.ioffeivan.feature.shopping_list.presentation.create_shopping_list
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,17 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ioffeivan.core.designsystem.component.PrimaryButton
 import com.ioffeivan.core.designsystem.icon.PrimaryIcon
 import com.ioffeivan.core.designsystem.icon.PrimaryIcons
-import com.ioffeivan.core.ui.LoadingScreen
-import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
 import com.ioffeivan.core.ui.onDebounceClick
 import com.ioffeivan.feature.shopping_list.R
 import com.ioffeivan.feature.shopping_list.presentation.create_shopping_list.component.ShoppingListNameTextField
@@ -35,31 +30,18 @@ import com.ioffeivan.feature.shopping_list.presentation.create_shopping_list.com
 @Composable
 fun CreateShoppingListRoute(
     onBack: () -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
     viewModel: CreateShoppingListViewModel = hiltViewModel(),
 ) {
-    val enteringShoppingListInfoUiState by viewModel.enteringShoppingListInfoUiState.collectAsStateWithLifecycle()
-    val createShoppingListUiState by viewModel.createShoppingListUiState.collectAsStateWithLifecycle()
-
-    ObserveAsEventsWithLifecycle(
-        events = viewModel.createShoppingListEvent,
-        onEvent = { event ->
-            when (event) {
-                is CreateShoppingListEvent.ShowSnackbar -> {
-                    onShowSnackbar(event.message, null)
-                }
-
-                CreateShoppingListEvent.NavigateToBack -> onBack()
-            }
-        },
-    )
+    val uiState by viewModel.createShoppingListUiState.collectAsStateWithLifecycle()
 
     CreateShoppingListScreen(
-        enteringShoppingListInfoUiState = enteringShoppingListInfoUiState,
-        createShoppingListUiState = createShoppingListUiState,
+        uiState = uiState,
         onShoppingListNameChange = viewModel::onShoppingListNameChange,
-        onCreateShoppingListClick = viewModel::onCreateShoppingListClick,
+        onCreateShoppingListClick = {
+            viewModel.onCreateShoppingListClick()
+            onBack()
+        },
         onBackClick = onBack,
         modifier = modifier,
     )
@@ -68,8 +50,7 @@ fun CreateShoppingListRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateShoppingListScreen(
-    enteringShoppingListInfoUiState: EnteringShoppingListInfoUiState,
-    createShoppingListUiState: CreateShoppingListUiState,
+    uiState: CreateShoppingListUiState,
     onShoppingListNameChange: (String) -> Unit,
     onCreateShoppingListClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -108,7 +89,7 @@ fun CreateShoppingListScreen(
                     .fillMaxSize(),
             ) {
                 ShoppingListNameTextField(
-                    shoppingListName = enteringShoppingListInfoUiState.name,
+                    shoppingListName = uiState.name,
                     onShoppingListNameChange = onShoppingListNameChange,
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -119,27 +100,9 @@ fun CreateShoppingListScreen(
                     onClick = {
                         onCreateShoppingListClick()
                     },
-                    enabled = enteringShoppingListInfoUiState.createShoppingListButtonEnabled,
+                    enabled = uiState.createShoppingListButtonEnabled,
                     modifier = Modifier
                         .fillMaxWidth(),
-                )
-            }
-        }
-    }
-
-    when (createShoppingListUiState) {
-        CreateShoppingListUiState.Error,
-        CreateShoppingListUiState.Initial,
-        CreateShoppingListUiState.Success -> Unit
-
-        CreateShoppingListUiState.Loading -> {
-            Popup(
-                alignment = Alignment.Center,
-            ) {
-                LoadingScreen(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(0.5f)),
                 )
             }
         }

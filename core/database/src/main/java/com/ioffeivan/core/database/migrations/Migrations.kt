@@ -93,13 +93,41 @@ val MIGRATION_3_4 = object : Migration(3, 4) {
 
 val MIGRATION_4_5 = object : Migration(4, 5) {
     override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE IF NOT EXISTS `shopping_lists_outbox` (
                 `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                 `list_id` INTEGER NOT NULL,
                 `operation` TEXT NOT NULL,
                 FOREIGN KEY(`list_id`) REFERENCES `shopping_lists`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
             )
-        """.trimIndent())
+        """.trimIndent()
+        )
+    }
+}
+
+val MIGRATION_5_6 = object : Migration(5, 6) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            """
+            CREATE TABLE temp_shopping_lists_outbox (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                list_id INTEGER NOT NULL,
+                operation TEXT NOT NULL,
+                FOREIGN KEY(list_id) REFERENCES shopping_lists(id) ON DELETE CASCADE
+            )
+        """.trimIndent()
+        )
+
+        db.execSQL(
+            """
+            INSERT INTO temp_shopping_lists_outbox (id, list_id, operation)
+            SELECT id, list_id, operation FROM shopping_lists_outbox
+        """.trimIndent()
+        )
+
+        db.execSQL("DROP TABLE shopping_lists_outbox")
+
+        db.execSQL("ALTER TABLE temp_shopping_lists_outbox RENAME TO shopping_lists_outbox")
     }
 }

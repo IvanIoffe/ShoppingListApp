@@ -8,8 +8,8 @@ import com.ioffeivan.feature.shopping_list.data.source.remote.model.ShoppingList
 import com.ioffeivan.feature.shopping_list.domain.model.CreateShoppingList
 import com.ioffeivan.feature.shopping_list.domain.model.ShoppingList
 
-fun CreateShoppingList.toDto(): CreateShoppingListDto {
-    return CreateShoppingListDto(
+fun CreateShoppingList.toShoppingListEntity(): ShoppingListEntity {
+    return ShoppingListEntity(
         name = name,
     )
 }
@@ -30,15 +30,6 @@ fun CreatedShoppingListDto.toShoppingListEntity(
     )
 }
 
-fun CreatedShoppingListDto.toShoppingListEntity(
-    createShoppingList: CreateShoppingList,
-): ShoppingListEntity {
-    return ShoppingListEntity(
-        id = id,
-        name = createShoppingList.name,
-    )
-}
-
 fun ShoppingListEntity.toDomain(): ShoppingList {
     return ShoppingList(
         id = id,
@@ -46,11 +37,11 @@ fun ShoppingListEntity.toDomain(): ShoppingList {
     )
 }
 
-fun ShoppingListsDto.toEntity(): List<ShoppingListEntity> {
-    return items.map { it.toEntity() }
+fun ShoppingListsDto.toShoppingListEntities(): List<ShoppingListEntity> {
+    return items.map(ShoppingListDto::toShoppingListEntity)
 }
 
-fun ShoppingListDto.toEntity(): ShoppingListEntity {
+private fun ShoppingListDto.toShoppingListEntity(): ShoppingListEntity {
     return ShoppingListEntity(
         serverId = id,
         name = name,

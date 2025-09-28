@@ -15,6 +15,7 @@ import androidx.room.PrimaryKey
             entity = ShoppingListEntity::class,
             parentColumns = ["id"],
             childColumns = ["list_id"],
+            onDelete = ForeignKey.CASCADE,
         ),
     ],
 )
