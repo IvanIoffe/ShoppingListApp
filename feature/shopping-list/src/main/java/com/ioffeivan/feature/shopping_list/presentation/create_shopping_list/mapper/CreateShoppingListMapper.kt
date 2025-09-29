@@ -1,9 +1,9 @@
 package com.ioffeivan.feature.shopping_list.presentation.create_shopping_list.mapper
 
 import com.ioffeivan.feature.shopping_list.domain.model.CreateShoppingList
-import com.ioffeivan.feature.shopping_list.presentation.create_shopping_list.EnteringShoppingListInfoUiState
+import com.ioffeivan.feature.shopping_list.presentation.create_shopping_list.CreateShoppingListUiState
 
-fun EnteringShoppingListInfoUiState.toCreateShoppingList(): CreateShoppingList {
+fun CreateShoppingListUiState.toCreateShoppingList(): CreateShoppingList {
     return CreateShoppingList(
         name = name.trim(),
     )
