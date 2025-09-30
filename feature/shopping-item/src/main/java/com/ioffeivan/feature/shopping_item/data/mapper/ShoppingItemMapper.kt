@@ -7,11 +7,23 @@ import com.ioffeivan.feature.shopping_item.data.source.remote.model.ShoppingItem
 import com.ioffeivan.feature.shopping_item.data.source.remote.model.ShoppingItemsDto
 import com.ioffeivan.feature.shopping_item.domain.model.ShoppingItem
 
-fun ShoppingItem.toAddShoppingItemDto(listId: Int): AddShoppingItemDto {
+fun ShoppingItem.toAddShoppingItemDto(): AddShoppingItemDto {
     return AddShoppingItemDto(
         name = name,
         quantity = quantity.toIntOrNull() ?: 0,
         listId = listId,
+    )
+}
+
+fun AddedShoppingItemDto.toShoppingItemEntity(
+    shoppingItem: ShoppingItem,
+): ShoppingItemEntity {
+    return ShoppingItemEntity(
+        id = shoppingItem.id,
+        serverId = id,
+        name = shoppingItem.name,
+        quantity = shoppingItem.quantity,
+        listId = shoppingItem.listId,
     )
 }
 

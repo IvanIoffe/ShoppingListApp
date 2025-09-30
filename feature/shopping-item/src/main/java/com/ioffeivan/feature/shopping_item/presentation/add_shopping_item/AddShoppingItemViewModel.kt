@@ -3,9 +3,9 @@ package com.ioffeivan.feature.shopping_item.presentation.add_shopping_item
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ioffeivan.core.common.Result
-import com.ioffeivan.feature.shopping_item.domain.model.AddShoppingItem
+import com.ioffeivan.feature.shopping_item.domain.model.ShoppingItem
 import com.ioffeivan.feature.shopping_item.domain.usecase.AddShoppingItemToShoppingListUseCase
-import com.ioffeivan.feature.shopping_item.presentation.add_shopping_item.mapper.toAddShoppingItem
+import com.ioffeivan.feature.shopping_item.presentation.add_shopping_item.mapper.toShoppingItem
 import dagger.Lazy
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -34,7 +34,7 @@ class AddShoppingItemViewModel @AssistedInject constructor(
     private val _addShoppingItemEvent = Channel<AddShoppingItemEvent>()
     val addShoppingItemEvent = _addShoppingItemEvent.receiveAsFlow()
 
-    private val addShoppingItemTrigger = MutableSharedFlow<AddShoppingItem>()
+    private val addShoppingItemTrigger = MutableSharedFlow<ShoppingItem>()
 
     private val _enteringShoppingItemInfoUiState =
         MutableStateFlow(EnteringShoppingItemInfoUiState())
@@ -42,8 +42,8 @@ class AddShoppingItemViewModel @AssistedInject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val addShoppingItemUiState = addShoppingItemTrigger
-        .flatMapLatest { addShoppingItem ->
-            addShoppingItemUseCase.get().invoke(addShoppingItem)
+        .flatMapLatest { shoppingItem ->
+            addShoppingItemUseCase.get().invoke(shoppingItem)
                 .onEach {
                     when (it) {
                         is Result.Error -> {
@@ -87,7 +87,7 @@ class AddShoppingItemViewModel @AssistedInject constructor(
     fun onAddShoppingItemClick() {
         viewModelScope.launch {
             addShoppingItemTrigger.emit(
-                _enteringShoppingItemInfoUiState.value.toAddShoppingItem(listId)
+                _enteringShoppingItemInfoUiState.value.toShoppingItem(listId)
             )
         }
     }
