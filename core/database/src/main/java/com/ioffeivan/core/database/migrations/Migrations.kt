@@ -160,3 +160,18 @@ val MIGRATION_6_7 = object : Migration(6, 7) {
         db.execSQL("DROP TABLE shopping_items_old;")
     }
 }
+
+val MIGRATION_7_8 = object : Migration(7, 8) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            """
+            CREATE TABLE shopping_items_outbox (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                item_id INTEGER NOT NULL,
+                operation TEXT NOT NULL,
+                FOREIGN KEY(item_id) REFERENCES shopping_items(id) ON DELETE CASCADE
+            )
+        """.trimIndent()
+        )
+    }
+}
