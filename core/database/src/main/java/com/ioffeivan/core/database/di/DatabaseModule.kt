@@ -8,6 +8,7 @@ import com.ioffeivan.core.database.migrations.MIGRATION_2_3
 import com.ioffeivan.core.database.migrations.MIGRATION_3_4
 import com.ioffeivan.core.database.migrations.MIGRATION_4_5
 import com.ioffeivan.core.database.migrations.MIGRATION_5_6
+import com.ioffeivan.core.database.migrations.MIGRATION_6_7
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,6 +35,7 @@ internal object DatabaseModule {
             .addMigrations(MIGRATION_3_4)
             .addMigrations(MIGRATION_4_5)
             .addMigrations(MIGRATION_5_6)
+            .addMigrations(MIGRATION_6_7)
             .build()
     }
 }

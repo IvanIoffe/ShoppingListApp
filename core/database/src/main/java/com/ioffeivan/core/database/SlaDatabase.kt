@@ -15,7 +15,7 @@ import com.ioffeivan.core.database.model.ShoppingListOutboxEntity
         ShoppingListOutboxEntity::class,
         ShoppingItemEntity::class,
     ],
-    version = 6,
+    version = 7,
     exportSchema = true,
 )
 internal abstract class SlaDatabase : RoomDatabase() {

@@ -28,7 +28,6 @@ fun ShoppingItemEntity.toDomain(): ShoppingItem {
         id = id,
         name = name,
         quantity = quantity,
-        isPendingDeletion = isPendingDeletion,
     )
 }
 
@@ -54,7 +53,6 @@ fun AddedShoppingItemDto.toShoppingItemEntity(
         id = id,
         name = addShoppingItem.name,
         quantity = addShoppingItem.quantity.toString(),
-        isPendingDeletion = false,
         listId = addShoppingItem.listId,
     )
 }
