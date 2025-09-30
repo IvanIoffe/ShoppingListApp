@@ -30,7 +30,7 @@ class ShoppingItemRepositoryImpl @Inject constructor(
                 when (result) {
                     is Result.Success -> {
                         val shoppingItemEntity = result.data.toShoppingItemEntity(addShoppingItem)
-                        shoppingItemLocalDataSource.insertShoppingItem(shoppingItemEntity)
+                        shoppingItemLocalDataSource.upsertShoppingItem(shoppingItemEntity)
                         Result.Success(Unit)
                     }
 
@@ -42,10 +42,6 @@ class ShoppingItemRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteShoppingItem(deleteShoppingItem: DeleteShoppingItem) {
-        shoppingItemLocalDataSource.changePendingDeletionStatus(
-            id = deleteShoppingItem.itemId,
-            isPendingDeletion = true,
-        )
         shoppingItemRemoteDataSource.deleteShoppingItem(deleteShoppingItem.toDto())
             .collect { result ->
                 when (result) {
@@ -54,10 +50,6 @@ class ShoppingItemRepositoryImpl @Inject constructor(
                     }
 
                     is Result.Error -> {
-                        shoppingItemLocalDataSource.changePendingDeletionStatus(
-                            id = deleteShoppingItem.itemId,
-                            isPendingDeletion = false,
-                        )
                         remoteShoppingItemsFLow.emit(Result.Error(result.message))
                     }
 
@@ -75,7 +67,7 @@ class ShoppingItemRepositoryImpl @Inject constructor(
                     Result.Loading -> remoteShoppingItemsFLow.emit(Result.Loading)
 
                     is Result.Success -> {
-                        shoppingItemLocalDataSource.insertShoppingItems(result.data.toEntity(listId))
+                        shoppingItemLocalDataSource.upsertShoppingItems(result.data.toEntity(listId))
                     }
                 }
             }

@@ -11,11 +11,11 @@ class RoomShoppingItemLocalDataSource @Inject constructor(
     private val shoppingItemDao: ShoppingItemDao,
 ) : ShoppingItemLocalDataSource {
 
-    override suspend fun insertShoppingItems(shoppingItems: List<ShoppingItemEntity>) {
+    override suspend fun upsertShoppingItems(shoppingItems: List<ShoppingItemEntity>) {
         shoppingItemDao.upsertShoppingItems(shoppingItems)
     }
 
-    override suspend fun insertShoppingItem(shoppingItemEntity: ShoppingItemEntity) {
+    override suspend fun upsertShoppingItem(shoppingItemEntity: ShoppingItemEntity) {
         shoppingItemDao.upsertShoppingItem(shoppingItemEntity)
     }
 
@@ -25,9 +25,5 @@ class RoomShoppingItemLocalDataSource @Inject constructor(
 
     override fun observeShoppingItems(listId: Int): Flow<Result<List<ShoppingItemEntity>>> {
         return shoppingItemDao.observeShoppingItems(listId).toResultFlow()
-    }
-
-    override suspend fun changePendingDeletionStatus(id: Int, isPendingDeletion: Boolean) {
-        shoppingItemDao.changePendingDeletionStatus(id = id, isPendingDeletion = isPendingDeletion)
     }
 }
