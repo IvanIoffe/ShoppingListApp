@@ -14,8 +14,8 @@ class ShoppingItemSyncRepositoryImpl @Inject constructor(
     private val shoppingItemLocalDataSource: ShoppingItemLocalDataSource,
 ) : ShoppingItemSyncRepository {
 
-    override suspend fun addShoppingItem(shoppingItem: ShoppingItem) {
-        shoppingItemRemoteDataSource.addShoppingItem(shoppingItem.toAddShoppingItemDto())
+    override suspend fun addShoppingItem(shoppingItem: ShoppingItem, listServerId: Int) {
+        shoppingItemRemoteDataSource.addShoppingItem(shoppingItem.toAddShoppingItemDto(listServerId))
             .collect { result ->
                 when (result) {
                     is Result.Success -> {
