@@ -14,7 +14,10 @@ interface ShoppingItemDao {
     @Query(
         value = """
             SELECT * FROM shopping_items
-            WHERE list_id = :listId
+            WHERE list_id = :listId AND id NOT IN (
+                SELECT item_id FROM shopping_items_outbox 
+                WHERE operation = "DELETE"
+            )
         """
     )
     fun observeShoppingItems(listId: Int): Flow<List<ShoppingItemEntity>>

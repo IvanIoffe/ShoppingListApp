@@ -36,7 +36,11 @@ class ShoppingItemSyncRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun deleteShoppingItem(itemServerId: Int, listServerId: Int) {
+    override suspend fun deleteShoppingItem(
+        itemLocalId: Int,
+        itemServerId: Int,
+        listServerId: Int
+    ) {
         shoppingItemRemoteDataSource.deleteShoppingItem(
             deleteShoppingItemDto = DeleteShoppingItemDto(
                 listId = listServerId,
@@ -44,6 +48,10 @@ class ShoppingItemSyncRepositoryImpl @Inject constructor(
             )
         ).collect { result ->
             when (result) {
+                is Result.Success -> {
+                    shoppingItemLocalDataSource.deleteShoppingItem(itemLocalId)
+                }
+
                 is Result.Error -> {
                     throw Exception()
                 }

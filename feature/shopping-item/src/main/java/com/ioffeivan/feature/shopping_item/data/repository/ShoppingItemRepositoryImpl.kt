@@ -1,8 +1,8 @@
 package com.ioffeivan.feature.shopping_item.data.repository
 
 import com.ioffeivan.core.common.Result
-import com.ioffeivan.core.database.model.ShoppingItemEntity
 import com.ioffeivan.core.database.dao.ShoppingItemOutboxDao
+import com.ioffeivan.core.database.model.ShoppingItemEntity
 import com.ioffeivan.core.database.model.ShoppingItemOperation
 import com.ioffeivan.core.database.model.ShoppingItemOutboxEntity
 import com.ioffeivan.feature.shopping_item.data.mapper.toDomain
@@ -57,7 +57,12 @@ class ShoppingItemRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteShoppingItem(id: Int) {
-
+        shoppingItemOutboxDao.insertShoppingItemOutbox(
+            ShoppingItemOutboxEntity(
+                itemId = id,
+                operation = ShoppingItemOperation.DELETE,
+            )
+        )
     }
 
     override fun observeShoppingItems(listId: Int): Flow<Result<ShoppingItems>> {

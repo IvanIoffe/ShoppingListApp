@@ -6,5 +6,5 @@ interface ShoppingItemSyncRepository {
 
     suspend fun addShoppingItem(shoppingItem: ShoppingItem, listServerId: Int)
 
-    suspend fun deleteShoppingItem(itemServerId: Int, listServerId: Int)
+    suspend fun deleteShoppingItem(itemLocalId: Int, itemServerId: Int, listServerId: Int)
 }

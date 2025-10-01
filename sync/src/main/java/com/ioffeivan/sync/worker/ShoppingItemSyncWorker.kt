@@ -41,17 +41,17 @@ internal class ShoppingItemSyncWorker @AssistedInject constructor(
                                 shoppingItemEntity.toDomain(),
                                 listServerId = listServerId,
                             )
+                            shoppingItemOutboxDao.deleteShoppingItemOutbox(outbox.id)
                         }
 
                         ShoppingItemOperation.DELETE -> {
                             shoppingItemSyncRepository.deleteShoppingItem(
+                                itemLocalId = shoppingItemEntity.id,
                                 itemServerId = shoppingItemEntity.serverId ?: 0,
                                 listServerId = listServerId,
                             )
                         }
                     }
-
-                    shoppingItemOutboxDao.deleteShoppingItemOutbox(outbox.id)
                 }
 
 
