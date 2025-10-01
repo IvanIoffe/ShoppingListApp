@@ -131,3 +131,47 @@ val MIGRATION_5_6 = object : Migration(5, 6) {
         db.execSQL("ALTER TABLE temp_shopping_lists_outbox RENAME TO shopping_lists_outbox")
     }
 }
+
+val MIGRATION_6_7 = object : Migration(6, 7) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE shopping_items RENAME TO shopping_items_old;")
+
+        db.execSQL(
+            """
+            CREATE TABLE shopping_items (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                server_id INTEGER,
+                name TEXT NOT NULL,
+                quantity TEXT NOT NULL,
+                list_id INTEGER NOT NULL,
+                FOREIGN KEY(list_id) REFERENCES shopping_lists(id) ON DELETE CASCADE
+            );
+        """.trimIndent()
+        )
+
+        db.execSQL("CREATE UNIQUE INDEX index_shopping_items_server_id ON shopping_items(server_id);")
+
+        db.execSQL(
+            """
+            INSERT INTO shopping_items (server_id, name, quantity, list_id)
+            SELECT id, name, quantity, list_id FROM shopping_items_old;
+        """.trimIndent()
+        )
+        db.execSQL("DROP TABLE shopping_items_old;")
+    }
+}
+
+val MIGRATION_7_8 = object : Migration(7, 8) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            """
+            CREATE TABLE shopping_items_outbox (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                item_id INTEGER NOT NULL,
+                operation TEXT NOT NULL,
+                FOREIGN KEY(item_id) REFERENCES shopping_items(id) ON DELETE CASCADE
+            )
+        """.trimIndent()
+        )
+    }
+}

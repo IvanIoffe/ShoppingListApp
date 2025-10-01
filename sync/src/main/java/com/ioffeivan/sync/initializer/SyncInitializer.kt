@@ -3,6 +3,7 @@ package com.ioffeivan.sync.initializer
 import android.content.Context
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
+import com.ioffeivan.sync.worker.ShoppingItemSyncWorker
 import com.ioffeivan.sync.worker.ShoppingListSyncWorker
 
 object Sync {
@@ -14,6 +15,7 @@ object Sync {
                 existingWorkPolicy = ExistingWorkPolicy.REPLACE,
                 request = ShoppingListSyncWorker.startUpSyncWork(),
             )
+                .then(ShoppingItemSyncWorker.startUpSyncWork())
                 .enqueue()
         }
     }

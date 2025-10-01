@@ -1,6 +1,8 @@
 package com.ioffeivan.feature.shopping_item.data.di
 
 import com.ioffeivan.feature.shopping_item.data.repository.ShoppingItemRepositoryImpl
+import com.ioffeivan.feature.shopping_item.data.repository.ShoppingItemSyncRepository
+import com.ioffeivan.feature.shopping_item.data.repository.ShoppingItemSyncRepositoryImpl
 import com.ioffeivan.feature.shopping_item.domain.repository.ShoppingItemRepository
 import dagger.Binds
 import dagger.Module
@@ -17,4 +19,9 @@ interface ShoppingItemDataModuleBinder {
     fun bindShoppingItemRepository(
         impl: ShoppingItemRepositoryImpl
     ): ShoppingItemRepository
+
+    @Binds
+    fun bindShoppingItemSyncRepository(
+        impl: ShoppingItemSyncRepositoryImpl
+    ): ShoppingItemSyncRepository
 }

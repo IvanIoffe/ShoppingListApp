@@ -38,6 +38,7 @@ dependencies {
 
     implementation(project(":core:database"))
     implementation(project(":feature:shopping-list"))
+    implementation(project(":feature:shopping-item"))
 
     implementation(libs.androidx.core.ktx)
 

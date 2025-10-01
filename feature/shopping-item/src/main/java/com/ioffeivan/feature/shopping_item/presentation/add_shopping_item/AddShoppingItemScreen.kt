@@ -1,6 +1,5 @@
 package com.ioffeivan.feature.shopping_item.presentation.add_shopping_item
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,21 +17,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ioffeivan.core.designsystem.component.PrimaryButton
 import com.ioffeivan.core.designsystem.icon.PrimaryIcon
 import com.ioffeivan.core.designsystem.icon.PrimaryIcons
 import com.ioffeivan.core.designsystem.preview.PreviewContainer
-import com.ioffeivan.core.ui.LoadingScreen
-import com.ioffeivan.core.ui.ObserveAsEventsWithLifecycle
 import com.ioffeivan.core.ui.onDebounceClick
 import com.ioffeivan.feature.shopping_item.R
 import com.ioffeivan.feature.shopping_item.presentation.add_shopping_item.component.ShoppingItemNameTextField
@@ -41,33 +36,20 @@ import com.ioffeivan.feature.shopping_item.presentation.add_shopping_item.compon
 @Composable
 fun AddShoppingItemRoute(
     onBack: () -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
     modifier: Modifier = Modifier,
     viewModel: AddShoppingItemViewModel = hiltViewModel(),
 ) {
-    val enteringShoppingItemInfoUiState by viewModel.enteringShoppingItemInfoUiState.collectAsStateWithLifecycle()
-    val addShoppingItemUiState by viewModel.addShoppingItemUiState.collectAsStateWithLifecycle()
-
-    ObserveAsEventsWithLifecycle(
-        events = viewModel.addShoppingItemEvent,
-        onEvent = { event ->
-            when (event) {
-                is AddShoppingItemEvent.ShowSnackbar -> {
-                    onShowSnackbar(event.message, null)
-                }
-
-                AddShoppingItemEvent.NavigateToBack -> onBack()
-            }
-        },
-    )
+    val uiState by viewModel.addShoppingItemUiState.collectAsStateWithLifecycle()
 
     AddShoppingItemScreen(
-        enteringShoppingItemInfoUiState = enteringShoppingItemInfoUiState,
-        addShoppingItemUiState = addShoppingItemUiState,
+        uiState = uiState,
         onBackClick = onBack,
         onShoppingItemNameChange = viewModel::onShoppingItemNameChange,
         onShoppingItemQuantityChange = viewModel::onShoppingItemQuantityChange,
-        onAddShoppingItemClick = viewModel::onAddShoppingItemClick,
+        onAddShoppingItemClick = {
+            viewModel.onAddShoppingItemClick()
+            onBack()
+        },
         modifier = modifier,
     )
 }
@@ -75,8 +57,7 @@ fun AddShoppingItemRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddShoppingItemScreen(
-    enteringShoppingItemInfoUiState: EnteringShoppingItemInfoUiState,
-    addShoppingItemUiState: AddShoppingItemUiState,
+    uiState: AddShoppingItemUiState,
     onBackClick: () -> Unit,
     onShoppingItemNameChange: (String) -> Unit,
     onShoppingItemQuantityChange: (String) -> Unit,
@@ -103,8 +84,8 @@ fun AddShoppingItemScreen(
             )
         },
     ) { innerPadding ->
-        EnteringShoppingItemInfoScreen(
-            uiState = enteringShoppingItemInfoUiState,
+        AddShoppingItemScreen(
+            uiState = uiState,
             onShoppingItemNameChange = onShoppingItemNameChange,
             onShoppingItemQuantityChange = onShoppingItemQuantityChange,
             onAddShoppingItemClick = onAddShoppingItemClick,
@@ -114,24 +95,11 @@ fun AddShoppingItemScreen(
                 .padding(horizontal = 16.dp, vertical = 16.dp),
         )
     }
-
-    when (addShoppingItemUiState) {
-        AddShoppingItemUiState.Initial -> Unit
-        AddShoppingItemUiState.Loading -> {
-            Popup(alignment = Alignment.Center) {
-                LoadingScreen(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(0.5f)),
-                )
-            }
-        }
-    }
 }
 
 @Composable
-fun EnteringShoppingItemInfoScreen(
-    uiState: EnteringShoppingItemInfoUiState,
+fun AddShoppingItemScreen(
+    uiState: AddShoppingItemUiState,
     onShoppingItemNameChange: (String) -> Unit,
     onShoppingItemQuantityChange: (String) -> Unit,
     onAddShoppingItemClick: () -> Unit,
@@ -181,8 +149,7 @@ fun EnteringShoppingItemInfoScreen(
 fun AddShoppingItemScreenPreviewLight() {
     PreviewContainer {
         AddShoppingItemScreen(
-            enteringShoppingItemInfoUiState = EnteringShoppingItemInfoUiState(),
-            addShoppingItemUiState = AddShoppingItemUiState.Initial,
+            uiState = AddShoppingItemUiState(),
             onBackClick = {},
             onShoppingItemNameChange = {},
             onShoppingItemQuantityChange = {},
@@ -196,8 +163,7 @@ fun AddShoppingItemScreenPreviewLight() {
 fun AddShoppingItemScreenPreviewDark() {
     PreviewContainer(darkTheme = true) {
         AddShoppingItemScreen(
-            enteringShoppingItemInfoUiState = EnteringShoppingItemInfoUiState(),
-            addShoppingItemUiState = AddShoppingItemUiState.Initial,
+            uiState = AddShoppingItemUiState(),
             onBackClick = {},
             onShoppingItemNameChange = {},
             onShoppingItemQuantityChange = {},

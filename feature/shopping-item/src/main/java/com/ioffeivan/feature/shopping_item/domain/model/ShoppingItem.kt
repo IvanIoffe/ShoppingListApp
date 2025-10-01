@@ -1,8 +1,8 @@
 package com.ioffeivan.feature.shopping_item.domain.model
 
 data class ShoppingItem(
-    val id: Int,
+    val id: Int = 0,
     val name: String,
     val quantity: String,
-    val isPendingDeletion: Boolean = false,
+    val listId: Int,
 )
