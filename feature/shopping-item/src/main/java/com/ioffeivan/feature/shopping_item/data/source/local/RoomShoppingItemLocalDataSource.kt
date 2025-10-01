@@ -15,8 +15,8 @@ class RoomShoppingItemLocalDataSource @Inject constructor(
         shoppingItemDao.upsertShoppingItems(shoppingItems)
     }
 
-    override suspend fun upsertShoppingItem(shoppingItemEntity: ShoppingItemEntity) {
-        shoppingItemDao.upsertShoppingItem(shoppingItemEntity)
+    override suspend fun upsertShoppingItem(shoppingItemEntity: ShoppingItemEntity): Long {
+        return shoppingItemDao.upsertShoppingItem(shoppingItemEntity)
     }
 
     override suspend fun deleteShoppingItem(id: Int) {

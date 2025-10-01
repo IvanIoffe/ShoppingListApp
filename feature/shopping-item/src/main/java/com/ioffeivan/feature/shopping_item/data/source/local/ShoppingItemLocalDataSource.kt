@@ -10,7 +10,7 @@ interface ShoppingItemLocalDataSource {
 
     suspend fun upsertShoppingItems(shoppingItems: List<ShoppingItemEntity>)
 
-    suspend fun upsertShoppingItem(shoppingItemEntity: ShoppingItemEntity)
+    suspend fun upsertShoppingItem(shoppingItemEntity: ShoppingItemEntity): Long
 
     suspend fun deleteShoppingItem(id: Int)
 }

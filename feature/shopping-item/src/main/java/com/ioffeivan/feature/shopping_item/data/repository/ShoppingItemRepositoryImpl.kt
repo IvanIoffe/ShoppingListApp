@@ -2,8 +2,12 @@ package com.ioffeivan.feature.shopping_item.data.repository
 
 import com.ioffeivan.core.common.Result
 import com.ioffeivan.core.database.model.ShoppingItemEntity
+import com.ioffeivan.core.database.dao.ShoppingItemOutboxDao
+import com.ioffeivan.core.database.model.ShoppingItemOperation
+import com.ioffeivan.core.database.model.ShoppingItemOutboxEntity
 import com.ioffeivan.feature.shopping_item.data.mapper.toDomain
 import com.ioffeivan.feature.shopping_item.data.mapper.toEntities
+import com.ioffeivan.feature.shopping_item.data.mapper.toEntity
 import com.ioffeivan.feature.shopping_item.data.source.local.ShoppingItemLocalDataSource
 import com.ioffeivan.feature.shopping_item.data.source.remote.ShoppingItemRemoteDataSource
 import com.ioffeivan.feature.shopping_item.domain.model.ShoppingItem
@@ -11,7 +15,6 @@ import com.ioffeivan.feature.shopping_item.domain.model.ShoppingItems
 import com.ioffeivan.feature.shopping_item.domain.repository.ShoppingItemRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import javax.inject.Inject
@@ -19,6 +22,7 @@ import javax.inject.Inject
 class ShoppingItemRepositoryImpl @Inject constructor(
     private val shoppingItemRemoteDataSource: ShoppingItemRemoteDataSource,
     private val shoppingItemLocalDataSource: ShoppingItemLocalDataSource,
+    private val shoppingItemOutboxDao: ShoppingItemOutboxDao,
 ) : ShoppingItemRepository {
 
     private val remoteShoppingItemsFLow = MutableSharedFlow<Result<ShoppingItems>>(replay = 1)
@@ -40,8 +44,16 @@ class ShoppingItemRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun addShoppingItem(shoppingItem: ShoppingItem): Flow<Result<Unit>> {
-        return flowOf()
+    override suspend fun addShoppingItem(shoppingItem: ShoppingItem) {
+        val id = shoppingItemLocalDataSource.upsertShoppingItem(
+            shoppingItem.toEntity()
+        )
+        shoppingItemOutboxDao.insertShoppingItemOutbox(
+            shoppingItemOutboxEntity = ShoppingItemOutboxEntity(
+                itemId = id.toInt(),
+                operation = ShoppingItemOperation.CREATE,
+            )
+        )
     }
 
     override suspend fun deleteShoppingItem(id: Int) {

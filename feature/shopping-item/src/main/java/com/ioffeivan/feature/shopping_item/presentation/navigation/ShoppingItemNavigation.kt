@@ -109,7 +109,6 @@ fun NavGraphBuilder.shoppingItem(
 
             AddShoppingItemRoute(
                 onBack = onBack,
-                onShowSnackbar = onShowSnackbar,
                 viewModel = hiltViewModel<AddShoppingItemViewModel, AddShoppingItemViewModel.Factory>(
                     key = "$listId"
                 ) { factory ->
