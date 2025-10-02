@@ -8,18 +8,25 @@ import com.ioffeivan.feature.shopping_list.data.source.remote.model.ShoppingList
 import com.ioffeivan.feature.shopping_list.domain.model.CreateShoppingList
 import com.ioffeivan.feature.shopping_list.domain.model.ShoppingList
 
-fun CreateShoppingList.toDto(): CreateShoppingListDto {
+fun CreateShoppingList.toShoppingListEntity(): ShoppingListEntity {
+    return ShoppingListEntity(
+        name = name,
+    )
+}
+
+fun ShoppingList.toCreateShoppingListDto(): CreateShoppingListDto {
     return CreateShoppingListDto(
         name = name,
     )
 }
 
 fun CreatedShoppingListDto.toShoppingListEntity(
-    createShoppingList: CreateShoppingList,
+    shoppingList: ShoppingList,
 ): ShoppingListEntity {
     return ShoppingListEntity(
-        id = id,
-        name = createShoppingList.name,
+        id = shoppingList.id,
+        serverId = this.id,
+        name = shoppingList.name,
     )
 }
 
@@ -27,17 +34,17 @@ fun ShoppingListEntity.toDomain(): ShoppingList {
     return ShoppingList(
         id = id,
         name = name,
-        isPendingDeletion = isPendingDeletion,
+        serverId = serverId,
     )
 }
 
-fun ShoppingListsDto.toEntity(): List<ShoppingListEntity> {
-    return items.map { it.toEntity() }
+fun ShoppingListsDto.toEntities(): List<ShoppingListEntity> {
+    return items.map(ShoppingListDto::toEntity)
 }
 
-fun ShoppingListDto.toEntity(): ShoppingListEntity {
+private fun ShoppingListDto.toEntity(): ShoppingListEntity {
     return ShoppingListEntity(
-        id = id,
+        serverId = id,
         name = name,
     )
 }

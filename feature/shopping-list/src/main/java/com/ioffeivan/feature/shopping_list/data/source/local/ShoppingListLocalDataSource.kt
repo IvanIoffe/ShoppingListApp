@@ -8,11 +8,9 @@ interface ShoppingListLocalDataSource {
 
     fun observeAllShoppingLists(): Flow<Result<List<ShoppingListEntity>>>
 
-    suspend fun insertShoppingLists(shoppingLists: List<ShoppingListEntity>)
+    suspend fun upsertShoppingLists(shoppingLists: List<ShoppingListEntity>)
 
-    suspend fun insertShoppingList(shoppingList: ShoppingListEntity)
+    suspend fun upsertShoppingList(shoppingList: ShoppingListEntity): Long
 
     suspend fun deleteShoppingList(id: Int)
-
-    suspend fun changePendingDeletionStatus(id: Int, isDeletionStatus: Boolean)
 }

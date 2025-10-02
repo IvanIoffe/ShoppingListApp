@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ioffeivan.core.common.Result
 import com.ioffeivan.core.ui.utils.withRefreshing
-import com.ioffeivan.feature.shopping_item.domain.model.DeleteShoppingItem
 import com.ioffeivan.feature.shopping_item.domain.usecase.DeleteShoppingItemFromShoppingListUseCase
 import com.ioffeivan.feature.shopping_item.domain.usecase.ObserveShoppingItemsUseCase
 import com.ioffeivan.feature.shopping_item.domain.usecase.RefreshShoppingItemsUseCase
@@ -33,6 +32,7 @@ class ShoppingItemsViewModel @AssistedInject constructor(
     private val deleteShoppingItemUseCase: Lazy<DeleteShoppingItemFromShoppingListUseCase>,
     @Assisted val listId: Int,
     @Assisted val listName: String,
+    @Assisted val listServerId: Int?,
 ) : ViewModel() {
 
     private val _shoppingItemsEvent = Channel<ShoppingItemsEvent>()
@@ -43,8 +43,15 @@ class ShoppingItemsViewModel @AssistedInject constructor(
         get() = _isRefreshing.asStateFlow()
 
     val uiState = observeShoppingItemsUseCase(listId)
-        .onStart { refreshShoppingItemsUseCase(listId) }
-        .drop(1) // Skip first Loading or Error
+        .onStart {
+            if (listServerId != null) {
+                refreshShoppingItemsUseCase(
+                    listLocalId = listId,
+                    listServerId = listServerId,
+                )
+            }
+        }
+        .drop(if (listServerId != null) 1 else 0) // Skip first Loading or Error
         .onEach { result ->
             when (result) {
                 is Result.Error -> {
@@ -56,10 +63,9 @@ class ShoppingItemsViewModel @AssistedInject constructor(
         }.runningFold(initial = ShoppingItemsUiState(title = listName)) { previousState, result ->
             when (result) {
                 is Result.Success -> {
-                    val filteredShoppingItems = result.data.items.filter { !it.isPendingDeletion }
                     previousState.copy(
-                        shoppingItems = result.data.copy(items = filteredShoppingItems),
-                        isEmpty = filteredShoppingItems.isEmpty(),
+                        shoppingItems = result.data,
+                        isEmpty = result.data.items.isEmpty(),
                         isLoading = false,
                     )
                 }
@@ -84,16 +90,19 @@ class ShoppingItemsViewModel @AssistedInject constructor(
                 startRefreshingAction = { _isRefreshing.value = true },
                 endRefreshingAction = { _isRefreshing.value = false },
             ) {
-                refreshShoppingItemsUseCase(listId)
+                if (listServerId != null) {
+                    refreshShoppingItemsUseCase(
+                        listLocalId = listId,
+                        listServerId = listServerId,
+                    )
+                }
             }
         }
     }
 
-    fun deleteShoppingItem(itemId: Int) {
+    fun deleteShoppingItem(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteShoppingItemUseCase.get().invoke(
-                DeleteShoppingItem(listId = listId, itemId = itemId)
-            )
+            deleteShoppingItemUseCase.get().invoke(id)
         }
     }
 
@@ -102,6 +111,7 @@ class ShoppingItemsViewModel @AssistedInject constructor(
         fun create(
             listId: Int,
             listName: String,
+            listServerId: Int?,
         ): ShoppingItemsViewModel
     }
 }

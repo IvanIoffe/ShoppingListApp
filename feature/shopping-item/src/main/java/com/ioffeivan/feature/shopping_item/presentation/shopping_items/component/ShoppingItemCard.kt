@@ -52,6 +52,7 @@ fun ShoppingItemCardPreviewLight() {
                 id = 1,
                 name = "Milk",
                 quantity = "2",
+                listId = 1,
             )
         )
     }
@@ -66,6 +67,7 @@ fun ShoppingItemCardPreviewDark() {
                 id = 1,
                 name = "Milk",
                 quantity = "2",
+                listId = 1,
             )
         )
     }

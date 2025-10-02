@@ -6,7 +6,10 @@ import javax.inject.Inject
 class RefreshShoppingItemsUseCase @Inject constructor(
     private val shoppingItemRepository: ShoppingItemRepository,
 ) {
-    suspend operator fun invoke(listId: Int) {
-        return shoppingItemRepository.refreshShoppingItems(listId)
+    suspend operator fun invoke(listLocalId: Int, listServerId: Int) {
+        return shoppingItemRepository.refreshShoppingItems(
+            listLocalId = listLocalId,
+            listServerId = listServerId,
+        )
     }
 }

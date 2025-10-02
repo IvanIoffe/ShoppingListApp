@@ -1,9 +1,12 @@
 package com.ioffeivan.feature.shopping_list.data.repository
 
 import com.ioffeivan.core.common.Result
+import com.ioffeivan.core.database.dao.ShoppingListOutboxDao
+import com.ioffeivan.core.database.model.ShoppingListOutboxOperation
+import com.ioffeivan.core.database.model.ShoppingListEntity
+import com.ioffeivan.core.database.model.ShoppingListOutboxEntity
 import com.ioffeivan.feature.shopping_list.data.mapper.toDomain
-import com.ioffeivan.feature.shopping_list.data.mapper.toDto
-import com.ioffeivan.feature.shopping_list.data.mapper.toEntity
+import com.ioffeivan.feature.shopping_list.data.mapper.toEntities
 import com.ioffeivan.feature.shopping_list.data.mapper.toShoppingListEntity
 import com.ioffeivan.feature.shopping_list.data.source.local.ShoppingListLocalDataSource
 import com.ioffeivan.feature.shopping_list.data.source.remote.ShoppingListRemoteDataSource
@@ -20,6 +23,7 @@ import javax.inject.Inject
 class ShoppingListRepositoryImpl @Inject constructor(
     private val shoppingListRemoteDataSource: ShoppingListRemoteDataSource,
     private val shoppingListLocalDataSource: ShoppingListLocalDataSource,
+    private val shoppingListOutboxDao: ShoppingListOutboxDao,
 ) : ShoppingListRepository {
 
     private val remoteShoppingListsFlow = MutableSharedFlow<Result<ShoppingLists>>(replay = 1)
@@ -29,7 +33,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
             .map { result ->
                 when (result) {
                     is Result.Success -> {
-                        val domainItems = result.data.map { it.toDomain() }
+                        val domainItems = result.data.map(ShoppingListEntity::toDomain)
                         Result.Success(ShoppingLists(items = domainItems))
                     }
 
@@ -52,8 +56,8 @@ class ShoppingListRepositoryImpl @Inject constructor(
                                 Result.Success(ShoppingLists(emptyList()))
                             )
                         } else {
-                            val shoppingListsEntity = shoppingListsDto.toEntity()
-                            shoppingListLocalDataSource.insertShoppingLists(shoppingListsEntity)
+                            val shoppingListsEntity = shoppingListsDto.toEntities()
+                            shoppingListLocalDataSource.upsertShoppingLists(shoppingListsEntity)
                         }
                     }
 
@@ -63,47 +67,25 @@ class ShoppingListRepositoryImpl @Inject constructor(
             }
     }
 
-    override fun createShoppingList(
-        createShoppingList: CreateShoppingList,
-    ): Flow<Result<Unit>> {
-        return shoppingListRemoteDataSource.createShoppingList(createShoppingList.toDto())
-            .map { result ->
-                when (result) {
-                    is Result.Success -> {
-                        val shoppingListEntity =
-                            result.data.toShoppingListEntity(createShoppingList)
-                        shoppingListLocalDataSource.insertShoppingList(shoppingListEntity)
-                        Result.Success(Unit)
-                    }
-
-                    Result.Loading -> Result.Loading
-                    is Result.Error -> Result.Error(result.message)
-                }
-            }
+    override suspend fun createShoppingList(createShoppingList: CreateShoppingList) {
+        val id = shoppingListLocalDataSource.upsertShoppingList(
+            createShoppingList.toShoppingListEntity()
+        )
+        shoppingListOutboxDao.insertShoppingListOutbox(
+            ShoppingListOutboxEntity(
+                listId = id.toInt(),
+                operation = ShoppingListOutboxOperation.CREATE,
+            )
+        )
     }
 
     override suspend fun deleteShoppingList(id: Int) {
-        shoppingListLocalDataSource.changePendingDeletionStatus(id = id, isDeletionStatus = true)
-
-        shoppingListRemoteDataSource.deleteShoppingList(id)
-            .collect { result ->
-                when (result) {
-                    is Result.Success -> {
-                        shoppingListLocalDataSource.deleteShoppingList(id)
-                    }
-
-                    is Result.Error -> {
-                        shoppingListLocalDataSource.changePendingDeletionStatus(
-                            id = id,
-                            isDeletionStatus = false,
-                        )
-                        remoteShoppingListsFlow.emit(Result.Error(result.message))
-                    }
-
-                    else -> {}
-                }
-            }
-
+        shoppingListOutboxDao.insertShoppingListOutbox(
+            ShoppingListOutboxEntity(
+                listId = id,
+                operation = ShoppingListOutboxOperation.DELETE,
+            )
+        )
     }
 
     override fun observeShoppingLists(): Flow<Result<ShoppingLists>> {

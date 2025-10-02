@@ -2,7 +2,9 @@ package com.ioffeivan.core.database.di
 
 import com.ioffeivan.core.database.SlaDatabase
 import com.ioffeivan.core.database.dao.ShoppingItemDao
+import com.ioffeivan.core.database.dao.ShoppingItemOutboxDao
 import com.ioffeivan.core.database.dao.ShoppingListDao
+import com.ioffeivan.core.database.dao.ShoppingListOutboxDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +20,17 @@ internal object DaoModule {
     ): ShoppingListDao = slaDatabase.shoppingListDao()
 
     @Provides
+    fun provideShoppingListOutboxDao(
+        slaDatabase: SlaDatabase,
+    ): ShoppingListOutboxDao = slaDatabase.shoppingListOutboxDao()
+
+    @Provides
     fun provideShoppingItemDao(
         slaDatabase: SlaDatabase,
     ): ShoppingItemDao = slaDatabase.shoppingItemDao()
+
+    @Provides
+    fun provideShoppingItemOutboxDao(
+        slaDatabase: SlaDatabase,
+    ): ShoppingItemOutboxDao = slaDatabase.shoppingItemOutboxDao()
 }

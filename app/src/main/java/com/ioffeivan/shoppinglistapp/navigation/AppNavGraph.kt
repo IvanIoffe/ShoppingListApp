@@ -35,6 +35,7 @@ fun AppNavGraph(
                 navController.navigateToShoppingItem(
                     listId = shoppingList.id,
                     listName = shoppingList.name,
+                    listServerId = shoppingList.serverId,
                 )
             },
             onCreateShoppingListClick = navController::navigateToCreateShoppingList,

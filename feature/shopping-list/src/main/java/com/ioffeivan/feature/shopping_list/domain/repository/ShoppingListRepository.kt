@@ -9,7 +9,7 @@ interface ShoppingListRepository {
 
     suspend fun refreshShoppingLists()
 
-    fun createShoppingList(createShoppingList: CreateShoppingList): Flow<Result<Unit>>
+    suspend fun createShoppingList(createShoppingList: CreateShoppingList)
 
     suspend fun deleteShoppingList(id: Int)
 
