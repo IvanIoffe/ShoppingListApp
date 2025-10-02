@@ -27,8 +27,8 @@ class ShoppingItemRepositoryImpl @Inject constructor(
 
     private val remoteShoppingItemsFLow = MutableSharedFlow<Result<ShoppingItems>>(replay = 1)
 
-    override suspend fun refreshShoppingItems(listId: Int) {
-        shoppingItemRemoteDataSource.getShoppingItems(listId)
+    override suspend fun refreshShoppingItems(listLocalId: Int, listServerId: Int) {
+        shoppingItemRemoteDataSource.getShoppingItems(listServerId)
             .collect { result ->
                 when (result) {
                     is Result.Error -> remoteShoppingItemsFLow.emit(Result.Error(result.message))
@@ -37,7 +37,7 @@ class ShoppingItemRepositoryImpl @Inject constructor(
 
                     is Result.Success -> {
                         shoppingItemLocalDataSource.upsertShoppingItems(
-                            result.data.toEntities(listId)
+                            result.data.toEntities(listLocalId)
                         )
                     }
                 }

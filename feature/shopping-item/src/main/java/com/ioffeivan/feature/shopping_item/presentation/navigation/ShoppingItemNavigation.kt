@@ -18,7 +18,11 @@ import com.ioffeivan.feature.shopping_item.presentation.shopping_items.ShoppingI
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ShoppingItemBaseRoute(val listId: Int, val listName: String)
+data class ShoppingItemBaseRoute(
+    val listId: Int,
+    val listName: String,
+    val listServerId: Int?,
+)
 
 @Serializable
 data object ShoppingItemsRoute
@@ -29,10 +33,15 @@ data class AddShoppingItemRoute(val listId: Int)
 fun NavController.navigateToShoppingItem(
     listId: Int,
     listName: String,
+    listServerId: Int?,
     navOptions: NavOptions? = null,
 ) {
     navigate(
-        route = ShoppingItemBaseRoute(listId = listId, listName = listName),
+        route = ShoppingItemBaseRoute(
+            listId = listId,
+            listName = listName,
+            listServerId = listServerId,
+        ),
         navOptions = navOptions,
     )
 }
@@ -77,16 +86,20 @@ fun NavGraphBuilder.shoppingItem(
             },
         ) {
             val parentEntry = remember { navBackStackEntry() }
-            val (listId, listName) = parentEntry.toRoute<ShoppingItemBaseRoute>()
+            val (listId, listName, listServerId) = parentEntry.toRoute<ShoppingItemBaseRoute>()
 
             ShoppingItemsRoute(
                 onBack = onBack,
                 onAddShoppingItemClick = { onAddShoppingItemClick(listId) },
                 onShowSnackbar = onShowSnackbar,
                 viewModel = hiltViewModel<ShoppingItemsViewModel, ShoppingItemsViewModel.Factory>(
-                    key = "$listId|$listName"
+                    key = "$listId|$listName|$listServerId"
                 ) { factory ->
-                    factory.create(listId = listId, listName = listName)
+                    factory.create(
+                        listId = listId,
+                        listName = listName,
+                        listServerId = listServerId,
+                    )
                 },
             )
         }
