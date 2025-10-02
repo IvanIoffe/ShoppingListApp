@@ -34,6 +34,7 @@ fun ShoppingListEntity.toDomain(): ShoppingList {
     return ShoppingList(
         id = id,
         name = name,
+        serverId = serverId,
     )
 }
 
