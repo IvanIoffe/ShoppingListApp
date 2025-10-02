@@ -38,11 +38,11 @@ fun ShoppingListEntity.toDomain(): ShoppingList {
     )
 }
 
-fun ShoppingListsDto.toShoppingListEntities(): List<ShoppingListEntity> {
-    return items.map(ShoppingListDto::toShoppingListEntity)
+fun ShoppingListsDto.toEntities(): List<ShoppingListEntity> {
+    return items.map(ShoppingListDto::toEntity)
 }
 
-private fun ShoppingListDto.toShoppingListEntity(): ShoppingListEntity {
+private fun ShoppingListDto.toEntity(): ShoppingListEntity {
     return ShoppingListEntity(
         serverId = id,
         name = name,

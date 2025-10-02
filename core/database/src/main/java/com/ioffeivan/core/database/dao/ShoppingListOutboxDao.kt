@@ -9,7 +9,7 @@ import com.ioffeivan.core.database.model.ShoppingListOutboxEntity
 interface ShoppingListOutboxDao {
 
     @Query("SELECT * FROM shopping_lists_outbox")
-    suspend fun getAllShoppingListOutbox(): List<ShoppingListOutboxEntity>
+    suspend fun getAllShoppingListsOutbox(): List<ShoppingListOutboxEntity>
 
     @Insert
     suspend fun insertShoppingListOutbox(shoppingListOutboxEntity: ShoppingListOutboxEntity)

@@ -3,7 +3,7 @@ package com.ioffeivan.feature.shopping_item.data.repository
 import com.ioffeivan.core.common.Result
 import com.ioffeivan.core.database.dao.ShoppingItemOutboxDao
 import com.ioffeivan.core.database.model.ShoppingItemEntity
-import com.ioffeivan.core.database.model.ShoppingItemOperation
+import com.ioffeivan.core.database.model.ShoppingItemOutboxOperation
 import com.ioffeivan.core.database.model.ShoppingItemOutboxEntity
 import com.ioffeivan.feature.shopping_item.data.mapper.toDomain
 import com.ioffeivan.feature.shopping_item.data.mapper.toEntities
@@ -51,7 +51,7 @@ class ShoppingItemRepositoryImpl @Inject constructor(
         shoppingItemOutboxDao.insertShoppingItemOutbox(
             shoppingItemOutboxEntity = ShoppingItemOutboxEntity(
                 itemId = id.toInt(),
-                operation = ShoppingItemOperation.CREATE,
+                operation = ShoppingItemOutboxOperation.ADD,
             )
         )
     }
@@ -60,7 +60,7 @@ class ShoppingItemRepositoryImpl @Inject constructor(
         shoppingItemOutboxDao.insertShoppingItemOutbox(
             ShoppingItemOutboxEntity(
                 itemId = id,
-                operation = ShoppingItemOperation.DELETE,
+                operation = ShoppingItemOutboxOperation.DELETE,
             )
         )
     }

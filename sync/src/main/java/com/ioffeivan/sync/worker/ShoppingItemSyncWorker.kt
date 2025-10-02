@@ -11,7 +11,7 @@ import androidx.work.WorkerParameters
 import com.ioffeivan.core.database.dao.ShoppingItemDao
 import com.ioffeivan.core.database.dao.ShoppingItemOutboxDao
 import com.ioffeivan.core.database.dao.ShoppingListDao
-import com.ioffeivan.core.database.model.ShoppingItemOperation
+import com.ioffeivan.core.database.model.ShoppingItemOutboxOperation
 import com.ioffeivan.feature.shopping_item.data.mapper.toDomain
 import com.ioffeivan.feature.shopping_item.data.repository.ShoppingItemSyncRepository
 import dagger.assisted.Assisted
@@ -36,7 +36,7 @@ internal class ShoppingItemSyncWorker @AssistedInject constructor(
                         shoppingListDao.getShoppingList(shoppingItemEntity.listId).serverId ?: 0
 
                     when (outbox.operation) {
-                        ShoppingItemOperation.CREATE -> {
+                        ShoppingItemOutboxOperation.ADD -> {
                             shoppingItemSyncRepository.addShoppingItem(
                                 shoppingItemEntity.toDomain(),
                                 listServerId = listServerId,
@@ -44,7 +44,7 @@ internal class ShoppingItemSyncWorker @AssistedInject constructor(
                             shoppingItemOutboxDao.deleteShoppingItemOutbox(outbox.id)
                         }
 
-                        ShoppingItemOperation.DELETE -> {
+                        ShoppingItemOutboxOperation.DELETE -> {
                             shoppingItemSyncRepository.deleteShoppingItem(
                                 itemLocalId = shoppingItemEntity.id,
                                 itemServerId = shoppingItemEntity.serverId ?: 0,

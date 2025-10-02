@@ -2,11 +2,11 @@ package com.ioffeivan.feature.shopping_list.data.repository
 
 import com.ioffeivan.core.common.Result
 import com.ioffeivan.core.database.dao.ShoppingListOutboxDao
-import com.ioffeivan.core.database.model.Operation
+import com.ioffeivan.core.database.model.ShoppingListOutboxOperation
 import com.ioffeivan.core.database.model.ShoppingListEntity
 import com.ioffeivan.core.database.model.ShoppingListOutboxEntity
 import com.ioffeivan.feature.shopping_list.data.mapper.toDomain
-import com.ioffeivan.feature.shopping_list.data.mapper.toShoppingListEntities
+import com.ioffeivan.feature.shopping_list.data.mapper.toEntities
 import com.ioffeivan.feature.shopping_list.data.mapper.toShoppingListEntity
 import com.ioffeivan.feature.shopping_list.data.source.local.ShoppingListLocalDataSource
 import com.ioffeivan.feature.shopping_list.data.source.remote.ShoppingListRemoteDataSource
@@ -56,7 +56,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
                                 Result.Success(ShoppingLists(emptyList()))
                             )
                         } else {
-                            val shoppingListsEntity = shoppingListsDto.toShoppingListEntities()
+                            val shoppingListsEntity = shoppingListsDto.toEntities()
                             shoppingListLocalDataSource.upsertShoppingLists(shoppingListsEntity)
                         }
                     }
@@ -74,7 +74,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
         shoppingListOutboxDao.insertShoppingListOutbox(
             ShoppingListOutboxEntity(
                 listId = id.toInt(),
-                operation = Operation.CREATE,
+                operation = ShoppingListOutboxOperation.CREATE,
             )
         )
     }
@@ -83,7 +83,7 @@ class ShoppingListRepositoryImpl @Inject constructor(
         shoppingListOutboxDao.insertShoppingListOutbox(
             ShoppingListOutboxEntity(
                 listId = id,
-                operation = Operation.DELETE,
+                operation = ShoppingListOutboxOperation.DELETE,
             )
         )
     }

@@ -27,10 +27,10 @@ data class ShoppingItemOutboxEntity(
     @ColumnInfo(name = "item_id")
     val itemId: Int,
 
-    val operation: ShoppingItemOperation,
+    val operation: ShoppingItemOutboxOperation,
 )
 
-enum class ShoppingItemOperation {
-    CREATE,
+enum class ShoppingItemOutboxOperation {
+    ADD,
     DELETE,
 }

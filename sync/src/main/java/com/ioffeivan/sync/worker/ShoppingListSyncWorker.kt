@@ -10,7 +10,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.ioffeivan.core.database.dao.ShoppingListDao
 import com.ioffeivan.core.database.dao.ShoppingListOutboxDao
-import com.ioffeivan.core.database.model.Operation
+import com.ioffeivan.core.database.model.ShoppingListOutboxOperation
 import com.ioffeivan.feature.shopping_list.data.mapper.toDomain
 import com.ioffeivan.feature.shopping_list.data.repository.ShoppingListSyncRepository
 import dagger.assisted.Assisted
@@ -27,13 +27,13 @@ internal class ShoppingListSyncWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-            val outboxes = shoppingListOutboxDao.getAllShoppingListOutbox()
+            val outboxes = shoppingListOutboxDao.getAllShoppingListsOutbox()
 
             outboxes.forEach { outbox ->
                 val shoppingListEntity = shoppingListDao.getShoppingList(outbox.listId)
 
                 when (outbox.operation) {
-                    Operation.CREATE -> {
+                    ShoppingListOutboxOperation.CREATE -> {
                         shoppingListSyncRepository.createShoppingList(shoppingListEntity.toDomain())
                         shoppingListOutboxDao.deleteShoppingListOutbox(outbox.id)
                     }
@@ -42,7 +42,7 @@ internal class ShoppingListSyncWorker @AssistedInject constructor(
                     // The FK (shopping_lists_outbox.list_id -> shopping_lists.id) is defined with
                     // ON DELETE CASCADE, so deleting the ShoppingList will automatically remove
                     // the related shopping_lists_outbox row in the database.
-                    Operation.DELETE -> {
+                    ShoppingListOutboxOperation.DELETE -> {
                         shoppingListSyncRepository.deleteShoppingList(
                             localId = shoppingListEntity.id,
                             serverId = shoppingListEntity.serverId ?: 0,
